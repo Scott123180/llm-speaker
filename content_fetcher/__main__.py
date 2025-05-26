@@ -1,7 +1,21 @@
 import requests
 import concurrent.futures
-import time
 import os
+
+from rich.progress import Progress, DownloadColumn, BarColumn, TextColumn, TimeRemainingColumn, TransferSpeedColumn
+from rich.console import Console
+
+# Create a shared console and progress manager
+console = Console()
+progress = Progress(
+    TextColumn("[bold blue]{task.fields[filename]}", justify="right"),
+    BarColumn(),
+    DownloadColumn(),
+    TransferSpeedColumn(),
+    TimeRemainingColumn(),
+    transient=False, # this keeps the progress bars after completion
+    console=console,
+)
 
 max_workers = 5  # Change this to control the number of parallel downloads
 output_dir = "/media/biosdaddy/WD Red/archives"
@@ -14,20 +28,21 @@ def download_file_with_speed(url, filepath):
 
         total_size = int(response.headers.get('content-length', 0))
         chunk_size = 8192  # 8 KB
-        downloaded = 0
-        start_time = time.time()
+        filename = os.path.basename(filepath)
+
+        task_id = progress.add_task("download", filename=filename, total=total_size)
+
 
         with open(filepath, 'wb') as f:
             for chunk in response.iter_content(chunk_size=chunk_size):
                 if chunk:
                     f.write(chunk)
-                    downloaded += len(chunk)
-                    elapsed = time.time() - start_time
-                    speed = downloaded / elapsed if elapsed > 0 else 0
-                    percent = (downloaded / total_size) * 100 if total_size else 0
-                    print(f"\rDownloading {url}: {percent:.1f}% at {speed / (1024 * 1024):.2f} MB/s", end='')
+                    progress.update(task_id, advance=len(chunk))
+
 
         print(f"\nSaved to {filepath}")
+        progress.remove_task(task_id)
+
 
     except Exception as e:
         print(f"Failed to download {url}: {e}")
@@ -59,8 +74,9 @@ def main():
 
     print(f"Number of ref values: {len(ref_ids)}")
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-        executor.map(download_task, ref_ids)
+    with progress:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            executor.map(download_task, ref_ids)
 
 
 
