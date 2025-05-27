@@ -4,6 +4,7 @@ import os
 
 from rich.progress import Progress, DownloadColumn, BarColumn, TextColumn, TimeRemainingColumn, TransferSpeedColumn
 from rich.console import Console
+from .overall_speed_column import OverallSpeedColumn
 
 # Create a shared console and progress manager
 console = Console()
@@ -12,12 +13,14 @@ progress = Progress(
     BarColumn(),
     DownloadColumn(),
     TransferSpeedColumn(),
+    OverallSpeedColumn(),
     TimeRemainingColumn(),
     transient=False, # this keeps the progress bars after completion
     console=console,
 )
 
-max_workers = 5  # Change this to control the number of parallel downloads
+# DO NOT RAISE ABOVE 5 AS IT MIGHT CRASH THE SERVER
+max_workers = 3  # Change this to control the number of parallel downloads
 output_dir = "/media/biosdaddy/WD Red/archives"
 
 
@@ -39,13 +42,14 @@ def download_file_with_speed(url, filepath):
                     f.write(chunk)
                     progress.update(task_id, advance=len(chunk))
 
+        console.print(f"downloaded file {url}")
 
-        print(f"\nSaved to {filepath}")
+        # remove the task from view
         progress.remove_task(task_id)
 
 
     except Exception as e:
-        print(f"Failed to download {url}: {e}")
+        console.print(f"Failed to download {url}: {e}")
 
 
 def download_task(ref_id):
@@ -61,8 +65,8 @@ def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Path to the file with ref values
-    #ref_file = "loori_talks.txt"
-    file_name = "test.txt" # should be in the webscraper directory
+    file_name = "loori_talks.txt"
+    #file_name = "test.txt" # should be in the webscraper directory
     ref_file = os.path.join(base_dir, file_name)
 
     # Directory to save the files
@@ -72,12 +76,14 @@ def main():
     with open(ref_file, 'r') as f:
         ref_ids = [line.strip() for line in f if line.strip().isdigit()]
 
-    print(f"Number of ref values: {len(ref_ids)}")
+    console.print(f"Number of ref values (files to download): {len(ref_ids)}")
+    console.print(
+    "[bold]Filename         │ Progress │ Downloaded │ Curr Speed │ Avg Speed │ ETA[/bold]"
+)
 
     with progress:
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             executor.map(download_task, ref_ids)
-
 
 
 if __name__ == "__main__":
