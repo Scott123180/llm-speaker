@@ -21,7 +21,8 @@ progress = Progress(
 
 # DO NOT RAISE ABOVE 5 AS IT MIGHT CRASH THE SERVER
 max_workers = 3  # Change this to control the number of parallel downloads
-output_dir = "/media/biosdaddy/WD Red/archives"
+output_dir = "/media/biosdaddy/WD Red/archives/other/audio"
+input_file_name = "other_talks.txt"
 
 
 def download_file_with_speed(url, filepath):
@@ -65,9 +66,8 @@ def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Path to the file with ref values
-    file_name = "loori_talks.txt"
     #file_name = "test.txt" # should be in the webscraper directory
-    ref_file = os.path.join(base_dir, file_name)
+    ref_file = os.path.join(base_dir, input_file_name)
 
     # Directory to save the files
     os.makedirs(output_dir, exist_ok=True)
