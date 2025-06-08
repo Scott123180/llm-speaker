@@ -17,12 +17,11 @@
 - shugen
 - gokan
 - maezumi
-
-# Currently transcribing
 - myotai
-
-# Pending Transcription
 - hojin
+- other
 - shoan
 - zuisei
-- other
+
+# Currently transcribing
+# Pending Transcription

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #INPUT_DIR="/home/biosdaddy/git/llm-speaker/transcriber/talks"
-INPUT_DIR="/media/biosdaddy/WD Red/archives/myotai/audio"
+INPUT_DIR="/media/biosdaddy/WD Red/archives/zuisei/audio"
 OUTPUT_DIR="./transcriptions"
 MODEL="turbo"  # or "medium", "large", etc.
 FORMAT="all"
