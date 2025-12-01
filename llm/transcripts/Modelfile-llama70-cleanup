@@ -29,7 +29,7 @@ Output:
 """
 
 # Use bigger context if you want; 8192 is fine for long transcripts.
-PARAMETER num_ctx 8192
+PARAMETER num_ctx 32000
 
 # Very low temperature: we want minimal creativity.
 PARAMETER temperature 0.0
