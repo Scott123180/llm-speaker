@@ -1,0 +1,2 @@
+python3 likeness.py /home/biosdaddy/git/llm-speaker/llm/transcripts/24526_short.txt /home/biosdaddy/git/llm-speaker/llm/transcripts/texts/llama3:8b_short/24526_short.cleaned.txt 
+Likeness score: 0.7756
