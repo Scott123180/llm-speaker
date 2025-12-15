@@ -15,7 +15,7 @@ CSV_PATH = Path(__file__).with_name("metadata_export__20251214-20_59.csv")
 # Where generated talk JSON files will live.
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
 # Set to an int to cap how many rows are processed; leave as None to process all.
-ROW_LIMIT: int | None = 10
+ROW_LIMIT: int | None = None
 FIELD_MAP: Dict[str, str] = {
     "Resource ID(s)": "id",
     "Resource type": "resourceType",
