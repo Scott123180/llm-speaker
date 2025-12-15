@@ -23,8 +23,8 @@ Saw this was using around 42GB of memory.
 
 ``` bash
 printf "Clean this transcript according to your rules. Do NOT summarize.\n\n%s" \
-  "$(cat ./transcripts/30594.txt)" \
-  | ollama run llama70-cleanup
+  "$(cat ./24798.txt)" \
+  | ollama run llama70-cleanup > 24798_cleaned.txt
 ```
 
 # Install small model

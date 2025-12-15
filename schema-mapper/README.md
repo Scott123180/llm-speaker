@@ -1,0 +1,1 @@
+This is a simple script to transform a csv into a json that can be read by my dharma library project.
