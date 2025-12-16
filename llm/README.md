@@ -22,44 +22,12 @@ Saw this was using around 42GB of memory.
 `ollama create llama70-cleanup -f Modelfile-llama70-cleanup`
 
 ``` bash
-printf "Clean this transcript according to your rules. Do NOT summarize.\n\n%s" \
-  "$(cat ./24798.txt)" \
-  | ollama run llama70-cleanup > 24798_cleaned.txt
+  cat ./30594.txt | ollama run llama70-cleanup > 30594_cleaned_and_corrected.txt
 ```
 
-# Install small model
-cd temp
-
-`ollama pull llama3:8b`
-
-`ollama create llama8-cleanup -f Modelfile-llama8-cleanup`
-
+This is the older one that might not be good since we're adding extra instructions on it.
 ``` bash
 printf "Clean this transcript according to your rules. Do NOT summarize.\n\n%s" \
-  "$(cat ../transcripts/24526_short.txt)" \
-  | ollama run llama8-cleanup
-```
-
-# 8B q5
-`ollama pull llama3:8b-instruct-q5_K_M`
-
-
-`ollama create llama8-Q5-instruct -f Modelfile-llama8-Q5-instruct-cleanup`
-
-
-``` bash
-printf "Clean this transcript according to your rules. Do NOT summarize.\n\n%s" \
-  "$(cat ../transcripts/24526_short.txt)" \
-  | ollama run llama8-Q5-instruct
-```
-
-# 3.1 fp16
-`ollama pull llama3.1:8b-instruct-fp16`
-
-`ollama create llama8-31-fp16 -f Modelfile-llama8-31-instruct-fp16`
-
-``` bash
-printf "Clean this transcript according to your rules. Do NOT summarize.\n\n%s" \
-  "$(cat ../transcripts/24526_short.txt)" \
-  | ollama run llama8-31-fp16
+  "$(cat ./30594.txt)" \
+  | ollama run llama70-cleanup > 30594_cleaned_cor.txt
 ```
