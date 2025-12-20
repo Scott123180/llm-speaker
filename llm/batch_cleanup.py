@@ -111,7 +111,7 @@ def main():
             input_path, input_dir, output_dir, args.ext
         )
         if not args.overwrite and os.path.exists(output_path):
-            return ("skip", output_path, None, None, 0.0)
+            return ("skip", output_path, None, None, 0.0, None)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
         with open(input_path, "r", encoding="utf-8", errors="replace") as f:

@@ -35,12 +35,7 @@ The plan is to run this on a single GPU instance and keep the model server warm 
 ## Approach
 Long-lived worker + a batch queue
 
-
-
-1. Export the model from the dev machine
-- `ollama list` to confirm model name
-- `ollama export llama70-cleanup-H100-smallctx -o llama70-cleanup-H100-smallctx.ollama` (creates a portable bundle).
-   Copy the `.ollama` file to the cloud/VM storage
+1. Download the git repo with all the model files
 2. Import on the cloud GPU machine
 - Install Ollama and GPU drivers (Lambda H100 PCIe).
 - `ollama import llama70-cleanup-H100-smallctx.ollama`
