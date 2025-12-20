@@ -1,4 +1,4 @@
-FROM llama3.1:8b
+FROM llama3.1:70b
 
 SYSTEM """
 You are an expert text editor for raw voice-to-text transcripts.
@@ -27,13 +27,25 @@ Very important rules:
 Output:
 - Return ONLY the cleaned transcript text, nothing else.
 """
-
-# Use bigger context if you want; 8192 is fine for long transcripts.
-PARAMETER num_ctx 8192
+# Distribution of tokens
+# max_words: 33621
+# approx_tokens: 44828
+# median_tokens: 6652
+# decile_1: 1-4195 (count: 603)
+# decile_2: 4196-5101 (count: 603)
+# decile_3: 5101-5675 (count: 603)
+# decile_4: 5675-6193 (count: 603)
+# decile_5: 6195-6652 (count: 604)
+# decile_6: 6653-7140 (count: 603)
+# decile_7: 7141-7700 (count: 603)
+# decile_8: 7701-8704 (count: 603)
+# decile_9: 8705-12939 (count: 603)
+# decile_10: 12957-44828 (count: 604)
+PARAMETER num_ctx 16000
 
 # Very low temperature: we want minimal creativity.
 PARAMETER temperature 0.0
 
 # Use more CPU threads if you have many cores.
-# Adjust 16 to the number of logical cores you want to use.
-PARAMETER num_thread 24
+# Adjust to the number of logical cores you want to use.
+PARAMETER num_thread 26

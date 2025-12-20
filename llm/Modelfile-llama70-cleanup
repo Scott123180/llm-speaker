@@ -28,7 +28,7 @@ Output:
 - Return ONLY the cleaned transcript text, nothing else.
 """
 
-# Use bigger context if you want; 8192 is fine for long transcripts.
+# Use bigger context if needed - larger contexts = slower. Context too short = content truncated
 PARAMETER num_ctx 32000
 
 # Very low temperature: we want minimal creativity.

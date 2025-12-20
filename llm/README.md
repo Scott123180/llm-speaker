@@ -37,12 +37,12 @@ Long-lived worker + a batch queue
 
 1. Export the model from the dev machine
 - `ollama list` to confirm model name
-- `ollama export llama70-cleanup -o llama70-cleanup.ollama` (creates a portable bundle).
+- `ollama export llama70-cleanup-H100 -o llama70-cleanup-H100.ollama` (creates a portable bundle).
    Copy the `.ollama` file to the cloud/VM storage
 2. Import on the cloud GPU machine
-- Install Ollama and GPU drivers (Lambda A H100).
-- `ollama import llama70-cleanup.ollama`
-- `ollama serve` (keeps the model loaded; don’t restart between jobs).3. Batch runner script (single process, many requests)
+- Install Ollama and GPU drivers (Lambda H100 PCIe).
+- `ollama import llama70-cleanup-H100.ollama`
+- `ollama serve` (keeps the model loaded; don’t restart between jobs).3. Batch runner script (single process, many requests - see below)
 - A script walks your 6,300 files, sends each to http://localhost:11434/api/chat (or /api/generate), and writes output to a parallel directory.
 - Keep concurrency low (1–4) to avoid VRAM thrash and keep latency consistent.
 - Reuse a single HTTP session and the same model name.
@@ -50,13 +50,31 @@ Long-lived worker + a batch queue
 - Place input files on fast local NVMe or a mounted volume.
 - Write outputs to another directory; later sync back to storage.
 
+## Targeted Machine
+URL: https://lambda.ai/instances
+
+Name: NVIDIA H100 PCIe
+VRAM/GPU: 80 GB
+vCPUs: 26
+RAM: 225 GiB
+Storage: 1 TiB SSD
+Hourly Cost: $2.49
+
 ## Batch Cleaup Script
 1. Start Ollama server once (keeps model warm)
 ollama serve
 
 2. Run batch cleanup
+Small Model
 ``` bash
-python3 llm/batch_cleanup.py \
+python3 batch_cleanup.py \
+  --input-dir /path/to/raw_txt \
+  --output-dir /path/to/clean_txt \
+  --model llama8-cleanup
+```
+Big Model
+``` bash
+python3 batch_cleanup.py \
   --input-dir /path/to/raw_txt \
   --output-dir /path/to/clean_txt \
   --model llama70-cleanup
