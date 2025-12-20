@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import argparse
-import concurrent.futures
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -26,7 +26,15 @@ def call_ollama(host, model, text, timeout, keep_alive):
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         body = resp.read()
     decoded = json.loads(body.decode("utf-8"))
-    return decoded.get("response", "")
+    response = decoded.get("response", "")
+    stats = {
+        "prompt_eval_count": decoded.get("prompt_eval_count"),
+        "prompt_eval_duration": decoded.get("prompt_eval_duration"),
+        "eval_count": decoded.get("eval_count"),
+        "eval_duration": decoded.get("eval_duration"),
+        "total_duration": decoded.get("total_duration"),
+    }
+    return response, stats
 
 
 def build_output_path(input_path, input_dir, output_dir, ext):
@@ -55,7 +63,7 @@ def main():
     )
     parser.add_argument("--input-dir", required=True, help="Directory with input files.")
     parser.add_argument("--output-dir", required=True, help="Directory for output files.")
-    parser.add_argument("--model", default="llama70-cleanup", help="Ollama model name.")
+    parser.add_argument("--model", default="llama70-G200-smallctx", help="Ollama model name.")
     parser.add_argument(
         "--host", default="http://localhost:11434", help="Ollama server host."
     )
@@ -79,82 +87,102 @@ def main():
         help="Overwrite output files if they exist.",
     )
     parser.add_argument(
-        "--parallel",
-        type=int,
-        default=1,
-        help="Number of parallel requests to send (default: 1).",
+        "--metrics",
+        action="store_true",
+        help="Print per-file timing and throughput metrics.",
     )
     args = parser.parse_args()
-    if args.parallel < 1:
-        parser.error("--parallel must be >= 1")
 
     input_dir = os.path.abspath(args.input_dir)
     output_dir = os.path.abspath(args.output_dir)
     os.makedirs(output_dir, exist_ok=True)
 
     def process_file(input_path):
+        start = time.perf_counter()
         output_path = build_output_path(
             input_path, input_dir, output_dir, args.ext
         )
         if not args.overwrite and os.path.exists(output_path):
-            return ("skip", output_path, None)
+            return ("skip", output_path, None, None, 0.0)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
         with open(input_path, "r", encoding="utf-8", errors="replace") as f:
             text = f.read()
         if not text.strip():
             cleaned = ""
+            stats = None
         else:
-            cleaned = call_ollama(
+            cleaned, stats = call_ollama(
                 args.host, args.model, text, args.timeout, args.keep_alive
             )
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(cleaned)
-        return ("wrote", output_path, None)
+        elapsed = time.perf_counter() - start
+        return ("wrote", output_path, stats, len(cleaned), elapsed)
 
     input_paths = list(iter_input_files(input_dir, args.ext))
     total = len(input_paths)
-    had_error = False
+    total_start = time.perf_counter()
+    total_chars = 0
+    total_eval_count = 0
+    total_eval_duration = 0.0
 
-    if args.parallel == 1:
-        for input_path in input_paths:
-            try:
-                status, output_path, _ = process_file(input_path)
-                if status == "skip":
-                    print(f"skip (exists): {output_path}", file=sys.stderr)
-                else:
-                    print(f"wrote: {output_path}", file=sys.stderr)
-            except urllib.error.URLError as exc:
-                print(f"error: {input_path}: {exc}", file=sys.stderr)
-                sys.exit(1)
-    else:
-        with concurrent.futures.ThreadPoolExecutor(
-            max_workers=args.parallel
-        ) as executor:
-            future_map = {
-                executor.submit(process_file, path): path
-                for path in input_paths
-            }
-            for future in concurrent.futures.as_completed(future_map):
-                input_path = future_map[future]
-                try:
-                    status, output_path, _ = future.result()
-                    if status == "skip":
-                        print(f"skip (exists): {output_path}", file=sys.stderr)
-                    else:
-                        print(f"wrote: {output_path}", file=sys.stderr)
-                except urllib.error.URLError as exc:
-                    print(f"error: {input_path}: {exc}", file=sys.stderr)
-                    had_error = True
-                except Exception as exc:
-                    print(f"error: {input_path}: {exc}", file=sys.stderr)
-                    had_error = True
+    for input_path in input_paths:
+        try:
+            status, output_path, stats, char_count, elapsed = process_file(input_path)
+            if status == "skip":
+                print(f"skip (exists): {output_path}", file=sys.stderr)
+            else:
+                print(f"wrote: {output_path}", file=sys.stderr)
+                if args.metrics:
+                    metric = format_metrics(stats, char_count, elapsed)
+                    print(f"metrics: {output_path}: {metric}", file=sys.stderr)
+                total_chars += char_count
+                if stats:
+                    total_eval_count += stats.get("eval_count") or 0
+                    total_eval_duration += (stats.get("eval_duration") or 0) / 1e9
+        except urllib.error.URLError as exc:
+            print(f"error: {input_path}: {exc}", file=sys.stderr)
+            sys.exit(1)
 
     if total == 0:
         print("no matching files found", file=sys.stderr)
-    if had_error:
-        sys.exit(1)
+    if args.metrics and total > 0:
+        total_elapsed = time.perf_counter() - total_start
+        metric = format_totals(total_elapsed, total_chars, total_eval_count, total_eval_duration)
+        print(f"metrics: total: {metric}", file=sys.stderr)
+
+
+def format_metrics(stats, char_count, elapsed):
+    if elapsed <= 0:
+        elapsed = 0.000001
+    parts = [f"time={elapsed:.2f}s"]
+    if char_count:
+        parts.append(f"chars/sec={int(char_count / elapsed)}")
+    if stats:
+        eval_count = stats.get("eval_count")
+        eval_duration = stats.get("eval_duration")
+        if eval_count and eval_duration:
+            eval_seconds = eval_duration / 1e9
+            if eval_seconds > 0:
+                parts.append(f"tok/sec={eval_count / eval_seconds:.2f}")
+        total_duration = stats.get("total_duration")
+        if total_duration:
+            parts.append(f"ollama_time={total_duration / 1e9:.2f}s")
+    return ", ".join(parts)
+
+
+def format_totals(total_elapsed, total_chars, total_eval_count, total_eval_duration):
+    if total_elapsed <= 0:
+        total_elapsed = 0.000001
+    parts = [f"time={total_elapsed:.2f}s"]
+    if total_chars:
+        parts.append(f"chars/sec={int(total_chars / total_elapsed)}")
+    if total_eval_count and total_eval_duration:
+        if total_eval_duration > 0:
+            parts.append(f"tok/sec={total_eval_count / total_eval_duration:.2f}")
+    return ", ".join(parts)
 
 
 if __name__ == "__main__":
