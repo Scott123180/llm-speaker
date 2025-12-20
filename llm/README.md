@@ -71,6 +71,34 @@ RAM: 432 GiB
 Storage: 4 TiB SSD
 Hourly Cost: $1.49
 
+# Performance & Utilization Notes (GH200 + Ollama)
+## Observed metrics for Llama 3.1 70B (Q4_K_M) on a GH200 (96 GB VRAM):
+
+- Throughput: ~37 tokens/sec
+- GPU: ~95–100% utilization
+- VRAM: ~46 GB used
+- CPU: ~100% shown in top
+
+### How to interpret this
+
+#### High GPU utilization (~97%)
+→ Inference is GPU-bound and running efficiently.
+
+#### VRAM well below max (~46 GB)
+→ Correct for 70B Q4_K_M; model weights fully fit on GPU with headroom.
+
+#### CPU ~100% in top
+→ This is ~1 fully used core on a 64-vCPU system, not a bottleneck. CPU handles tokenization and scheduling; GPU does the heavy work.
+
+#### Token rate (~37 tok/s)
+→ Expected for 70B @ 16k context; higher context = lower tok/s.
+
+#### Sanity check rule
+
+If GPU is saturated, VRAM is stable, and CPU is not broadly pegged, the system is healthy.
+
+This behavior indicates a well-tuned inference setup, not underutilization.
+
 
 ## Batch Cleaup Script
 1. Start Ollama server once (keeps model warm)
@@ -82,12 +110,14 @@ Small Model
 python3 batch_cleanup.py \
   --input-dir /path/to/raw_txt \
   --output-dir /path/to/clean_txt \
-  --model llama8-cleanup
+  --model llama8-cleanup \
+  --metrics
 ```
 Big Model
 ``` bash
 python3 batch_cleanup.py \
   --input-dir /path/to/raw_txt \
   --output-dir /path/to/clean_txt \
-  --model llama70-cleanup
+  --model llama70-cleanup \ 
+  --metrics
 ```

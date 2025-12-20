@@ -91,7 +91,15 @@ def main():
         action="store_true",
         help="Print per-file timing and throughput metrics.",
     )
+    parser.add_argument(
+        "--retries",
+        type=int,
+        default=1,
+        help="Number of retries per file on request failure (default: 1).",
+    )
     args = parser.parse_args()
+    if args.retries < 0:
+        parser.error("--retries must be >= 0")
 
     input_dir = os.path.abspath(args.input_dir)
     output_dir = os.path.abspath(args.output_dir)
@@ -112,14 +120,23 @@ def main():
             cleaned = ""
             stats = None
         else:
-            cleaned, stats = call_ollama(
-                args.host, args.model, text, args.timeout, args.keep_alive
-            )
+            attempts = 0
+            while True:
+                try:
+                    cleaned, stats = call_ollama(
+                        args.host, args.model, text, args.timeout, args.keep_alive
+                    )
+                    break
+                except (urllib.error.URLError, TimeoutError) as exc:
+                    attempts += 1
+                    if attempts > args.retries:
+                        elapsed = time.perf_counter() - start
+                        return ("error", output_path, None, 0, elapsed, exc)
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(cleaned)
         elapsed = time.perf_counter() - start
-        return ("wrote", output_path, stats, len(cleaned), elapsed)
+        return ("wrote", output_path, stats, len(cleaned), elapsed, None)
 
     input_paths = list(iter_input_files(input_dir, args.ext))
     total = len(input_paths)
@@ -128,23 +145,24 @@ def main():
     total_eval_count = 0
     total_eval_duration = 0.0
 
+    had_error = False
     for input_path in input_paths:
-        try:
-            status, output_path, stats, char_count, elapsed = process_file(input_path)
-            if status == "skip":
-                print(f"skip (exists): {output_path}", file=sys.stderr)
-            else:
-                print(f"wrote: {output_path}", file=sys.stderr)
-                if args.metrics:
-                    metric = format_metrics(stats, char_count, elapsed)
-                    print(f"metrics: {output_path}: {metric}", file=sys.stderr)
-                total_chars += char_count
-                if stats:
-                    total_eval_count += stats.get("eval_count") or 0
-                    total_eval_duration += (stats.get("eval_duration") or 0) / 1e9
-        except urllib.error.URLError as exc:
-            print(f"error: {input_path}: {exc}", file=sys.stderr)
-            sys.exit(1)
+        status, output_path, stats, char_count, elapsed, err = process_file(input_path)
+        if status == "skip":
+            print(f"skip (exists): {output_path}", file=sys.stderr)
+            continue
+        if status == "error":
+            print(f"error: {input_path}: {err}", file=sys.stderr)
+            had_error = True
+            continue
+        print(f"wrote: {output_path}", file=sys.stderr)
+        if args.metrics:
+            metric = format_metrics(stats, char_count, elapsed)
+            print(f"metrics: {output_path}: {metric}", file=sys.stderr)
+        total_chars += char_count
+        if stats:
+            total_eval_count += stats.get("eval_count") or 0
+            total_eval_duration += (stats.get("eval_duration") or 0) / 1e9
 
     if total == 0:
         print("no matching files found", file=sys.stderr)
@@ -152,6 +170,8 @@ def main():
         total_elapsed = time.perf_counter() - total_start
         metric = format_totals(total_elapsed, total_chars, total_eval_count, total_eval_duration)
         print(f"metrics: total: {metric}", file=sys.stderr)
+    if had_error:
+        sys.exit(1)
 
 
 def format_metrics(stats, char_count, elapsed):
