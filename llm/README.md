@@ -35,13 +35,15 @@ The plan is to run this on a single GPU instance and keep the model server warm 
 ## Approach
 Long-lived worker + a batch queue
 
+
+
 1. Export the model from the dev machine
 - `ollama list` to confirm model name
-- `ollama export llama70-cleanup-H100 -o llama70-cleanup-H100.ollama` (creates a portable bundle).
+- `ollama export llama70-cleanup-H100-smallctx -o llama70-cleanup-H100-smallctx.ollama` (creates a portable bundle).
    Copy the `.ollama` file to the cloud/VM storage
 2. Import on the cloud GPU machine
 - Install Ollama and GPU drivers (Lambda H100 PCIe).
-- `ollama import llama70-cleanup-H100.ollama`
+- `ollama import llama70-cleanup-H100-smallctx.ollama`
 - `ollama serve` (keeps the model loaded; don’t restart between jobs).3. Batch runner script (single process, many requests - see below)
 - A script walks your 6,300 files, sends each to http://localhost:11434/api/chat (or /api/generate), and writes output to a parallel directory.
 - Keep concurrency low (1–4) to avoid VRAM thrash and keep latency consistent.
@@ -59,6 +61,16 @@ vCPUs: 26
 RAM: 225 GiB
 Storage: 1 TiB SSD
 Hourly Cost: $2.49
+
+Might be cheaper and perform equal or better for this task:
+
+Name: NVIDIA GH200
+VRAM/GPU: 96 GB
+vCPUs: 64
+RAM: 432 GiB
+Storage: 4 TiB SSD
+Hourly Cost: $1.49
+
 
 ## Batch Cleaup Script
 1. Start Ollama server once (keeps model warm)
