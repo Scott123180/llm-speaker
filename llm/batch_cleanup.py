@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import concurrent.futures
 import json
 import os
 import sys
@@ -77,21 +78,26 @@ def main():
         action="store_true",
         help="Overwrite output files if they exist.",
     )
+    parser.add_argument(
+        "--parallel",
+        type=int,
+        default=1,
+        help="Number of parallel requests to send (default: 1).",
+    )
     args = parser.parse_args()
+    if args.parallel < 1:
+        parser.error("--parallel must be >= 1")
 
     input_dir = os.path.abspath(args.input_dir)
     output_dir = os.path.abspath(args.output_dir)
     os.makedirs(output_dir, exist_ok=True)
 
-    total = 0
-    for input_path in iter_input_files(input_dir, args.ext):
-        total += 1
+    def process_file(input_path):
         output_path = build_output_path(
             input_path, input_dir, output_dir, args.ext
         )
         if not args.overwrite and os.path.exists(output_path):
-            print(f"skip (exists): {output_path}", file=sys.stderr)
-            continue
+            return ("skip", output_path, None)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
         with open(input_path, "r", encoding="utf-8", errors="replace") as f:
@@ -99,20 +105,56 @@ def main():
         if not text.strip():
             cleaned = ""
         else:
-            try:
-                cleaned = call_ollama(
-                    args.host, args.model, text, args.timeout, args.keep_alive
-                )
-            except urllib.error.URLError as exc:
-                print(f"error: {input_path}: {exc}", file=sys.stderr)
-                sys.exit(1)
+            cleaned = call_ollama(
+                args.host, args.model, text, args.timeout, args.keep_alive
+            )
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(cleaned)
-        print(f"wrote: {output_path}", file=sys.stderr)
+        return ("wrote", output_path, None)
+
+    input_paths = list(iter_input_files(input_dir, args.ext))
+    total = len(input_paths)
+    had_error = False
+
+    if args.parallel == 1:
+        for input_path in input_paths:
+            try:
+                status, output_path, _ = process_file(input_path)
+                if status == "skip":
+                    print(f"skip (exists): {output_path}", file=sys.stderr)
+                else:
+                    print(f"wrote: {output_path}", file=sys.stderr)
+            except urllib.error.URLError as exc:
+                print(f"error: {input_path}: {exc}", file=sys.stderr)
+                sys.exit(1)
+    else:
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=args.parallel
+        ) as executor:
+            future_map = {
+                executor.submit(process_file, path): path
+                for path in input_paths
+            }
+            for future in concurrent.futures.as_completed(future_map):
+                input_path = future_map[future]
+                try:
+                    status, output_path, _ = future.result()
+                    if status == "skip":
+                        print(f"skip (exists): {output_path}", file=sys.stderr)
+                    else:
+                        print(f"wrote: {output_path}", file=sys.stderr)
+                except urllib.error.URLError as exc:
+                    print(f"error: {input_path}: {exc}", file=sys.stderr)
+                    had_error = True
+                except Exception as exc:
+                    print(f"error: {input_path}: {exc}", file=sys.stderr)
+                    had_error = True
 
     if total == 0:
         print("no matching files found", file=sys.stderr)
+    if had_error:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
