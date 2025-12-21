@@ -3,15 +3,23 @@
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 from typing import Iterable, Tuple
+
+# A bit of effort to add a file in from another directory in a 
+# project that's not using packages
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from llm.accuracy.likeness import likeness_ratio_from_files
+# End ugly, hard effort. This is not the way to do things
 
 from utils import iter_json_files, load_json, save_json
 
 # Where the JSON files live (produced by earlier steps).
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
-
-# Base project directory so transcript folders can be configured relative to repo.
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+QUALITY_LOG_PATH = OUTPUT_DIR.parent / "transcript_quality.log"
 
 # Stages in data lineage order (earlier -> later). Later stages take precedence.
 LINEAGE_STAGES = [
@@ -34,6 +42,7 @@ STAGE_SOURCES = {
 
 # Fallback lineage marker when no transcript is found.
 LINEAGE_UNPROCESSED = ["unprocessed"]
+QUALITY_THRESHOLD = 0.9
 
 
 def iter_stage_priority() -> Iterable[str]:
@@ -49,17 +58,47 @@ def build_lineage(selected_stage: str) -> list[str]:
     return LINEAGE_STAGES[:idx]
 
 
+def find_stage_path(talk_id: str, stage: str) -> Path | None:
+    """Find a transcript file for the given talk ID at the requested stage."""
+    source = STAGE_SOURCES.get(stage)
+    if not source:
+        return None
+    directory = Path(source["directory"])
+    for template in source["filename_templates"]:
+        candidate = directory / template.format(id=talk_id)
+        if candidate.is_file():
+            return candidate
+    return None
+
+
 def find_transcript_path(talk_id: str) -> Tuple[Path | None, str | None]:
     """Find the highest-priority transcript file for the given talk ID."""
+    structured_path = find_stage_path(talk_id, "transcript_structured")
+    raw_path = find_stage_path(talk_id, "transcript_raw")
+
+    if structured_path:
+        if raw_path:
+            score = likeness_ratio_from_files(raw_path, structured_path)
+            print("calculated score!", score)
+            if score < QUALITY_THRESHOLD:
+                QUALITY_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+                with QUALITY_LOG_PATH.open("a", encoding="utf-8") as log_file:
+                    log_file.write(
+                        f"{talk_id}: structured {structured_path.name} failed likeness "
+                        f"{score:.4f}; using raw {raw_path.name}\n"
+                    )
+                return raw_path, "transcript_raw"
+        return structured_path, "transcript_structured"
+
+    if raw_path:
+        return raw_path, "transcript_raw"
+
     for stage in iter_stage_priority():
-        source = STAGE_SOURCES.get(stage)
-        if not source:
+        if stage in ("transcript_raw", "transcript_structured"):
             continue
-        directory: Path = source["directory"]
-        for template in source["filename_templates"]:
-            candidate = directory / template.format(id=talk_id)
-            if candidate.is_file():
-                return candidate, stage
+        candidate = find_stage_path(talk_id, stage)
+        if candidate:
+            return candidate, stage
     return None, None
 
 

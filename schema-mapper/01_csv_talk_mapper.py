@@ -75,7 +75,8 @@ def transform_row(row: Dict[str, str]) -> Dict[str, object]:
     for csv_key, json_key in FIELD_MAP.items():
         if csv_key in IGNORED_CSV_FIELDS:
             continue
-        transformed[json_key] = row.get(csv_key, "")
+        value = row.get(csv_key, "")
+        transformed[json_key] = value
 
     # Additional fields expected by downstream consumers.
     transformed["audioUrl"] = ""
