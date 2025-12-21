@@ -23,8 +23,6 @@ def build_index_entry(data: Dict) -> Dict:
         "tags": data.get("tags", []) or [],
         "summary": data.get("summary", ""),
         "duration": data.get("duration", ""),
-        "location": data.get("location", ""),
-        "audioUrl": data.get("audioUrl", ""),
     }
 
 

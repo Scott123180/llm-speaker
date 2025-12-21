@@ -61,6 +61,9 @@ def main():
         print("no matching files found", file=sys.stderr)
         sys.exit(1)
 
+    total_tokens = sum(token_counts)
+    avg_tokens = statistics.mean(token_counts)
+
     token_counts.sort()
     median_tokens = int(round(statistics.median(token_counts)))
 
@@ -79,6 +82,8 @@ def main():
     print(f"max_file: {max_path}")
     print(f"max_words: {max_words}")
     print(f"approx_tokens: {max_tokens}")
+    print(f"total_tokens: {total_tokens}")
+    print(f"avg_tokens: {avg_tokens:.2f}")
     print(f"median_tokens: {median_tokens}")
     for idx, (q_min, q_max, count) in enumerate(deciles, start=1):
         print(f"decile_{idx}: {q_min}-{q_max} (count: {count})")

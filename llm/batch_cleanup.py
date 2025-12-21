@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -97,9 +98,17 @@ def main():
         default=1,
         help="Number of retries per file on request failure (default: 1).",
     )
+    parser.add_argument(
+        "--heartbeat-seconds",
+        type=int,
+        default=30,
+        help="Seconds between heartbeat logs while waiting on a request (default: 30, 0 to disable).",
+    )
     args = parser.parse_args()
     if args.retries < 0:
         parser.error("--retries must be >= 0")
+    if args.heartbeat_seconds < 0:
+        parser.error("--heartbeat-seconds must be >= 0")
 
     input_dir = os.path.abspath(args.input_dir)
     output_dir = os.path.abspath(args.output_dir)
@@ -114,24 +123,38 @@ def main():
             return ("skip", output_path, None, None, 0.0, None)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
+        print(f"start: {input_path}", file=sys.stderr)
         with open(input_path, "r", encoding="utf-8", errors="replace") as f:
             text = f.read()
         if not text.strip():
             cleaned = ""
             stats = None
+            print(f"note: empty input, skipping ollama: {input_path}", file=sys.stderr)
         else:
             attempts = 0
             while True:
                 try:
-                    cleaned, stats = call_ollama(
-                        args.host, args.model, text, args.timeout, args.keep_alive
+                    attempts += 1
+                    print(
+                        f"ollama: {input_path} attempt {attempts}/{args.retries + 1}",
+                        file=sys.stderr,
+                    )
+                    cleaned, stats = call_with_heartbeat(
+                        lambda: call_ollama(
+                            args.host, args.model, text, args.timeout, args.keep_alive
+                        ),
+                        args.heartbeat_seconds,
+                        input_path,
                     )
                     break
                 except (urllib.error.URLError, TimeoutError) as exc:
-                    attempts += 1
                     if attempts > args.retries:
                         elapsed = time.perf_counter() - start
                         return ("error", output_path, None, 0, elapsed, exc)
+                    print(
+                        f"retry: {input_path} attempt {attempts + 1}/{args.retries + 1} after error: {exc}",
+                        file=sys.stderr,
+                    )
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(cleaned)
@@ -172,6 +195,28 @@ def main():
         print(f"metrics: total: {metric}", file=sys.stderr)
     if had_error:
         sys.exit(1)
+
+
+def call_with_heartbeat(func, interval_seconds, label):
+    if interval_seconds == 0:
+        return func()
+    start = time.perf_counter()
+    stop = threading.Event()
+
+    def heartbeat():
+        while not stop.wait(interval_seconds):
+            elapsed = time.perf_counter() - start
+            print(
+                f"heartbeat: {label} elapsed={elapsed:.0f}s",
+                file=sys.stderr,
+            )
+
+    thread = threading.Thread(target=heartbeat, daemon=True)
+    thread.start()
+    try:
+        return func()
+    finally:
+        stop.set()
 
 
 def format_metrics(stats, char_count, elapsed):

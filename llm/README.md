@@ -116,3 +116,18 @@ python3 batch_cleanup.py \
   --model llama70-cleanup \ 
   --metrics
 ```
+
+Running on ollama
+``` bash
+python3 batch_cleanup.py --input-dir ~/talks/small/small/ --output-dir ~/output/ --model llama70-G200-tinyctx --metrics
+```
+
+#### Safe for disconnects
+```bash
+nohup python3 batch_cleanup.py \
+  --input-dir ~/talks/small/small/ \
+  --output-dir ~/output/ \
+  --model llama70-G200-tinyctx \
+  --metrics \
+  > batch_cleanup.log 2>&1 &
+```
