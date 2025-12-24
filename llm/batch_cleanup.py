@@ -38,6 +38,25 @@ def call_ollama(host, model, text, timeout, keep_alive):
     return response, stats
 
 
+def unwrap_text(text):
+    paragraphs = []
+    current = []
+    for raw_line in text.splitlines():
+        line = raw_line.rstrip("\r")
+        if not line.strip():
+            if current:
+                paragraphs.append(" ".join(current))
+                current = []
+            continue
+        line = " ".join(line.strip().split())
+        current.append(line)
+    if current:
+        paragraphs.append(" ".join(current))
+    if not paragraphs:
+        return ""
+    return "\n\n".join(paragraphs) + "\n"
+
+
 def build_output_path(input_path, input_dir, output_dir, ext):
     rel_path = os.path.relpath(input_path, input_dir)
     rel_dir = os.path.dirname(rel_path)
@@ -125,7 +144,7 @@ def main():
 
         print(f"start: {input_path}", file=sys.stderr)
         with open(input_path, "r", encoding="utf-8", errors="replace") as f:
-            text = f.read()
+            text = unwrap_text(f.read())
         if not text.strip():
             cleaned = ""
             stats = None
