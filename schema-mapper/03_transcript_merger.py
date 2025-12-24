@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import sys
+import time
 from typing import Iterable, Tuple
 
 # A bit of effort to add a file in from another directory in a 
@@ -19,7 +21,8 @@ from utils import iter_json_files, load_json, save_json
 
 # Where the JSON files live (produced by earlier steps).
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
-QUALITY_LOG_PATH = OUTPUT_DIR.parent / "transcript_quality.log"
+
+QUALITY_LOG_PATH = OUTPUT_DIR.parent / f"transcript_quality_local_v2_{int(time.time() * 1000)}.log"
 
 # Stages in data lineage order (earlier -> later). Later stages take precedence.
 LINEAGE_STAGES = [
@@ -28,6 +31,17 @@ LINEAGE_STAGES = [
     "transcript_structured",
 ]
 
+# # local mapping
+# STAGE_SOURCES = {
+#     "transcript_raw": {
+#         "directory": "/home/biosdaddy/Documents/talks/all",
+#         "filename_templates": ["{id}.txt"],
+#     },
+#     "transcript_structured": {
+#         "directory": "/home/biosdaddy/Documents/talks/local_output",
+#         "filename_templates": ["{id}_cleaned.txt"],
+#     },
+# }
 # Map stages to folders and filename templates. Update as lineage expands.
 STAGE_SOURCES = {
     "transcript_raw": {
@@ -79,14 +93,22 @@ def find_transcript_path(talk_id: str) -> Tuple[Path | None, str | None]:
     if structured_path:
         if raw_path:
             score = likeness_ratio_from_files(raw_path, structured_path)
-            print("calculated score!", score)
-            if score < QUALITY_THRESHOLD:
-                QUALITY_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-                with QUALITY_LOG_PATH.open("a", encoding="utf-8") as log_file:
-                    log_file.write(
-                        f"{talk_id}: structured {structured_path.name} failed likeness "
-                        f"{score:.4f}; using raw {raw_path.name}\n"
-                    )
+            passed = score >= QUALITY_THRESHOLD
+            selected_path = structured_path if passed else raw_path
+            selected_stage = "transcript_structured" if passed else "transcript_raw"
+            status = "succeeded" if passed else "failed"
+            QUALITY_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+            log_entry = {
+                "talk_id": talk_id,
+                "structured": structured_path.name,
+                "status": status,
+                "likeness": round(score, 4),
+                "selected_stage": selected_stage,
+                "selected_file": selected_path.name,
+            }
+            with QUALITY_LOG_PATH.open("a", encoding="utf-8") as log_file:
+                log_file.write(json.dumps(log_entry) + "\n")
+            if not passed:
                 return raw_path, "transcript_raw"
         return structured_path, "transcript_structured"
 

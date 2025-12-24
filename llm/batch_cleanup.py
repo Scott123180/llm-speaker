@@ -270,6 +270,9 @@ def main():
 
 
 def call_with_heartbeat(func, interval_seconds, label):
+    # Put this in here to see if ollama will stop stalling after input 
+    # number 1
+    time.sleep(5) 
     if interval_seconds == 0:
         return func()
     start = time.perf_counter()
