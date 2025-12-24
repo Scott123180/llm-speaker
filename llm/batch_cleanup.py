@@ -139,12 +139,15 @@ def main():
             input_path, input_dir, output_dir, args.ext
         )
         if not args.overwrite and os.path.exists(output_path):
-            return ("skip", output_path, None, None, 0.0, None)
+            return ("skip", output_path, None, 0, 0, 0, 0.0, None)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
         print(f"start: {input_path}", file=sys.stderr)
         with open(input_path, "r", encoding="utf-8", errors="replace") as f:
-            text = unwrap_text(f.read())
+            raw_text = f.read()
+        raw_char_count = len(raw_text)
+        text = unwrap_text(raw_text)
+        unwrapped_char_count = len(text)
         if not text.strip():
             cleaned = ""
             stats = None
@@ -169,7 +172,16 @@ def main():
                 except (urllib.error.URLError, TimeoutError) as exc:
                     if attempts > args.retries:
                         elapsed = time.perf_counter() - start
-                        return ("error", output_path, None, 0, elapsed, exc)
+                        return (
+                            "error",
+                            output_path,
+                            None,
+                            raw_char_count,
+                            unwrapped_char_count,
+                            0,
+                            elapsed,
+                            exc,
+                        )
                     print(
                         f"retry: {input_path} attempt {attempts + 1}/{args.retries + 1} after error: {exc}",
                         file=sys.stderr,
@@ -178,18 +190,40 @@ def main():
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(cleaned)
         elapsed = time.perf_counter() - start
-        return ("wrote", output_path, stats, len(cleaned), elapsed, None)
+        return (
+            "wrote",
+            output_path,
+            stats,
+            raw_char_count,
+            unwrapped_char_count,
+            len(cleaned),
+            elapsed,
+            None,
+        )
 
     input_paths = list(iter_input_files(input_dir, args.ext))
     total = len(input_paths)
     total_start = time.perf_counter()
-    total_chars = 0
+    total_input_chars = 0
+    total_unwrapped_chars = 0
+    total_output_chars = 0
+    total_prompt_eval_count = 0
+    total_prompt_eval_duration = 0.0
     total_eval_count = 0
     total_eval_duration = 0.0
 
     had_error = False
     for input_path in input_paths:
-        status, output_path, stats, char_count, elapsed, err = process_file(input_path)
+        (
+            status,
+            output_path,
+            stats,
+            input_char_count,
+            unwrapped_char_count,
+            output_char_count,
+            elapsed,
+            err,
+        ) = process_file(input_path)
         if status == "skip":
             print(f"skip (exists): {output_path}", file=sys.stderr)
             continue
@@ -199,10 +233,20 @@ def main():
             continue
         print(f"wrote: {output_path}", file=sys.stderr)
         if args.metrics:
-            metric = format_metrics(stats, char_count, elapsed)
+            metric = format_metrics(
+                stats,
+                input_char_count,
+                unwrapped_char_count,
+                output_char_count,
+                elapsed,
+            )
             print(f"metrics: {output_path}: {metric}", file=sys.stderr)
-        total_chars += char_count
+        total_input_chars += input_char_count
+        total_unwrapped_chars += unwrapped_char_count
+        total_output_chars += output_char_count
         if stats:
+            total_prompt_eval_count += stats.get("prompt_eval_count") or 0
+            total_prompt_eval_duration += (stats.get("prompt_eval_duration") or 0) / 1e9
             total_eval_count += stats.get("eval_count") or 0
             total_eval_duration += (stats.get("eval_duration") or 0) / 1e9
 
@@ -210,7 +254,16 @@ def main():
         print("no matching files found", file=sys.stderr)
     if args.metrics and total > 0:
         total_elapsed = time.perf_counter() - total_start
-        metric = format_totals(total_elapsed, total_chars, total_eval_count, total_eval_duration)
+        metric = format_totals(
+            total_elapsed,
+            total_input_chars,
+            total_unwrapped_chars,
+            total_output_chars,
+            total_prompt_eval_count,
+            total_prompt_eval_duration,
+            total_eval_count,
+            total_eval_duration,
+        )
         print(f"metrics: total: {metric}", file=sys.stderr)
     if had_error:
         sys.exit(1)
@@ -238,34 +291,74 @@ def call_with_heartbeat(func, interval_seconds, label):
         stop.set()
 
 
-def format_metrics(stats, char_count, elapsed):
+def format_metrics(stats, input_char_count, unwrapped_char_count, output_char_count, elapsed):
     if elapsed <= 0:
         elapsed = 0.000001
     parts = [f"time={elapsed:.2f}s"]
-    if char_count:
-        parts.append(f"chars/sec={int(char_count / elapsed)}")
+    if input_char_count or unwrapped_char_count or output_char_count:
+        parts.append(
+            "chars(in/raw,unwrapped,out)={}/{}/{}".format(
+                input_char_count, unwrapped_char_count, output_char_count
+            )
+        )
+    if output_char_count:
+        parts.append(f"out_chars/sec={int(output_char_count / elapsed)}")
     if stats:
+        prompt_eval_count = stats.get("prompt_eval_count")
+        prompt_eval_duration = stats.get("prompt_eval_duration")
         eval_count = stats.get("eval_count")
         eval_duration = stats.get("eval_duration")
+        if prompt_eval_count:
+            parts.append(f"prompt_toks={prompt_eval_count}")
+        if prompt_eval_count and prompt_eval_duration:
+            prompt_seconds = prompt_eval_duration / 1e9
+            if prompt_seconds > 0:
+                parts.append(f"prompt_s={prompt_seconds:.2f}")
+                parts.append(f"prompt_tok/sec={prompt_eval_count / prompt_seconds:.2f}")
+        if eval_count:
+            parts.append(f"gen_toks={eval_count}")
         if eval_count and eval_duration:
             eval_seconds = eval_duration / 1e9
             if eval_seconds > 0:
-                parts.append(f"tok/sec={eval_count / eval_seconds:.2f}")
+                parts.append(f"gen_s={eval_seconds:.2f}")
+                parts.append(f"gen_tok/sec={eval_count / eval_seconds:.2f}")
         total_duration = stats.get("total_duration")
         if total_duration:
             parts.append(f"ollama_time={total_duration / 1e9:.2f}s")
     return ", ".join(parts)
 
 
-def format_totals(total_elapsed, total_chars, total_eval_count, total_eval_duration):
+def format_totals(
+    total_elapsed,
+    total_input_chars,
+    total_unwrapped_chars,
+    total_output_chars,
+    total_prompt_eval_count,
+    total_prompt_eval_duration,
+    total_eval_count,
+    total_eval_duration,
+):
     if total_elapsed <= 0:
         total_elapsed = 0.000001
     parts = [f"time={total_elapsed:.2f}s"]
-    if total_chars:
-        parts.append(f"chars/sec={int(total_chars / total_elapsed)}")
+    if total_input_chars or total_unwrapped_chars or total_output_chars:
+        parts.append(
+            "chars(in/raw,unwrapped,out)={}/{}/{}".format(
+                total_input_chars, total_unwrapped_chars, total_output_chars
+            )
+        )
+    if total_output_chars:
+        parts.append(f"out_chars/sec={int(total_output_chars / total_elapsed)}")
+    if total_prompt_eval_count and total_prompt_eval_duration:
+        if total_prompt_eval_duration > 0:
+            parts.append(f"prompt_s={total_prompt_eval_duration:.2f}")
+            parts.append(
+                f"prompt_tok/sec={total_prompt_eval_count / total_prompt_eval_duration:.2f}"
+            )
     if total_eval_count and total_eval_duration:
         if total_eval_duration > 0:
-            parts.append(f"tok/sec={total_eval_count / total_eval_duration:.2f}")
+            parts.append(f"gen_s={total_eval_duration:.2f}")
+            parts.append(f"gen_tok/sec={total_eval_count / total_eval_duration:.2f}")
     return ", ".join(parts)
 
 
