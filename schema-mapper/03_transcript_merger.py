@@ -22,7 +22,8 @@ from utils import iter_json_files, load_json, save_json
 # Where the JSON files live (produced by earlier steps).
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
 
-QUALITY_LOG_PATH = OUTPUT_DIR.parent / f"transcript_quality_local_v2_{int(time.time() * 1000)}.log"
+MODEL_VERSION = "v3"
+QUALITY_LOG_PATH = OUTPUT_DIR.parent / f"transcript_quality_local_{MODEL_VERSION}_{int(time.time() * 1000)}.log"
 
 # Stages in data lineage order (earlier -> later). Later stages take precedence.
 LINEAGE_STAGES = [
@@ -49,7 +50,7 @@ STAGE_SOURCES = {
         "filename_templates": ["{id}.txt"],
     },
     "transcript_structured": {
-        "directory": "/home/biosdaddy/Documents/talks/output/output",
+        "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/llama8-cleanup-v3",
         "filename_templates": ["{id}_cleaned.txt"],
     },
 }
@@ -105,6 +106,7 @@ def find_transcript_path(talk_id: str) -> Tuple[Path | None, str | None]:
                 "likeness": round(score, 4),
                 "selected_stage": selected_stage,
                 "selected_file": selected_path.name,
+                "model_version": MODEL_VERSION,
             }
             with QUALITY_LOG_PATH.open("a", encoding="utf-8") as log_file:
                 log_file.write(json.dumps(log_entry) + "\n")

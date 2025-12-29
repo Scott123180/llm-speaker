@@ -83,7 +83,11 @@ def main():
     )
     parser.add_argument("--input-dir", required=True, help="Directory with input files.")
     parser.add_argument("--output-dir", required=True, help="Directory for output files.")
-    parser.add_argument("--model", default="llama70-G200-smallctx", help="Ollama model name.")
+    parser.add_argument(
+        "--model",
+        required=True,
+        help="Ollama model name.",
+    )
     parser.add_argument(
         "--host", default="http://localhost:11434", help="Ollama server host."
     )
@@ -93,7 +97,7 @@ def main():
     parser.add_argument(
         "--timeout",
         type=int,
-        default=600,
+        default=300,
         help="Per-request timeout in seconds.",
     )
     parser.add_argument(
@@ -108,6 +112,7 @@ def main():
     )
     parser.add_argument(
         "--metrics",
+        default=True,
         action="store_true",
         help="Print per-file timing and throughput metrics.",
     )
@@ -124,155 +129,25 @@ def main():
         help="Seconds between heartbeat logs while waiting on a request (default: 30, 0 to disable).",
     )
     args = parser.parse_args()
-    if args.retries < 0:
-        parser.error("--retries must be >= 0")
-    if args.heartbeat_seconds < 0:
-        parser.error("--heartbeat-seconds must be >= 0")
 
-    input_dir = os.path.abspath(args.input_dir)
-    output_dir = os.path.abspath(args.output_dir)
-    os.makedirs(output_dir, exist_ok=True)
-
-    def process_file(input_path):
-        start = time.perf_counter()
-        output_path = build_output_path(
-            input_path, input_dir, output_dir, args.ext
-        )
-        if not args.overwrite and os.path.exists(output_path):
-            return ("skip", output_path, None, 0, 0, 0, 0.0, None)
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-
-        print(f"start: {input_path}", file=sys.stderr)
-        with open(input_path, "r", encoding="utf-8", errors="replace") as f:
-            raw_text = f.read()
-        raw_char_count = len(raw_text)
-        text = unwrap_text(raw_text)
-        unwrapped_char_count = len(text)
-        if not text.strip():
-            cleaned = ""
-            stats = None
-            print(f"note: empty input, skipping ollama: {input_path}", file=sys.stderr)
-        else:
-            attempts = 0
-            while True:
-                try:
-                    attempts += 1
-                    print(
-                        f"ollama: {input_path} attempt {attempts}/{args.retries + 1}",
-                        file=sys.stderr,
-                    )
-                    cleaned, stats = call_with_heartbeat(
-                        lambda: call_ollama(
-                            args.host, args.model, text, args.timeout, args.keep_alive
-                        ),
-                        args.heartbeat_seconds,
-                        input_path,
-                    )
-                    break
-                except (urllib.error.URLError, TimeoutError) as exc:
-                    if attempts > args.retries:
-                        elapsed = time.perf_counter() - start
-                        return (
-                            "error",
-                            output_path,
-                            None,
-                            raw_char_count,
-                            unwrapped_char_count,
-                            0,
-                            elapsed,
-                            exc,
-                        )
-                    print(
-                        f"retry: {input_path} attempt {attempts + 1}/{args.retries + 1} after error: {exc}",
-                        file=sys.stderr,
-                    )
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(cleaned)
-        elapsed = time.perf_counter() - start
-        return (
-            "wrote",
-            output_path,
-            stats,
-            raw_char_count,
-            unwrapped_char_count,
-            len(cleaned),
-            elapsed,
-            None,
-        )
-
+    validate_args(parser, args)
+    input_dir, output_dir = resolve_paths(args)
     input_paths = list(iter_input_files(input_dir, args.ext))
-    total = len(input_paths)
-    total_start = time.perf_counter()
-    total_input_chars = 0
-    total_unwrapped_chars = 0
-    total_output_chars = 0
-    total_prompt_eval_count = 0
-    total_prompt_eval_duration = 0.0
-    total_eval_count = 0
-    total_eval_duration = 0.0
-
+    totals = init_totals()
     had_error = False
-    for input_path in input_paths:
-        (
-            status,
-            output_path,
-            stats,
-            input_char_count,
-            unwrapped_char_count,
-            output_char_count,
-            elapsed,
-            err,
-        ) = process_file(input_path)
-        if status == "skip":
-            print(f"skip (exists): {output_path}", file=sys.stderr)
-            continue
-        if status == "error":
-            print(f"error: {input_path}: {err}", file=sys.stderr)
-            had_error = True
-            continue
-        print(f"wrote: {output_path}", file=sys.stderr)
-        if args.metrics:
-            metric = format_metrics(
-                stats,
-                input_char_count,
-                unwrapped_char_count,
-                output_char_count,
-                elapsed,
-            )
-            print(f"metrics: {output_path}: {metric}", file=sys.stderr)
-        total_input_chars += input_char_count
-        total_unwrapped_chars += unwrapped_char_count
-        total_output_chars += output_char_count
-        if stats:
-            total_prompt_eval_count += stats.get("prompt_eval_count") or 0
-            total_prompt_eval_duration += (stats.get("prompt_eval_duration") or 0) / 1e9
-            total_eval_count += stats.get("eval_count") or 0
-            total_eval_duration += (stats.get("eval_duration") or 0) / 1e9
+    total_start = time.perf_counter()
 
-    if total == 0:
-        print("no matching files found", file=sys.stderr)
-    if args.metrics and total > 0:
-        total_elapsed = time.perf_counter() - total_start
-        metric = format_totals(
-            total_elapsed,
-            total_input_chars,
-            total_unwrapped_chars,
-            total_output_chars,
-            total_prompt_eval_count,
-            total_prompt_eval_duration,
-            total_eval_count,
-            total_eval_duration,
-        )
-        print(f"metrics: total: {metric}", file=sys.stderr)
-    if had_error:
-        sys.exit(1)
+    for input_path in input_paths:
+        result = process_file(input_path, input_dir, output_dir, args)
+        had_error = handle_result(result, input_path, args, totals) or had_error
+
+    finalize_run(input_paths, args, totals, total_start, had_error)
 
 
 def call_with_heartbeat(func, interval_seconds, label):
     # Put this in here to see if ollama will stop stalling after input 
     # number 1
-    time.sleep(5) 
+    #time.sleep(5) 
     if interval_seconds == 0:
         return func()
     start = time.perf_counter()
@@ -363,6 +238,160 @@ def format_totals(
             parts.append(f"gen_s={total_eval_duration:.2f}")
             parts.append(f"gen_tok/sec={total_eval_count / total_eval_duration:.2f}")
     return ", ".join(parts)
+
+
+def validate_args(parser, args):
+    if not args.model.strip():
+        parser.error("--model must be a non-empty string")
+    if args.retries < 0:
+        parser.error("--retries must be >= 0")
+    if args.heartbeat_seconds < 0:
+        parser.error("--heartbeat-seconds must be >= 0")
+
+
+def resolve_paths(args):
+    input_dir = os.path.abspath(args.input_dir)
+    output_dir = os.path.abspath(args.output_dir)
+    os.makedirs(output_dir, exist_ok=True)
+    return input_dir, output_dir
+
+
+def init_totals():
+    return {
+        "input_chars": 0,
+        "unwrapped_chars": 0,
+        "output_chars": 0,
+        "prompt_eval_count": 0,
+        "prompt_eval_duration": 0.0,
+        "eval_count": 0,
+        "eval_duration": 0.0,
+    }
+
+
+def process_file(input_path, input_dir, output_dir, args):
+    start = time.perf_counter()
+    output_path = build_output_path(input_path, input_dir, output_dir, args.ext)
+    if not args.overwrite and os.path.exists(output_path):
+        return ("skip", output_path, None, 0, 0, 0, 0.0, None)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    print(f"start: {input_path}", file=sys.stderr)
+    with open(input_path, "r", encoding="utf-8", errors="replace") as f:
+        raw_text = f.read()
+    raw_char_count = len(raw_text)
+    text = unwrap_text(raw_text)
+    unwrapped_char_count = len(text)
+    if not text.strip():
+        cleaned = ""
+        stats = None
+        print(f"note: empty input, skipping ollama: {input_path}", file=sys.stderr)
+    else:
+        attempts = 0
+        while True:
+            try:
+                attempts += 1
+                print(
+                    f"ollama: {input_path} attempt {attempts}/{args.retries + 1}",
+                    file=sys.stderr,
+                )
+                cleaned, stats = call_with_heartbeat(
+                    lambda: call_ollama(
+                        args.host, args.model, text, args.timeout, args.keep_alive
+                    ),
+                    args.heartbeat_seconds,
+                    input_path,
+                )
+                break
+            except (urllib.error.URLError, TimeoutError) as exc:
+                if attempts > args.retries:
+                    elapsed = time.perf_counter() - start
+                    return (
+                        "error",
+                        output_path,
+                        None,
+                        raw_char_count,
+                        unwrapped_char_count,
+                        0,
+                        elapsed,
+                        exc,
+                    )
+                print(
+                    f"retry: {input_path} attempt {attempts + 1}/{args.retries + 1} after error: {exc}",
+                    file=sys.stderr,
+                )
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(cleaned)
+    elapsed = time.perf_counter() - start
+    return (
+        "wrote",
+        output_path,
+        stats,
+        raw_char_count,
+        unwrapped_char_count,
+        len(cleaned),
+        elapsed,
+        None,
+    )
+
+
+def handle_result(result, input_path, args, totals):
+    (
+        status,
+        output_path,
+        stats,
+        input_char_count,
+        unwrapped_char_count,
+        output_char_count,
+        elapsed,
+        err,
+    ) = result
+    if status == "skip":
+        print(f"skip (exists): {output_path}", file=sys.stderr)
+        return False
+    if status == "error":
+        print(f"error: {input_path}: {err}", file=sys.stderr)
+        return True
+    print(f"wrote: {output_path}", file=sys.stderr)
+    if args.metrics:
+        metric = format_metrics(
+            stats,
+            input_char_count,
+            unwrapped_char_count,
+            output_char_count,
+            elapsed,
+        )
+        print(f"metrics: {output_path}: {metric}", file=sys.stderr)
+    totals["input_chars"] += input_char_count
+    totals["unwrapped_chars"] += unwrapped_char_count
+    totals["output_chars"] += output_char_count
+    if stats:
+        totals["prompt_eval_count"] += stats.get("prompt_eval_count") or 0
+        totals["prompt_eval_duration"] += (stats.get("prompt_eval_duration") or 0) / 1e9
+        totals["eval_count"] += stats.get("eval_count") or 0
+        totals["eval_duration"] += (stats.get("eval_duration") or 0) / 1e9
+    return False
+
+
+def finalize_run(input_paths, args, totals, total_start, had_error):
+    total = len(input_paths)
+    if total == 0:
+        print("no matching files found", file=sys.stderr)
+    if args.metrics and total > 0:
+        total_elapsed = time.perf_counter() - total_start
+        metric = format_totals(
+            total_elapsed,
+            totals["input_chars"],
+            totals["unwrapped_chars"],
+            totals["output_chars"],
+            totals["prompt_eval_count"],
+            totals["prompt_eval_duration"],
+            totals["eval_count"],
+            totals["eval_duration"],
+        )
+        print(f"metrics: total: {metric}", file=sys.stderr)
+    if had_error:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
