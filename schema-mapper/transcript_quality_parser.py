@@ -66,6 +66,37 @@ def summarize_scores(scores: List[float]) -> dict:
     }
 
 
+def compute_distribution(scores: List[float]) -> List[int]:
+    bins = [0 for _ in range(11)]
+    for score in scores:
+        percent = int(score * 100)
+        if percent < 0:
+            percent = 0
+        elif percent > 100:
+            percent = 100
+        if percent == 100:
+            bins[10] += 1
+        else:
+            bins[percent // 10] += 1
+    return bins
+
+
+def render_distribution(bins: List[int]) -> None:
+    if not bins:
+        return
+    max_count = max(bins)
+    scale = 40
+    print("\nQuality distribution (files per accuracy range):")
+    for index, count in enumerate(bins):
+        if index < 10:
+            label = f"{index * 10:02d}-{index * 10 + 9:02d}%"
+        else:
+            label = "100%"
+        bar_length = int(round((count / max_count) * scale)) if max_count else 0
+        bar = "#" * bar_length
+        print(f"{label} | {bar} ({count})")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Summarize transcript quality JSONL logs.",
@@ -104,6 +135,8 @@ def main() -> None:
     else:
         print(f"Average likeness: {summary['average']:.4f}")
         print(f"Median likeness: {summary['median']:.4f}")
+    if likeness_scores:
+        render_distribution(compute_distribution(likeness_scores))
 
 
 if __name__ == "__main__":

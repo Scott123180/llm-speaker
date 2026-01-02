@@ -5,12 +5,26 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Dict, List
 
-from utils import iter_json_files, load_json, save_json
+from utils import LINEAGE_STAGES, iter_json_files, load_json, save_json
 
 # Directory containing per-talk JSON files.
 TALKS_DIR = Path(__file__).with_name("output") / "talks"
 # Where the index will be written (one level up from talks).
 INDEX_PATH = Path(__file__).with_name("output") / "talks-index.json"
+
+
+def _lineage_stage_number(data_lineage: object) -> int:
+    """Return a 1-based stage number, or 0 when unknown."""
+    # `dataLineage` should be a non-empty list; otherwise treat as unknown.
+    if not isinstance(data_lineage, list) or not data_lineage:
+        return 0
+    last_stage = data_lineage[-1]
+    try:
+        # Map last lineage stage to 1-based index in LINEAGE_STAGES.
+        return LINEAGE_STAGES.index(last_stage) + 1
+    except ValueError:
+        # Unknown stage names collapse to 0.
+        return 0
 
 
 def build_index_entry(data: Dict) -> Dict:
@@ -23,6 +37,7 @@ def build_index_entry(data: Dict) -> Dict:
         "tags": data.get("tags", []) or [],
         "summary": data.get("summary", ""),
         "duration": data.get("duration", ""),
+        "ts": _lineage_stage_number(data.get("dataLineage")), # transcript stage
     }
 
 

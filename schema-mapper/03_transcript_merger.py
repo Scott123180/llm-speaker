@@ -17,20 +17,13 @@ if str(PROJECT_ROOT) not in sys.path:
 from llm.accuracy.likeness import likeness_ratio_from_files
 # End ugly, hard effort. This is not the way to do things
 
-from utils import iter_json_files, load_json, save_json
+from utils import LINEAGE_STAGES, iter_json_files, load_json, save_json
 
 # Where the JSON files live (produced by earlier steps).
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
 
 MODEL_VERSION = "v3"
 QUALITY_LOG_PATH = OUTPUT_DIR.parent / f"transcript_quality_local_{MODEL_VERSION}_{int(time.time() * 1000)}.log"
-
-# Stages in data lineage order (earlier -> later). Later stages take precedence.
-LINEAGE_STAGES = [
-    "audio_original",
-    "transcript_raw",
-    "transcript_structured",
-]
 
 # # local mapping
 # STAGE_SOURCES = {
@@ -49,14 +42,18 @@ STAGE_SOURCES = {
         "directory": "/home/biosdaddy/Documents/talks/all",
         "filename_templates": ["{id}.txt"],
     },
+    # "transcript_cleaned": {
+    #     "directory": "/home/biosdaddy/Documents/talks/local_output_v3",
+    #     "filename_templates": ["{id}_cleaned.txt"],
+    # },
     "transcript_structured": {
-        "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/llama8-cleanup-v3",
+        "directory": "/home/biosdaddy/Documents/talks/local_output_v3",
         "filename_templates": ["{id}_cleaned.txt"],
     },
 }
 
 # Fallback lineage marker when no transcript is found.
-LINEAGE_UNPROCESSED = ["unprocessed"]
+LINEAGE_UNPROCESSED = ["audio_original"]
 QUALITY_THRESHOLD = 0.9
 
 
@@ -86,39 +83,78 @@ def find_stage_path(talk_id: str, stage: str) -> Path | None:
     return None
 
 
+def _log_quality(
+    talk_id: str,
+    candidate_path: Path,
+    candidate_stage: str,
+    selected_path: Path,
+    selected_stage: str,
+    score: float,
+    passed: bool,
+) -> None:
+    """Record lineage quality checks for LLM-produced transcripts."""
+    status = "succeeded" if passed else "failed"
+    QUALITY_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    log_entry = {
+        "talk_id": talk_id,
+        "candidate_stage": candidate_stage,
+        "candidate_file": candidate_path.name,
+        "status": status,
+        "likeness": round(score, 4),
+        "selected_stage": selected_stage,
+        "selected_file": selected_path.name,
+        "model_version": MODEL_VERSION,
+    }
+    with QUALITY_LOG_PATH.open("a", encoding="utf-8") as log_file:
+        log_file.write(json.dumps(log_entry) + "\n")
+
+
+def _evaluate_candidate(
+    talk_id: str,
+    raw_path: Path | None,
+    candidate_path: Path | None,
+    candidate_stage: str,
+) -> Tuple[Path | None, str | None]:
+    """Return candidate when it passes quality checks, otherwise None."""
+    if not candidate_path:
+        return None, None
+    if not raw_path:
+        return candidate_path, candidate_stage
+
+    score = likeness_ratio_from_files(raw_path, candidate_path)
+    passed = score >= QUALITY_THRESHOLD
+    selected_path = candidate_path if passed else raw_path
+    selected_stage = candidate_stage if passed else "transcript_raw"
+    _log_quality(
+        talk_id=talk_id,
+        candidate_path=candidate_path,
+        candidate_stage=candidate_stage,
+        selected_path=selected_path,
+        selected_stage=selected_stage,
+        score=score,
+        passed=passed,
+    )
+    if passed:
+        return candidate_path, candidate_stage
+    return None, None
+
+
 def find_transcript_path(talk_id: str) -> Tuple[Path | None, str | None]:
     """Find the highest-priority transcript file for the given talk ID."""
-    structured_path = find_stage_path(talk_id, "transcript_structured")
     raw_path = find_stage_path(talk_id, "transcript_raw")
-
-    if structured_path:
-        if raw_path:
-            score = likeness_ratio_from_files(raw_path, structured_path)
-            passed = score >= QUALITY_THRESHOLD
-            selected_path = structured_path if passed else raw_path
-            selected_stage = "transcript_structured" if passed else "transcript_raw"
-            status = "succeeded" if passed else "failed"
-            QUALITY_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-            log_entry = {
-                "talk_id": talk_id,
-                "structured": structured_path.name,
-                "status": status,
-                "likeness": round(score, 4),
-                "selected_stage": selected_stage,
-                "selected_file": selected_path.name,
-                "model_version": MODEL_VERSION,
-            }
-            with QUALITY_LOG_PATH.open("a", encoding="utf-8") as log_file:
-                log_file.write(json.dumps(log_entry) + "\n")
-            if not passed:
-                return raw_path, "transcript_raw"
-        return structured_path, "transcript_structured"
+    for candidate_stage in ("transcript_structured", "transcript_cleaned"):
+        candidate_path = find_stage_path(talk_id, candidate_stage)
+        selected_path, selected_stage = _evaluate_candidate(
+            talk_id, raw_path, candidate_path, candidate_stage
+        )
+        if selected_path and selected_stage:
+            return selected_path, selected_stage
 
     if raw_path:
         return raw_path, "transcript_raw"
 
     for stage in iter_stage_priority():
-        if stage in ("transcript_raw", "transcript_structured"):
+        if stage in ("transcript_raw", "transcript_cleaned", "transcript_structured"):
             continue
         candidate = find_stage_path(talk_id, stage)
         if candidate:

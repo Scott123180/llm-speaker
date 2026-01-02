@@ -6,6 +6,13 @@ import json
 from pathlib import Path
 from typing import Dict, Iterator
 
+LINEAGE_STAGES = [
+    "audio_original",
+    "transcript_raw",
+    "transcript_structured",
+    "transcript_cleaned",
+]
+
 
 def iter_json_files(directory: Path) -> Iterator[Path]:
     """Yield JSON files in a deterministic order."""
