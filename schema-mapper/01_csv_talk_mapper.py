@@ -6,16 +6,21 @@ import csv
 import json
 import os
 import re
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, Tuple
 
 
 RESOURCE_ID_FIELD = "Resource ID(s)"
+TITLE_FIELD = "Title"
 CSV_PATH = Path(__file__).with_name("metadata_export__20251214-20_59.csv")
 # Where generated talk JSON files will live.
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
 # Set to an int to cap how many rows are processed; leave as None to process all.
 ROW_LIMIT: int | None = None
+# Validation handling: "enforce" skips invalid rows,
+# "log_only" logs the issues but still writes the output.
+VALIDATION_MODE = "enforce"
 FIELD_MAP: Dict[str, str] = {
     "Resource ID(s)": "id",
     "Resource type": "resourceType",
@@ -44,6 +49,18 @@ IGNORED_CSV_FIELDS = {
 }
 
 
+@dataclass(frozen=True)
+class RequiredField:
+    field: str
+    label: str
+
+
+REQUIRED_FIELDS = [
+    RequiredField(field=RESOURCE_ID_FIELD, label="resource id"),
+    RequiredField(field=TITLE_FIELD, label="title"),
+]
+
+
 def sanitize_for_filename(value: str) -> str:
     """Keep filenames filesystem-safe."""
     value = value.strip().replace(os.sep, "_")
@@ -67,6 +84,43 @@ def iter_rows(reader: Iterable[Dict[str, str]], limit: int | None) -> Iterable[T
         if limit is not None and idx > limit:
             break
         yield idx, clean_row(raw_row)
+
+
+def find_missing_required_fields(row: Dict[str, str]) -> Tuple[RequiredField, ...]:
+    """Return any required fields that are missing or blank."""
+    missing = []
+    for required in REQUIRED_FIELDS:
+        value = row.get(required.field, "")
+        if not str(value).strip():
+            missing.append(required)
+    return tuple(missing)
+
+
+def validate_row(row: Dict[str, str], idx: int) -> Tuple[bool, Tuple[RequiredField, ...], str]:
+    """Validate required fields and return whether the row should be processed."""
+    missing_fields = find_missing_required_fields(row)
+    resource_id = str(row.get(RESOURCE_ID_FIELD, "")).strip()
+
+    if missing_fields:
+        missing_labels = ", ".join(field.label for field in missing_fields)
+        print(f"[invalid] Row {idx}: missing required field(s): {missing_labels}")
+        if VALIDATION_MODE != "log_only":
+            return False, missing_fields, resource_id
+
+    if not resource_id and VALIDATION_MODE == "log_only":
+        resource_id = f"missing-id-row-{idx}"
+
+    return True, missing_fields, resource_id
+
+
+def validate_headers(fieldnames: Iterable[str]) -> None:
+    """Ensure required CSV headers exist."""
+    missing_headers = [
+        required.field for required in REQUIRED_FIELDS if required.field not in fieldnames
+    ]
+    if missing_headers:
+        missing_list = ", ".join(missing_headers)
+        raise ValueError(f"Required column(s) not found in CSV headers: {missing_list}")
 
 
 def transform_row(row: Dict[str, str]) -> Dict[str, object]:
@@ -100,19 +154,27 @@ def main() -> None:
 
     written = 0
     skipped = 0
+    missing_required = 0
+    removed_missing_title = 0
 
     # Read the CSV once and stream rows into individual JSON files.
     with csv_path.open(newline="", encoding="utf-8-sig") as csv_file:
         reader = csv.DictReader(csv_file)
 
-        if RESOURCE_ID_FIELD not in reader.fieldnames:
-            raise ValueError(f"Required column '{RESOURCE_ID_FIELD}' not found in CSV headers.")
+        if not reader.fieldnames:
+            raise ValueError("CSV file contains no headers.")
+        validate_headers(reader.fieldnames)
 
         for idx, row in iter_rows(reader, ROW_LIMIT):
-            resource_id = row.get(RESOURCE_ID_FIELD, "").strip()
-            if not resource_id:
+            should_process, missing_fields, resource_id = validate_row(row, idx)
+            if missing_fields:
+                missing_required += 1
+                if VALIDATION_MODE != "log_only" and any(
+                    field.field == TITLE_FIELD for field in missing_fields
+                ):
+                    removed_missing_title += 1
+            if not should_process:
                 skipped += 1
-                print(f"[skip] Row {idx}: missing '{RESOURCE_ID_FIELD}'")
                 continue
 
             # Use the resource ID as the filename after making it filesystem-safe.
@@ -128,7 +190,18 @@ def main() -> None:
 
             written += 1
 
-    print(f"Done. Wrote {written} file(s) to {output_dir}. Skipped {skipped} row(s).")
+    print(
+        "Done. Wrote {written} file(s) to {output_dir}. "
+        "Skipped {skipped} row(s). "
+        "Invalid rows {missing_required}. "
+        "Removed {removed_missing_title} file(s) due to missing title.".format(
+            written=written,
+            output_dir=output_dir,
+            skipped=skipped,
+            missing_required=missing_required,
+            removed_missing_title=removed_missing_title,
+        )
+    )
 
 
 if __name__ == "__main__":

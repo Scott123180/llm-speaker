@@ -19,6 +19,8 @@ def _lineage_stage_number(data_lineage: object) -> int:
     if not isinstance(data_lineage, list) or not data_lineage:
         return 0
     last_stage = data_lineage[-1]
+    if isinstance(last_stage, dict):
+        last_stage = last_stage.get("stage")
     try:
         # Map last lineage stage to 1-based index in LINEAGE_STAGES.
         return LINEAGE_STAGES.index(last_stage) + 1

@@ -62,12 +62,25 @@ def iter_stage_priority() -> Iterable[str]:
     return reversed(LINEAGE_STAGES)
 
 
-def build_lineage(selected_stage: str) -> list[str]:
+def build_lineage(
+    selected_stage: str, structured_likeness: float | None = None
+) -> list[object]:
     """Return lineage up to and including the selected stage."""
     if selected_stage not in LINEAGE_STAGES:
         return [selected_stage]
     idx = LINEAGE_STAGES.index(selected_stage) + 1
-    return LINEAGE_STAGES[:idx]
+    lineage: list[object] = []
+    for stage in LINEAGE_STAGES[:idx]:
+        if stage == "transcript_structured" and structured_likeness is not None:
+            lineage.append(
+                {
+                    "stage": stage,
+                    "likeness": round(structured_likeness, 4),
+                }
+            )
+        else:
+            lineage.append(stage)
+    return lineage
 
 
 def find_stage_path(talk_id: str, stage: str) -> Path | None:
@@ -114,12 +127,12 @@ def _evaluate_candidate(
     raw_path: Path | None,
     candidate_path: Path | None,
     candidate_stage: str,
-) -> Tuple[Path | None, str | None]:
+) -> Tuple[Path | None, str | None, float | None]:
     """Return candidate when it passes quality checks, otherwise None."""
     if not candidate_path:
-        return None, None
+        return None, None, None
     if not raw_path:
-        return candidate_path, candidate_stage
+        return candidate_path, candidate_stage, None
 
     score = likeness_ratio_from_files(raw_path, candidate_path)
     passed = score >= QUALITY_THRESHOLD
@@ -135,31 +148,33 @@ def _evaluate_candidate(
         passed=passed,
     )
     if passed:
-        return candidate_path, candidate_stage
-    return None, None
+        return candidate_path, candidate_stage, score
+    return None, None, score
 
 
-def find_transcript_path(talk_id: str) -> Tuple[Path | None, str | None]:
+def find_transcript_path(
+    talk_id: str,
+) -> Tuple[Path | None, str | None, float | None]:
     """Find the highest-priority transcript file for the given talk ID."""
     raw_path = find_stage_path(talk_id, "transcript_raw")
     for candidate_stage in ("transcript_structured", "transcript_cleaned"):
         candidate_path = find_stage_path(talk_id, candidate_stage)
-        selected_path, selected_stage = _evaluate_candidate(
+        selected_path, selected_stage, score = _evaluate_candidate(
             talk_id, raw_path, candidate_path, candidate_stage
         )
         if selected_path and selected_stage:
-            return selected_path, selected_stage
+            return selected_path, selected_stage, score
 
     if raw_path:
-        return raw_path, "transcript_raw"
+        return raw_path, "transcript_raw", None
 
     for stage in iter_stage_priority():
         if stage in ("transcript_raw", "transcript_cleaned", "transcript_structured"):
             continue
         candidate = find_stage_path(talk_id, stage)
         if candidate:
-            return candidate, stage
-    return None, None
+            return candidate, stage, None
+    return None, None, None
 
 
 def process_file(path: Path) -> Tuple[bool, str]:
@@ -169,7 +184,7 @@ def process_file(path: Path) -> Tuple[bool, str]:
     if not talk_id:
         return False, "missing id"
 
-    transcript_path, stage = find_transcript_path(talk_id)
+    transcript_path, stage, structured_likeness = find_transcript_path(talk_id)
     if not transcript_path or not stage:
         data["dataLineage"] = LINEAGE_UNPROCESSED
         save_json(path, data)
@@ -177,7 +192,12 @@ def process_file(path: Path) -> Tuple[bool, str]:
 
     transcript_text = transcript_path.read_text(encoding="utf-8").rstrip()
     data["transcript"] = transcript_text
-    data["dataLineage"] = build_lineage(stage)
+    data["dataLineage"] = build_lineage(
+        stage,
+        structured_likeness=structured_likeness
+        if stage == "transcript_structured"
+        else None,
+    )
     save_json(path, data)
     return True, f"merged from {stage}"
 
