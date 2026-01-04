@@ -1,4 +1,19 @@
-"""Compare transcript quality JSONL logs across model versions."""
+"""
+Run: python transcript_quality_compare.py --help
+---
+Compare transcript quality JSONL logs across model versions.
+
+positional arguments:
+  log_paths             Path(s) to JSONL log files.
+
+options:
+  -h, --help            show this help message and exit
+  --version VERSION=PATH
+                        Override model_version for a given log path (repeatable).
+  --baseline BASELINE   Baseline version to compare against (defaults to first seen).
+  --limit LIMIT         Limit for top regressions/improvements per comparison.
+
+"""
 
 from __future__ import annotations
 

@@ -32,7 +32,6 @@ FIELD_MAP: Dict[str, str] = {
     "Talk Location": "location",
     "Title": "title",
     "Caption or Other Speaker": "caption",
-    "Extracted Text": "transcript",
     "Speaker": "speaker",
     "Koan Collection": "koanCollection",
     "Track": "track",

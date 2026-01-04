@@ -28,11 +28,11 @@ QUALITY_LOG_PATH = OUTPUT_DIR.parent / f"transcript_quality_local_{MODEL_VERSION
 # # local mapping
 # STAGE_SOURCES = {
 #     "transcript_raw": {
-#         "directory": "/home/biosdaddy/Documents/talks/all",
+#         "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/input",
 #         "filename_templates": ["{id}.txt"],
 #     },
 #     "transcript_structured": {
-#         "directory": "/home/biosdaddy/Documents/talks/local_output",
+#         "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/llama8-cleanup-v4",
 #         "filename_templates": ["{id}_cleaned.txt"],
 #     },
 # }
