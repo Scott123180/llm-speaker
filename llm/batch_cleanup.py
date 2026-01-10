@@ -8,7 +8,7 @@ import time
 import urllib.error
 import urllib.request
 
-DEFAULT_TIMEOUT = 90
+DEFAULT_TIMEOUT = 300
 
 def call_ollama(host, model, text, timeout, keep_alive):
     payload = {
