@@ -1,5 +1,5 @@
 """
-Run: python transcript_quality_compare.py --help
+Run: python3 transcript_quality_compare.py --help
 ---
 Compare transcript quality JSONL logs across model versions.
 

@@ -22,35 +22,35 @@ from utils import LINEAGE_STAGES, iter_json_files, load_json, save_json
 # Where the JSON files live (produced by earlier steps).
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
 
-MODEL_VERSION = "v3"
+MODEL_VERSION = "v6a"
 QUALITY_LOG_PATH = OUTPUT_DIR.parent / f"transcript_quality_local_{MODEL_VERSION}_{int(time.time() * 1000)}.log"
 
 # # local mapping
-# STAGE_SOURCES = {
-#     "transcript_raw": {
-#         "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/input",
-#         "filename_templates": ["{id}.txt"],
-#     },
-#     "transcript_structured": {
-#         "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/llama8-cleanup-v4",
-#         "filename_templates": ["{id}_cleaned.txt"],
-#     },
-# }
-# Map stages to folders and filename templates. Update as lineage expands.
 STAGE_SOURCES = {
     "transcript_raw": {
-        "directory": "/home/biosdaddy/Documents/talks/all",
+        "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/input",
         "filename_templates": ["{id}.txt"],
     },
-    # "transcript_cleaned": {
-    #     "directory": "/home/biosdaddy/Documents/talks/local_output_v3",
-    #     "filename_templates": ["{id}_cleaned.txt"],
-    # },
     "transcript_structured": {
-        "directory": "/home/biosdaddy/Documents/talks/local_output_v3",
+        "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/llama8-cleanup-v6a",
         "filename_templates": ["{id}_cleaned.txt"],
     },
 }
+# Map stages to folders and filename templates. Update as lineage expands.
+# STAGE_SOURCES = {
+#     "transcript_raw": {
+#         "directory": "/home/biosdaddy/Documents/talks/all",
+#         "filename_templates": ["{id}.txt"],
+#     },
+#     # "transcript_cleaned": {
+#     #     "directory": "/home/biosdaddy/Documents/talks/local_output_v3",
+#     #     "filename_templates": ["{id}_cleaned.txt"],
+#     # },
+#     "transcript_structured": {
+#         "directory": "/home/biosdaddy/Documents/talks/local_output_v3",
+#         "filename_templates": ["{id}_cleaned.txt"],
+#     },
+# }
 
 # Fallback lineage marker when no transcript is found.
 LINEAGE_UNPROCESSED = ["audio_original"]
