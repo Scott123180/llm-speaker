@@ -92,6 +92,102 @@ Successes: 11
 Success rate: 0.1964
 Average likeness: 0.7843
 Median likeness: 0.8117
+
+- v3
+  Entries: 54
+  Successes: 18
+  Success rate: 0.3333
+  Average likeness: 0.8017
+  Median likeness: 0.8096
+- v4
+  Entries: 37
+  Successes: 11
+  Success rate: 0.2973
+  Average likeness: 0.8274
+  Median likeness: 0.8303
+- v5a
+  python3 transcript_quality_parser.py output/transcript_quality_local_v5_1768050129262.log 
+  Entries: 28
+  Successes: 11
+  Success rate: 0.3929
+  Average likeness: 0.8424
+  Median likeness: 0.8664
+
+  Quality distribution (files per accuracy range):
+  00-09% |  (0)
+  10-19% |  (0)
+  20-29% |  (0)
+  30-39% | ##### (1)
+  40-49% |  (0)
+  50-59% | ##### (1)
+  60-69% | ##### (1)
+  70-79% | ################################### (7)
+  80-89% | ################################### (7)
+  90-99% | ######################################## (8)
+  100% | ############### (3)
+
+- v5b (second stage)
+  Entries: 28
+  Successes: 11
+  Success rate: 0.3929
+  Average likeness: 0.8482
+  Median likeness: 0.8658
+
+  Quality distribution (files per accuracy range):
+  00-09% |  (0)
+  10-19% |  (0)
+  20-29% |  (0)
+  30-39% |  (0)
+  40-49% |  (0)
+  50-59% | ########## (2)
+  60-69% | ##### (1)
+  70-79% | ################################### (7)
+  80-89% | ################################### (7)
+  90-99% | ######################################## (8)
+  100% | ############### (3)
+
+- llama 70 v5a
+  python3 transcript_quality_parser.py output/transcript_quality_local_v5a_1768350869667.log 
+  Entries: 46
+  Successes: 18
+  Success rate: 0.3913
+  Average likeness: 0.8347
+  Median likeness: 0.8417
+
+  Quality distribution (files per accuracy range):
+  00-09% |  (0)
+  10-19% |  (0)
+  20-29% |  (0)
+  30-39% |  (0)
+  40-49% | ### (1)
+  50-59% | ##### (2)
+  60-69% | ############# (5)
+  70-79% | ########################### (10)
+  80-89% | ########################### (10)
+  90-99% | ######################################## (15)
+  100% | ######## (3)
+
+- llama 8b v6a
+  python3 transcript_quality_parser.py output/transcript_quality_local_v6a_1768739986673.log 
+  Entries: 39
+  Successes: 16
+  Success rate: 0.4103
+  Average likeness: 0.8553
+  Median likeness: 0.8642
+
+  Quality distribution (files per accuracy range):
+  00-09% |  (0)
+  10-19% |  (0)
+  20-29% |  (0)
+  30-39% |  (0)
+  40-49% | ### (1)
+  50-59% |  (0)
+  60-69% | ########## (3)
+  70-79% | ########################### (8)
+  80-89% | ##################################### (11)
+  90-99% | ######################################## (12)
+  100% | ############# (4)
+
 ```
 
 ### Result Interpretation
