@@ -22,18 +22,19 @@ from utils import LINEAGE_STAGES, iter_json_files, load_json, save_json
 # Where the JSON files live (produced by earlier steps).
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
 
-MODEL_VERSION = "v6a"
+MODEL_VERSION = "v5a"
 QUALITY_LOG_PATH = OUTPUT_DIR.parent / f"transcript_quality_local_{MODEL_VERSION}_{int(time.time() * 1000)}.log"
 
-# # local mapping
+# local mapping
 STAGE_SOURCES = {
     "transcript_raw": {
-        "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/input",
+        "directory": "/home/biosdaddy/Documents/talks/all",
         "filename_templates": ["{id}.txt"],
     },
     "transcript_structured": {
-        "directory": "/home/biosdaddy/git/llm-speaker/llm/temp/llama8-cleanup-v6a",
-        "filename_templates": ["{id}_cleaned.txt"],
+#        "directory": "/home/biosdaddy/git/asr-llm-pipeline/output/1f49caa6-f0f1-408a-ae43-cd454684407f/final",
+        "directory": "/home/biosdaddy/git/asr-llm-pipeline/final",
+        "filename_templates": ["{id}.txt"],
     },
 }
 # Map stages to folders and filename templates. Update as lineage expands.

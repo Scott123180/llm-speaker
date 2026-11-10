@@ -12,7 +12,7 @@ from utils import iter_json_files, load_json, save_json
 OUTPUT_DIR = Path(__file__).with_name("output") / "talks"
 
 # Base URL template; `ref` will be populated from the `id` field in each JSON file.
-AUDIO_URL_TEMPLATE = "https://media-archive.zmmapple.com/pages/download.php?direct=1&ref={ref}&ext=mp3"
+AUDIO_URL_TEMPLATE = "https://d2f7aw4s8anu7j.cloudfront.net/audio/{ref}.mp3"
 
 
 def build_audio_url(ref: str) -> str:
