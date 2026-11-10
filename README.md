@@ -1,20 +1,23 @@
 # llm-speaker
 
 
-# Instructions
-These are tailored to Ubuntu linux install.
+# Setup
 
-1. create a venv
-`bash setup.sh`
+Tailored to Ubuntu. Uses [uv](https://docs.astral.sh/uv/) instead of a hand-made venv: the
+Python version is pinned in `.python-version` and every package in `uv.lock`, so OS Python
+upgrades can't break the environment.
 
-2.  activate python virtual environment
-`bash activate_venv.sh`
+```bash
+sudo apt install ffmpeg
+uv sync                               # main env (Python 3.14): faster-whisper, eval tools, requests, rich
+uv sync --project asr/envs/nemo       # optional: NVIDIA NeMo / Parakeet (Python 3.12)
+uv sync --project asr/envs/qwen       # optional: Qwen3-ASR (Python 3.12)
+```
 
-3. install whisper for transcription
-`pip install git+https://github.com/openai/whisper.git`
+Run scripts with `uv run python <script>` (no activation needed).
 
-4. install accompanying whisper dependencies 
-`sudo apt update && sudo apt install ffmpeg`
+See `ROADMAP.md` for where the project is headed, `CLAUDE.md` for a map of the code,
+and `reports/` for the research report and the ASR bake-off results.
 
 # Utilities
 
@@ -24,7 +27,7 @@ highest word count plus an approximate token count using the 3/4 rule.
 
 Usage:
 ```bash
-python3 llm/max_tokens.py --input-dir /path/to/texts
+uv run python llm/max_tokens.py --input-dir /path/to/texts
 ```
 
 Options:
@@ -40,7 +43,7 @@ Alternate approaches could include chunking, but I think we have the vRAM on the
 
 Usage:
 ```bash
-python3 llm/split_by_tokens.py --input-dir /path/to/texts
+uv run python llm/split_by_tokens.py --input-dir /path/to/texts
 ```
 
 Options:

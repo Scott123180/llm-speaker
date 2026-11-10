@@ -1,5 +1,10 @@
+.venv/
 venv/
 __pycache__/
 *.py[cod]
 *.mp3
+*.wav
 /transcriber/transcriptions
+/transcriber/context
+# large local data: downloaded audio, excerpts, ASR outputs
+/data/

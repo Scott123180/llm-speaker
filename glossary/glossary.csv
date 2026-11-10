@@ -1,0 +1,688 @@
+term,category,lang,same_as,misheard,notes
+Bibashi Butsu,lineage-buddha,ja,Vipashyin,,Seven Buddhas of the past #1
+Shiki Butsu,lineage-buddha,ja,Shikhin,,#2
+Bishafu Butsu,lineage-buddha,ja,Vishvabhu,,#3
+Kuruson Butsu,lineage-buddha,ja,Krakucchanda,,#4
+Kunagommuni Butsu,lineage-buddha,ja,Kanakamuni,,#5
+Kasho Butsu,lineage-buddha,ja,Kashyapa Buddha,,#6
+Shakyamuni,lineage-buddha,sa,Shakyamuni Buddha;Shakyamuni Butsu;Siddhartha Gautama;Gautama;Siddhartha;Tathagata,,#7
+Mahakashyapa,lineage-indian,sa,Mahakasyapa;Makakasho;Kashyapa;Kasyapa;Kasho;Kassapa,Mayakaya Shapa;Kaisapa;Shapa,ZMM page spells Mahakasyapa; Japanese reading Makakasho chanted before April 2023
+Ananda,lineage-indian,sa,,,#9
+Shanavasa,lineage-indian,sa,Shonawashu,,#10
+Upagupta,lineage-indian,sa,Ubakikuta,,#11
+Dhritaka,lineage-indian,sa,Dritaka;Daitaka,,#12 ZMM page spells Dritaka
+Micchaka,lineage-indian,sa,Mishaka,,#13
+Vasumitra,lineage-indian,sa,Bashumitsu,,#14
+Buddhanandi,lineage-indian,sa,Butsudanandai,,#15
+Buddhamitra,lineage-indian,sa,Fudamitta,,#16
+Parshva,lineage-indian,sa,Barishiba,,#17
+Punyayasha,lineage-indian,sa,Punyayasa;Funayasha,,#18
+Anabodhi,lineage-indian,sa,Anabotei;Ashvaghosha,,#19 (Anabodhi is identified with Ashvaghosha)
+Kapimala,lineage-indian,sa,Kabimora,,#20
+Nagarjuna,lineage-indian,sa,Nagyaharajuna;Ryuju,,#21
+Kanadeva,lineage-indian,sa,Kanadaiba;Aryadeva,,#22
+Rahulata,lineage-indian,sa,Ragarata,,#23
+Sanghanandi,lineage-indian,sa,Sogyanandai,,#24
+Sanghayashas,lineage-indian,sa,Sangayashas;Kayashata,,#25 ZMM page spells Sangayashas
+Kumarata,lineage-indian,sa,Kumorata,,#26
+Jayata,lineage-indian,sa,Shayata,,#27
+Vasubandhu,lineage-indian,sa,Bashubanzu,,#28
+Manorhita,lineage-indian,sa,Man'ura;Manura,,#29
+Haklenayashas,lineage-indian,sa,Kakuronkuna,,#30
+Simhabodhi,lineage-indian,sa,Shishibodai;Simha,,#31
+Vasiasita,lineage-indian,sa,Bashashita,,#32
+Punyamitra,lineage-indian,sa,Funyomitta,,#33
+Prajnatara,lineage-indian,sa,Hannyatara,,#34
+Bodhidharma,lineage-indian,sa,Bodaidaruma;Daruma,,#35
+Huike,lineage-chinese,zh,Dazu Huike;Taiso Eka;Eka;Hui-k'o,Huiko;Ika,#36
+Sengcan,lineage-chinese,zh,Jianzhi Sengcan;Kanchi Sosan;Sosan;Seng-ts'an;Seng-Ts'an,,#37 author of Faith in Mind (Shinjinmei)
+Daoxin,lineage-chinese,zh,Dayi Daoxin;Daii Doshin;Doshin;Tao-hsin,,#38
+Hongren,lineage-chinese,zh,Daman Hongren;Daiman Konin;Konin;Hung-jen,,#39 Fifth Ancestor
+Huineng,lineage-chinese,zh,Dajian Huineng;Daikan Eno;Eno;Hui-neng;Sixth Ancestor;Sixth Patriarch,Huenang;Huanong,#40
+Qingyuan Xingsi,lineage-chinese,zh,Qingyuan;Seigen Gyoshi;Seigen;Ch'ing-yuan,,#41
+Shitou Xiqian,lineage-chinese,zh,Shitou;Sekito Kisen;Sekito;Shih-t'ou,Sikito,#42 author of Sandokai
+Yaoshan Weiyan,lineage-chinese,zh,Yaoshan;Yakusan Igen;Yakusan;Yao-shan,Yakuzan;Yakuzaan,#43
+Yunyan Tansheng,lineage-chinese,zh,Yunyan;Ungan Donjo;Ungan;Yun-yen;Yun Yen,Ongan,#44
+Dongshan Liangjie,lineage-chinese,zh,Dongshan;Tozan Ryokai;Tozan;Tung-shan,Dungshan;Tongshan;Tungshan;Tozon,#45 author of Jewel Mirror Samadhi; name shared with Dongshan Shouchu
+Yunju Daoying,lineage-chinese,zh,Yunju;Ungo Doyo;Ungo;Yun-chu,,#46
+Tongan Daopi,lineage-chinese,zh,Doan Dohi,,#47
+Tongan Guanzhi,lineage-chinese,zh,Doan Kanshi,,#48
+Liangshan Yuanguan,lineage-chinese,zh,Ryozan Enkan,,#49
+Dayang Jingxuan,lineage-chinese,zh,Dayang;Taiyo Kyogen,,#50
+Touzi Yiqing,lineage-chinese,zh,Toshi Gisei;Tosu Gisei,,#51 not the same person as Touzi Datong
+Furong Daokai,lineage-chinese,zh,Furong;Fuyo Dokai,,#52
+Danxia Zichun,lineage-chinese,zh,Tanka Shijun,,#53 not the same person as Danxia Tianran
+Changlu Qingliao,lineage-chinese,zh,Choro Seiryo;Zhenxie Qingliao,,#54
+Tiantong Zongjue,lineage-chinese,zh,Tendo Sokaku,,#55
+Xuedou Zhijian,lineage-chinese,zh,Setcho Chikan,,#56 not the same person as Xuedou Chongxian (Blue Cliff Record)
+Tiantong Rujing,lineage-chinese,zh,Rujing;Tendo Nyojo;Nyojo;Tendo,Jujing,#57 Dogen's teacher; 'Tendo' alone may be William Tendo Leckie
+Eihei Dogen,lineage-japanese,ja,Dogen;Dogen Zenji;Eihei Dogen Zenji;Dogen Kigen;Kigen,dogan;Dogon;Dogon's,#58
+Koun Ejo,lineage-japanese,ja,Ejo,,#59
+Tettsu Gikai,lineage-japanese,ja,Gikai,,#60
+Keizan Jokin,lineage-japanese,ja,Keizan;Keizan Zenji,Kezan;Kaizan,#61 compiler of Denkoroku
+Gasan Joseki,lineage-japanese,ja,Gasan,,#62
+Taigen Soshin,lineage-japanese,ja,,,#63
+Baizan Monpon,lineage-japanese,ja,,,#64
+Nyochu Tengin,lineage-japanese,ja,,,#65
+Kisan Shosan,lineage-japanese,ja,,,#66
+Morin Shihan,lineage-japanese,ja,,,#67
+Taishi Sotai,lineage-japanese,ja,,,#68
+Kenchu Hantetsu,lineage-japanese,ja,,,#69
+Daiju Soko,lineage-japanese,ja,,,#70
+Kinpo Jusen,lineage-japanese,ja,,,#71
+Tetsuei Seiton,lineage-japanese,ja,,,#72
+Shukoku Choton,lineage-japanese,ja,,,#73
+Ketsuzan Tetsuei,lineage-japanese,ja,,,#74
+Hoshi Soon,lineage-japanese,ja,,,#75
+Goho Kainon,lineage-japanese,ja,,,#76
+Tenkei Denson,lineage-japanese,ja,Tenkei,Tenke,#77 commentator on Blue Cliff Record
+Zozan Monko,lineage-japanese,ja,,,#78
+Niken Sekiryo,lineage-japanese,ja,,,#79
+Reitan Roryu,lineage-japanese,ja,,,#80
+Kakujo Tosai,lineage-japanese,ja,,,#81
+Kakuan Ryogu,lineage-japanese,ja,,,#82
+Ryoka Daibai,lineage-japanese,ja,,,#83
+Ungan Guhaku,lineage-japanese,ja,,,#84
+Baian Hakujun,lineage-japanese,ja,Kuroda Hakujun;Kuroda Roshi,,#85 Maezumi Roshi's father
+Hakuyu Taizan,lineage-japanese,ja,Taizan Maezumi;Hakuyu Taizan Maezumi;Maezumi Roshi;Maezumi,Maizumi;Mizumi;Mazumi;Zumi,#86 also a speaker in the archive
+Muge Daido,lineage-japanese,ja,John Daido Loori;Daido Loori;Daido Roshi;Daido,Daito;Dairoshi;Daira,#87 founder of ZMM; check that Daito is not Daito Kokushi before correcting
+Geoffrey Shugen Arnold,teacher-zmm,en,Shugen;Shugen Roshi;Shugen Sensei,Shugan;Shugin;Jeffrey Shugan,current abbot
+Konrad Ryushin Marchaj,teacher-zmm,en,Ryushin;Ryushin Sensei;Ryushin Roshi,,
+Jody Hojin Kimmel,teacher-zmm,en,Hojin;Hojin Sensei;Hojin Roshi;Hojin Osho,Hojun,
+Bonnie Myotai Treace,teacher-zmm,en,Myotai;Myotai Sensei,,
+Ron Hogen Green,teacher-zmm,en,Hogen;Hogen Sensei,,also the Japanese name of Fayan Wenyi
+Bear Gokan Bonebakker,teacher-zmm,en,Gokan,Gokhan,
+Vanessa Zuisei Goddard,teacher-zmm,en,Zuisei,,
+Danica Shoan Ankele,teacher-zmm,en,Shoan,Shohan,
+Zhaozhou Congshen,ancestor-chinese,zh,Zhaozhou;Joshu;Joshu Jushin;Chao-chou;Chou Chou;Zhao Zhou,Zhao;Zhaozhu;Zhajo,Gateless Gate case 1 (Mu)
+Yunmen Wenyan,ancestor-chinese,zh,Yunmen;Ummon;Unmon;Ummon Bun'en;Yun-men,Uman;Umman;Yunman;Yunmin;Yuman;Yun-Man,
+Linji Yixuan,ancestor-chinese,zh,Linji;Rinzai;Rinzai Gigen;Lin-chi;Linchi,,also the name of the Rinzai school
+Mazu Daoyi,ancestor-chinese,zh,Mazu;Baso;Baso Doitsu;Ma-tsu,Matsu>Mazu,
+Baizhang Huaihai,ancestor-chinese,zh,Baizhang;Hyakujo;Hyakujo Ekai;Pai-chang,Yakujo;Bajang;Bai,
+Nanquan Puyuan,ancestor-chinese,zh,Nanquan;Nansen;Nansen Fugan;Nan-ch'uan,Nankuan;Nanchuan;Nankun,
+Huangbo Xiyun,ancestor-chinese,zh,Huangbo;Obaku;Obaku Kiun;Huang-po,Huangpo,
+Guishan Lingyou,ancestor-chinese,zh,Guishan;Isan;Isan Reiyu;Kuei-shan,Gwishan;Issan,
+Yangshan Huiji,ancestor-chinese,zh,Yangshan;Kyozan;Kyozan Ejaku;Yang-shan,Gyozan;Yashan,
+Deshan Xuanjian,ancestor-chinese,zh,Deshan;Tokusan;Tokusan Senkan;Te-shan,Toksan;Deshaun;Deshawn,
+Xuefeng Yicun,ancestor-chinese,zh,Xuefeng;Seppo;Seppo Gison;Hsueh-feng,Sepo;Shefeng,
+Xuansha Shibei,ancestor-chinese,zh,Xuansha;Gensha;Gensha Shibi,Guansha;Gwansha,
+Yantou Quanhuo,ancestor-chinese,zh,Yantou;Ganto;Ganto Zenkatsu;Yen-t'ou,Yanto;Yantau,
+Caoshan Benji,ancestor-chinese,zh,Caoshan;Sozan;Sozan Honjaku;Ts'ao-shan,Kaoshan;Kaushan,co-founder of the Caodong (Soto) school
+Fayan Wenyi,ancestor-chinese,zh,Fayan;Hogen Bun'eki;Fa-yen,,Japanese name Hogen also used for Ron Hogen Green
+Dizang Guichen,ancestor-chinese,zh,Dizang;Jizo Keichin;Luohan Guichen;Rakan Keichin,Dijang;Dijong,Japanese name Jizo also used for the bodhisattva
+Xiangyan Zhixian,ancestor-chinese,zh,Xiangyan;Kyogen;Kyogen Chikan;Hsiang-yen,,
+Juzhi,ancestor-chinese,zh,Gutei;Chu-chih,Gutai,one-finger Zen
+Yuanwu Keqin,ancestor-chinese,zh,Yuanwu;Engo;Engo Kokugon,Ingo,compiler of Blue Cliff Record; 'Ingo' usually Engo (checked in gold set clip 31311) but could be ango
+Xuedou Chongxian,ancestor-chinese,zh,Xuedou;Setcho;Setcho Juken;Hsueh-tou,Setsho;Secho,verses of the Blue Cliff Record
+Wumen Huikai,ancestor-chinese,zh,Wumen;Mumon;Mumon Ekai;Wu-men,Muman;Mumman,compiler of the Gateless Gate (Mumonkan)
+Hongzhi Zhengjue,ancestor-chinese,zh,Hongzhi;Wanshi;Wanshi Shogaku,,silent illumination; verses of the Book of Serenity
+Wansong Xingxiu,ancestor-chinese,zh,Wansong;Bansho;Bansho Gyoshu,,commentary of the Book of Serenity
+Zhimen Guangzuo,ancestor-chinese,zh,Zhimen;Chimon,,
+Fengxue Yanzhao,ancestor-chinese,zh,Fengxue;Fuketsu;Fuketsu Ensho,,
+Muzhou Daoming,ancestor-chinese,zh,Muzhou;Bokushu;Chen Zunsu,,
+Ruiyan Shiyan,ancestor-chinese,zh,Ruiyan;Zuigan;Zuigan Shigen,,calls to himself 'Master!'
+Jingqing Daofu,ancestor-chinese,zh,Jingqing;Kyosei;Jinqing,Kyose,
+Changqing Huileng,ancestor-chinese,zh,Changqing;Chokei,Choke;Choque,
+Baofu Congzhan,ancestor-chinese,zh,Baofu;Hofuku,Hofoku,
+Shishuang Qingzhu,ancestor-chinese,zh,Shishuang;Sekiso;Sekiso Keisho,Sikiso,
+Daowu Yuanzhi,ancestor-chinese,zh,Daowu;Dogo;Dogo Enchi,Dawu,
+Jiashan Shanhui,ancestor-chinese,zh,Jiashan;Kassan;Kassan Zenne,Kazon;Kasan,
+Longtan Chongxin,ancestor-chinese,zh,Longtan;Ryutan;Ryutan Soshin,,
+Touzi Datong,ancestor-chinese,zh,Tosu Daido,Tozi;Totsi,
+Shenxiu,ancestor-chinese,zh,Jinshu;Shen-hsiu,,Northern School
+Huiming,ancestor-chinese,zh,Emyo;Myo;Hui-ming,Mio,pursued the Sixth Ancestor
+Nanyue Huairang,ancestor-chinese,zh,Nanyue;Nangaku;Nangaku Ejo,,
+Nanyang Huizhong,ancestor-chinese,zh,Nanyang;National Teacher Zhong;Nan'yo Echu;Echu,Nanyu,
+Danxia Tianran,ancestor-chinese,zh,Tanka Tennen,,burned the wooden Buddha
+Layman Pang,ancestor-chinese,zh,Pang Yun;Ho Koji,Layman Pong>Layman Pang,
+Mayu Baoche,ancestor-chinese,zh,Mayu;Magu;Mayoku;Mayoku Hotetsu;Bao Che,,
+Wuzu Fayan,ancestor-chinese,zh,Wuzu;Goso;Goso Hoen,Wutsu,not the same person as Fayan Wenyi
+Shoushan Shengnian,ancestor-chinese,zh,Shoushan;Shuzan;Shuzan Shonen,Shushan,
+Dahui Zonggao,ancestor-chinese,zh,Dahui;Daie;Daie Soko,,koan introspection (kanhua)
+Hanshan,ancestor-chinese,zh,Kanzan;Cold Mountain,,poet; companion Shide (Jittoku)
+Budai,ancestor-chinese,zh,Hotei,,
+Puhua,ancestor-chinese,zh,Fuke,,
+Lingyun Zhiqin,ancestor-chinese,zh,Lingyun;Reiun,,peach blossoms
+Changsha Jingcen,ancestor-chinese,zh,Changsha;Chosa;Chang Sha,,
+Yongjia Xuanjue,ancestor-chinese,zh,Yongjia;Yoka Daishi;Yoka Genkaku,,author of Song of Enlightenment (Shodoka)
+Fu Daishi,ancestor-chinese,zh,Fu Xi;Mahasattva Fu,,
+Sengzhao,ancestor-chinese,zh,Sojo,,
+Dongshan Shouchu,ancestor-chinese,zh,Tozan Shusho,,three pounds of flax
+Baling Haojian,ancestor-chinese,zh,Baling;Haryo;Pa Ling,,
+Langya Huijue,ancestor-chinese,zh,Langya;Roya;Langye,,
+Jiufeng Daoqian,ancestor-chinese,zh,Jiufeng;Kyuho,,
+Yuezhou Qianfeng,ancestor-chinese,zh,Qianfeng;Kempo;Esshu Kempo,,
+Doushuai Congyue,ancestor-chinese,zh,Doushuai;Tosotsu;Tosotsu Juetsu,,
+Qingshui,ancestor-chinese,zh,Seizei,,Gateless Gate case 10
+Daitong Zhisheng,ancestor-chinese,zh,Daitsu Chisho,,Gateless Gate case 9
+Taiyuan Fu,ancestor-chinese,zh,Taigen Fu,,
+Jinniu,ancestor-chinese,zh,Kingyu,,
+Guizong Zhichang,ancestor-chinese,zh,Guizong;Kisu,,
+Damei Fachang,ancestor-chinese,zh,Damei;Daibai;Daibai Hojo,,
+Zihu Lizong,ancestor-chinese,zh,Zihu;Shiko,,
+Luzu Baoyun,ancestor-chinese,zh,Luzu;Roso,,faced the wall
+Emperor Wu,ancestor-chinese,zh,Emperor Wu of Liang;Butei;Liang Wudi,,met Bodhidharma
+Chinul,teacher-modern,ko,,,Korean Seon
+Seung Sahn,teacher-modern,ko,,,Korean Zen; 'only don't know'
+Sheng Yen,teacher-modern,zh,Master Sheng Yen;Sheng-yen;Chan Master Sheng Yen,,
+Thich Nhat Hanh,teacher-modern,vi,Nhat Hanh;Thay,,
+Hakuin Ekaku,ancestor-japanese,ja,Hakuin;Hakuin Zenji,Hakuen,
+Bankei Yotaku,ancestor-japanese,ja,Bankei,,the Unborn
+Ryokan,ancestor-japanese,ja,Taigu Ryokan,,poet monk
+Ikkyu Sojun,ancestor-japanese,ja,Ikkyu,,
+Daito Kokushi,ancestor-japanese,ja,Shuho Myocho,,Rinzai; Daitokuji
+Muso Soseki,ancestor-japanese,ja,Muso Kokushi,,
+Eisai,ancestor-japanese,ja,Myoan Eisai;Yosai,,
+Bassui Tokusho,ancestor-japanese,ja,Bassui,,
+Takuan Soho,ancestor-japanese,ja,Takuan,,
+Menzan Zuiho,ancestor-japanese,ja,Menzan,,
+Manzan Dohaku,ancestor-japanese,ja,Manzan,,
+Shinran,ancestor-japanese,ja,,,
+Honen,ancestor-japanese,ja,,,
+Nichiren,ancestor-japanese,ja,,,
+Kukai,ancestor-japanese,ja,Kobo Daishi,,
+Saicho,ancestor-japanese,ja,Dengyo Daishi,,
+Harada Daiun Sogaku,teacher-modern,ja,Harada Roshi;Harada,,
+Hakuun Yasutani,teacher-modern,ja,Yasutani Roshi;Yasutani,Yastani,
+Koun Yamada,teacher-modern,ja,Yamada Roshi;Yamada,,
+Koryu Osaka,teacher-modern,ja,Koryu Roshi,,Maezumi Roshi's Rinzai teacher
+Kodo Sawaki,teacher-modern,ja,Sawaki Roshi,,
+Kosho Uchiyama,teacher-modern,ja,Uchiyama Roshi,,
+Shunryu Suzuki,teacher-modern,ja,Suzuki Roshi,,
+D. T. Suzuki,teacher-modern,ja,Daisetz Teitaro Suzuki;Daisetz Suzuki,,
+Zenkei Shibayama,teacher-modern,ja,Shibayama Roshi;Shibayama,Shibiyama;Shibuyama,
+Soen Nakagawa,teacher-modern,ja,Soen Roshi;Nakagawa Roshi,,
+Nyogen Senzaki,teacher-modern,ja,,,
+Eido Shimano,teacher-modern,ja,Eido Roshi,,
+Dainin Katagiri,teacher-modern,ja,Katagiri Roshi,,
+Shohaku Okumura,teacher-modern,ja,Okumura Roshi,,
+Kazuaki Tanahashi,teacher-modern,ja,Kaz Tanahashi;Tanahashi;Koz Tanahashi,Tanahishi,
+Gudo Nishijima,teacher-modern,ja,Nishijima Roshi,,
+Kobun Chino,teacher-modern,ja,Kobun Chino Otogawa,,
+Joshu Sasaki,teacher-modern,ja,Sasaki Roshi,,
+Ruth Fuller Sasaki,teacher-modern,en,,,
+Bernie Tetsugen Glassman,teacher-modern,en,Tetsugen;Tetsugen Sensei;Bernie Glassman;Bernard Tetsugen Glassman,Tetsugin;Tetsugan,Maezumi Roshi dharma heir
+Dennis Genpo Merzel,teacher-modern,en,Genpo;Genpo Roshi;Dennis Paul Genpo Merzel,,Maezumi Roshi dharma heir
+Charlotte Joko Beck,teacher-modern,en,Joko Beck;Joko,,
+Jan Chozen Bays,teacher-modern,en,Chozen Bays;Chozen,,
+Robert Aitken,teacher-modern,en,Aitken Roshi,,
+Philip Kapleau,teacher-modern,en,Kapleau Roshi,Kaplow,
+Taigen Dan Leighton,teacher-modern,en,Taigen Leighton,,
+Peter Matthiessen,teacher-modern,en,Muryo;Isshin Muryo;Muryo Roshi,,
+Chogyam Trungpa,teacher-modern,bo,Trungpa Rinpoche;Trungpa,,
+Pema Chodron,teacher-modern,bo,,,
+Sogyal Rinpoche,teacher-modern,bo,,,
+Dilgo Khyentse,teacher-modern,bo,Dilgo Khyentse Rinpoche,,
+Dalai Lama,teacher-modern,bo,His Holiness the Dalai Lama,,
+Karmapa,teacher-modern,bo,,,
+Milarepa,ancestor-tibetan,bo,,,
+Marpa,ancestor-tibetan,bo,,,
+Naropa,ancestor-tibetan,sa,,,also Naropa University
+Tilopa,ancestor-tibetan,sa,,,
+Padmasambhava,ancestor-tibetan,sa,Guru Rinpoche,,
+Tsongkhapa,ancestor-tibetan,bo,,,
+Longchenpa,ancestor-tibetan,bo,,,
+Gampopa,ancestor-tibetan,bo,,,
+Ajahn Chah,teacher-modern,th,,,
+Mahasi Sayadaw,teacher-modern,my,,,
+Sayadaw U Pandita,teacher-modern,my,U Pandita,,
+Walpola Rahula,teacher-modern,si,,,
+Bhikkhu Bodhi,teacher-modern,pi,,,
+Shantideva,ancestor-indian,sa,,,author of Bodhicharyavatara
+Asanga,ancestor-indian,sa,,,Yogacara
+Ashvaghosha,ancestor-indian,sa,,,
+Ashoka,ancestor-indian,sa,King Ashoka,,
+Avalokiteshvara,figure,sa,Avalokitesvara;Kanzeon;Kannon;Kanjizai;Guanyin;Kuan Yin;Chenrezig,Avalukiteshvara;Kanon;Kanan,bodhisattva of compassion
+Manjushri,figure,sa,Manjusri;Monju,Manjur,bodhisattva of wisdom
+Samantabhadra,figure,sa,Fugen,,
+Ksitigarbha,figure,sa,Jizo;Dizang,,Jizo Bodhisattva; see also Dizang Guichen
+Maitreya,figure,sa,Miroku,,
+Amitabha,figure,sa,Amida;Amida Buddha,,
+Vairocana,figure,sa,Birushana;Dainichi,,
+Bhaisajyaguru,figure,sa,Medicine Buddha;Yakushi,,
+Tara,figure,sa,Green Tara,,
+Prajnaparamita,figure,sa,Prajna Paramita,,also the wisdom teachings and texts
+Mahaprajapati,figure,sa,Mahapajapati;Mahaprajapati Gotami,,first nun
+Yasodhara,figure,sa,,,
+Rahula,figure,sa,,,the Buddha's son
+Devadatta,figure,sa,,,
+Subhuti,figure,sa,,Sabuti,
+Shariputra,figure,sa,Sariputra;Sariputta;Sharihotsu,Shadiputra,
+Maudgalyayana,figure,sa,Moggallana;Mokuren,,
+Upali,figure,sa,,,
+Sudhana,figure,sa,,,pilgrim of the Avatamsaka
+Vimalakirti,figure,sa,Yuima,Vimla Kirti;Vermilakurte;Vimalakurte;Virmala;Kirti,
+Mara,figure,sa,,,
+Indra,figure,sa,Indra's Net,,
+Shobogenzo,text,ja,Treasury of the True Dharma Eye;Shobo Genzo,Shovogenzo>Shobogenzo;Shobo Ginzo>Shobogenzo;Genzo>Shobogenzo,Dogen's masterwork
+Shinji Shobogenzo,text,ja,True Dharma Eye;Dogen's Three Hundred Koans,,koan collection with Daido Loori's commentary; 'Shinji' alone may be Linda Shinji Hoffman
+Mumonkan,text,ja,Gateless Gate;Gateless Barrier;Wumenguan,Mumankan,koan collection
+Hekiganroku,text,ja,Blue Cliff Record;Biyanlu,Bluecliffe;Bluecliff,koan collection
+Shoyoroku,text,ja,Book of Serenity;Book of Equanimity;Congrong Lu,,koan collection
+Denkoroku,text,ja,Transmission of Light;Transmission of the Light,,Keizan's collection
+Keitoku Dentoroku,text,ja,Transmission of the Lamp;Jingde Chuandeng Lu,,
+Kattoshu,text,ja,Entangling Vines,,
+Koans of the Way of Reality,text,en,,,ZMM koan collection
+Kamakura Koans,text,en,,,
+Genjokoan,text,ja,Genjo Koan;Actualizing the Fundamental Point,Genjo>Genjokoan,Shobogenzo fascicle
+Bendowa,text,ja,Wholehearted Way,Bendoa,
+Fukanzazengi,text,ja,Universal Recommendation for Zazen,Zazengi,
+Uji,text,ja,Being Time,,
+Sansuikyo,text,ja,Mountains and Rivers Sutra,,
+Gabyo,text,ja,Painted Rice Cake,,
+Bussho,text,ja,Buddha Nature,,
+Zazenshin,text,ja,Lancet of Zazen;Acupuncture Needle of Zazen,,
+Ikka Myoju,text,ja,One Bright Pearl,,
+Shinjin Gakudo,text,ja,Body and Mind Study of the Way,,
+Gakudo Yojinshu,text,ja,Guidelines for Studying the Way,,
+Tenzo Kyokun,text,ja,Instructions for the Cook,,
+Eihei Shingi,text,ja,Pure Standards,,
+Eihei Koroku,text,ja,Dogen's Extensive Record,,
+Shobogenzo Zuimonki,text,ja,Zuimonki,,
+Jinzu,text,ja,Spiritual Powers,,
+Henzan,text,ja,Everywhere,,
+Katto,text,ja,Twining Vines,,
+Dotoku,text,ja,Expressing the Way,,
+Kannon,text,ja,,,also the bodhisattva Avalokiteshvara
+Kuge,text,ja,Flowers in the Sky,,
+Zanmai O Zanmai,text,ja,Samadhi King of Samadhis,Zanmai,
+Kaiin Zanmai,text,ja,Ocean Seal Samadhi,,
+Keisei Sanshoku,text,ja,Sounds of Valley Streams,,
+Shinfukatoku,text,ja,Mind Cannot Be Grasped,,
+Kokyo,text,ja,Ancient Mirror,,also the chant leader role
+Hachidainingaku,text,ja,Eight Awarenesses of the Great Person,,
+Shoaku Makusa,text,ja,Refrain from Unwholesome Action,,
+Mujo Seppo,text,ja,Insentient Beings Expound the Dharma,,
+Raihai Tokuzui,text,ja,Attaining the Marrow,,
+Bodaisatta Shishobo,text,ja,Four Methods of Guidance,,
+Kesa Kudoku,text,ja,Virtue of the Kesa,,
+Senjo,text,ja,Washing,,Shobogenzo fascicle; compare Seijo (Gateless Gate 35)
+Seijo,figure,ja,Qiannu,,Seijo and her soul (Gateless Gate case 35)
+Heart Sutra,text,en,Maka Hannya Haramitta Shingyo;Prajnaparamita Hridaya,,
+Diamond Sutra,text,en,Vajracchedika,,
+Lotus Sutra,text,en,Saddharma Pundarika;Hokekyo,,
+Vimalakirti Sutra,text,en,Vimalakirti Nirdesa,,
+Lankavatara Sutra,text,en,Lankavatara,,
+Avatamsaka Sutra,text,en,Avatamsaka;Flower Garland Sutra;Flower Ornament Scripture;Kegon;Huayan;Hua-yen,Huayin;Huayen,
+Surangama Sutra,text,en,Shurangama,,
+Platform Sutra,text,en,Sutra of Hui-neng,,
+Enmei Jukku Kannon Gyo,liturgy,ja,Ten Verse Kannon Sutra of Timeless Life;Emmei Jukku Kannon Gyo,Jukku,
+Sandokai,liturgy,ja,Identity of Relative and Absolute;Harmony of Difference and Equality,,
+Hokyo Zanmai,liturgy,ja,Jewel Mirror Samadhi;Song of the Jewel Mirror Samadhi,,
+Shinjinmei,liturgy,ja,Faith in Mind;Affirming Faith in Mind,,
+Shodoka,liturgy,ja,Song of Enlightenment,,
+Zazen Wasan,liturgy,ja,Hakuin's Song of Zazen;Song of Zazen,,
+Dai Hi Shin Dharani,liturgy,ja,Great Compassionate Heart Dharani,,
+Sho Sai Myo Kichijo Dharani,liturgy,ja,,,
+Kanromon,liturgy,ja,Gate of Sweet Nectar,,
+Shiguseigan,liturgy,ja,Four Bodhisattva Vows;Four Great Vows,,
+Gate Gate Paragate Parasamgate Bodhi Svaha,liturgy,sa,,,mantra of the Heart Sutra
+Namu,liturgy,ja,Namo;Namu Kie Butsu,Nammu,
+Om Mani Padme Hum,liturgy,sa,,,
+Dhammapada,text,pi,,,
+Majjhima Nikaya,text,pi,,,
+Digha Nikaya,text,pi,,,
+Sutta Nipata,text,pi,,,
+Metta Sutta,text,pi,Karaniya Metta Sutta,,
+Satipatthana Sutta,text,pi,Satipatthana,,
+Kalama Sutta,text,pi,,,
+Bodhicharyavatara,text,sa,Way of the Bodhisattva,,
+Mulamadhyamakakarika,text,sa,Fundamental Verses of the Middle Way,,
+Tripitaka,text,sa,Tipitaka,,
+Ox-Herding Pictures,text,en,Ten Ox-Herding Pictures,,
+zazen,practice,ja,,Sazen;Zazan;Zaza;Azen,
+zazenkai,practice,ja,,,
+zendo,practice,ja,,Zenda,
+dokusan,practice,ja,,doksan;Doxan;Dok,ZMM uses 'dokusan'
+daisan,practice,ja,,,
+sanzen,practice,ja,,,
+sesshin,practice,ja,,Sashin;seshin;Sashen;Sishin;Sushin,'Shishin' can be sesshin or Gerry Shishin Wick
+ango,practice,ja,,Ongo;on-go,'Ingo' is not mapped: it is often Engo (Yuanwu)
+teisho,practice,ja,,tesho,
+mondo,practice,ja,,Mundo;mando,
+hossen,practice,ja,dharma combat,Hosen,
+shosan,practice,ja,,,ceremony of dharma questioning; do not map to hossen
+hosan,practice,ja,,,day off; do not map to hossen
+shuso,practice,ja,shuso hossen,,head trainee
+jukai,practice,ja,,Jakai;Jikai,receiving the precepts
+tokudo,practice,ja,,,ordination
+shiho,practice,ja,dharma transmission,,
+fusatsu,practice,ja,,Fasatsu,renewal of vows ceremony
+rohatsu,practice,ja,,Rahatsu,
+oryoki,practice,ja,,Orioki;orioke,
+kinhin,practice,ja,,kinhen,
+kyosaku,practice,ja,keisaku,kiyosaku,
+zafu,practice,ja,,,
+zabuton,practice,ja,,,
+rakusu,practice,ja,,Raksu,
+kesa,practice,ja,okesa,,
+gassho,practice,ja,,gasho;Gashow,
+shashu,practice,ja,,,
+samu,practice,ja,work practice,,
+takuhatsu,practice,ja,,,
+segaki,practice,ja,Hungry Ghost ceremony,,
+mokugyo,practice,ja,,,
+inkin,practice,ja,,,
+densho,practice,ja,,,
+han,practice,ja,,,wooden board
+juzu,practice,ja,,,
+butsudan,practice,ja,,,
+jisha,practice,ja,,,attendant
+ino,practice,ja,,,
+tenzo,practice,ja,,,
+tanto,practice,ja,,,
+godo,practice,ja,,,
+shika,practice,ja,,,
+jikido,practice,ja,,,
+doan,practice,ja,,,bell ringer; also the lineage names Doan Dohi and Doan Kanshi
+daidoshi,practice,ja,,,officiant
+unsui,practice,ja,,,
+roshi,title,ja,,,
+sensei,title,ja,,,
+osho,title,ja,,,
+zenji,title,ja,,,
+daiosho,title,ja,,Dayosho,honorific used for each ancestor in the lineage chant
+kokushi,title,ja,national teacher,,
+rinpoche,title,bo,,,
+sayadaw,title,my,,,
+bhikkhu,title,pi,bhikshu,,
+bhikkhuni,title,pi,bhikshuni,,
+shikantaza,practice,ja,just sitting,,
+koan,practice,ja,kung-an;gong'an,kohan;Kohen,'Koen' can be koan or a person's dharma name
+hua tou,practice,zh,huatou;wato,,
+Mu,practice,ja,Wu,,Zhaozhou's dog
+kensho,practice,ja,,,
+satori,practice,ja,,,
+makyo,practice,ja,,,
+joriki,practice,ja,,,
+mushin,practice,ja,,,
+kufu,practice,ja,,,
+hara,practice,ja,,,
+buji Zen,practice,ja,,,
+dharma,doctrine,sa,dhamma,Dahmer,
+buddhadharma,doctrine,sa,,,
+sangha,doctrine,sa,,,
+sutra,doctrine,sa,sutta,,
+bodhisattva,doctrine,sa,bosatsu,Bosa,
+mahasattva,doctrine,sa,,,
+tathagata,doctrine,sa,,Tathagatha,
+karma,doctrine,sa,karmic,,
+samsara,doctrine,sa,,,
+nirvana,doctrine,sa,nibbana,,
+parinirvana,doctrine,sa,,,
+dukkha,doctrine,pi,,,
+anicca,doctrine,pi,anitya,,
+anatta,doctrine,pi,anatman,,
+shunyata,doctrine,sa,sunyata,,emptiness
+prajna,doctrine,sa,,,
+paramita,doctrine,sa,paramitas,Padamita,
+dana paramita,doctrine,sa,dana,Dhanaparamita,
+sila,doctrine,sa,shila,,
+kshanti,doctrine,sa,,,
+virya,doctrine,sa,,,
+dhyana,doctrine,sa,jhana;chan;zen,,
+bodhicitta,doctrine,sa,,,
+bodhi,doctrine,sa,,,
+samadhi,doctrine,sa,,,
+skandhas,doctrine,sa,skandha,,
+kleshas,doctrine,sa,klesha,,
+dharmakaya,doctrine,sa,,,
+sambhogakaya,doctrine,sa,,Sambokaya,
+nirmanakaya,doctrine,sa,,,
+trikaya,doctrine,sa,,,
+alaya vijnana,doctrine,sa,alaya;storehouse consciousness,,
+manas,doctrine,sa,,,
+tathata,doctrine,sa,suchness;thusness,,
+tathagatagarbha,doctrine,sa,,,
+pratityasamutpada,doctrine,sa,dependent origination;interdependent co-arising,,
+dharmadhatu,doctrine,sa,,,
+upaya,doctrine,sa,skillful means,,
+karuna,doctrine,sa,,,
+metta,doctrine,pi,maitri,,
+mudita,doctrine,pi,,,
+upekkha,doctrine,pi,upeksha,,
+brahmaviharas,doctrine,pi,,,
+vipassana,doctrine,pi,,,
+samatha,doctrine,pi,shamatha,,
+anapanasati,doctrine,pi,,,
+arhat,doctrine,sa,arahant,,
+pratyekabuddha,doctrine,sa,,,
+shravaka,doctrine,sa,sravaka,,
+kalpa,doctrine,sa,kalpas,,
+Mount Sumeru,doctrine,sa,Sumeru,,
+Tushita,doctrine,sa,,,
+asura,doctrine,sa,,,
+deva,doctrine,sa,,,
+preta,doctrine,sa,hungry ghost,,
+dharani,doctrine,sa,,,
+mantra,doctrine,sa,,,
+mudra,doctrine,sa,,,
+gatha,doctrine,sa,,Gath,'Gata' is often 'gate gate' (Heart Sutra mantra) so it is not mapped here
+stupa,doctrine,sa,,,
+bodhimanda,doctrine,sa,,,
+Anuttara Samyak Sambodhi,doctrine,sa,anuttara samyak sambodhi,,
+Mahayana,doctrine,sa,,,
+Hinayana,doctrine,sa,,,
+Theravada,doctrine,pi,Theravadan,,
+Vajrayana,doctrine,sa,,,
+Yogacara,doctrine,sa,,,
+Madhyamaka,doctrine,sa,Madhyamika,,
+Abhidharma,doctrine,sa,Abhidhamma,,
+Vinaya,doctrine,sa,,,
+Tendai,doctrine,ja,Tiantai,,
+Kegon,doctrine,ja,Huayan,,
+Shingon,doctrine,ja,,,
+Soto,doctrine,ja,Caodong;Soto Zen,,
+Rinzai,doctrine,ja,Linji school,,
+Chan,doctrine,zh,Ch'an,,
+Seon,doctrine,ko,Son,,
+Pure Land,doctrine,en,Jodo,,
+bardo,doctrine,bo,,,
+tonglen,doctrine,bo,,,
+dzogchen,doctrine,bo,,,
+mahamudra,doctrine,sa,,,
+rigpa,doctrine,bo,,,
+lama,doctrine,bo,,,
+tulku,doctrine,bo,,,
+thangka,doctrine,bo,,tanka,check that it is not Tanka (Danxia)
+tantra,doctrine,sa,tantric,,
+Kagyu,doctrine,bo,,,
+Nyingma,doctrine,bo,,,
+Gelug,doctrine,bo,,,
+Sakya,doctrine,bo,,,
+Zen Mountain Monastery,place,en,ZMM,,
+Mountains and Rivers Order,place,en,MRO,,
+zmm.org,place,en,zmm.mro.org,cmm.mro.org;cmm,website as read aloud
+Zen Center of New York City,place,en,ZCNYC;Fire Lotus Temple,,
+Zen Affiliate of Vermont,place,en,,,
+Doshinji,place,ja,Temple of the Way of Reality,,Japanese temple name of ZMM (confirmed by Wikipedia)
+Mount Tremper,place,en,Tremper Mountain;Tremper,,
+Esopus Creek,place,en,Esopus,,
+Dharma Communications,place,en,,,
+Mountain Record,place,en,,,
+Monastery Store,place,en,monasterystore.org,,
+Green Haven,place,en,Green Haven prison;Lotus Flower Sangha,Greenhaven,prison sangha
+Zen Center of Los Angeles,place,en,ZCLA,,
+Eiheiji,place,ja,Eihei-ji,Eheji;Aheji;Ehe,
+Sojiji,place,ja,,,
+Daitokuji,place,ja,,,
+Shasta Abbey,place,en,,,
+San Francisco Zen Center,place,en,Tassajara,,
+Rochester Zen Center,place,en,,,
+Naropa University,place,en,,,
+Plum Village,place,en,,,
+Mount Wutai,place,zh,Wutaishan;Wutai,,
+Vulture Peak,place,en,Gridhrakuta,,
+Bodh Gaya,place,sa,Bodhgaya,,
+Shaolin,place,zh,,,
+Mount Hiei,place,ja,,,
+Joy Jimon Hintz,sangha-zmm,en,Jimon;Shuko,Joy Jimon Shuko,senior monastic; also called Shuko (arts instructor)
+Pat Jikyo George,sangha-zmm,en,Jikyo,,senior student
+Patrick Yunen Kelly,sangha-zmm,en,Yunen,,
+Trudy Mukon Jinpu Hirsch,sangha-zmm,en,Jinpu;Mukon;Trudi Jinpu Hirsch;Trudy Hirsch-Abramson,,senior student
+Michael Yukon Grody,sangha-zmm,en,Yukon,,
+Michael Chizen Brown,sangha-zmm,en,Chizen,,senior student
+Prabu Gikon Vasan,sangha-zmm,en,Gikon,,
+Robert Rakusan Ricci,sangha-zmm,en,Rakusan,,senior monastic
+Michelle Seigei Spark,sangha-zmm,en,Seigei,Segei,
+Lisa Kyojo Smith,sangha-zmm,en,Kyojo,,
+Daniel Doen Silberberg,sangha-zmm,en,Doen,Silverberg,senior student
+Robert Tokushu Senghas,sangha-zmm,en,Tokushu,,senior student
+Linda Shinji Hoffman,sangha-zmm,en,Shinji,,
+Horace Kaishu Moody,sangha-zmm,en,Kaishu,,senior student
+Ely Seiryu Rayek,sangha-zmm,en,Seiryu,,
+Sarah Taisho Sands,sangha-zmm,en,Taisho,,
+Richard Ryoha Dunworth,sangha-zmm,en,Ryoha,,
+Frank Kyosho Fallon,sangha-zmm,en,Kyosho,,
+Chris Yudo Abraham,sangha-zmm,en,Yudo,,
+Wally Taiko Edge,sangha-zmm,en,Taiko,,
+Lee Anne Kyoan Nail,sangha-zmm,en,Kyoan,,senior student
+Bethany Senkyu Saltman,sangha-zmm,en,Senkyu,,
+Amy Shoko Brown,sangha-zmm,en,Shoko,,
+Jim Jinmon Langabeer,sangha-zmm,en,Jinmon,,New Zealand
+Mary Kaijun Mold,sangha-zmm,en,Kaijun;Kaijin,,metadata spells both Kaijun and Kaijin (verify)
+Mark Sando Mininberg,sangha-zmm,en,Sando;Mark Mininberg,,dharma heir of Bernie Glassman; metadata also spells Miniberg
+Kerry Shoho Fristoe,sangha-zmm,en,Shoho,,
+Kerstin Seishin Maile,sangha-zmm,en,Seishin,,
+Degna Chikei Levister,sangha-zmm,en,Chikei,,
+Valerie Meiju Linet,sangha-zmm,en,Meiju,,
+Gwitha Kaido Nash,sangha-zmm,en,Kaido,,
+William Tendo Leckie,sangha-zmm,en,Tendo,,
+Barry Nyosu Weiss,sangha-zmm,en,Nyosu,,
+Carole Kyodo Walsh,sangha-zmm,en,Kyodo,,senior student
+Katie Yosha Scott-Childress,sangha-zmm,en,Yosha;Katie Yosho Scott-Childress,,
+Suzanne Taikyo Gilman,sangha-zmm,en,Taikyo,Gillman,
+Michelle Yoshin Lacaditto,sangha-zmm,en,Yoshin,,architect and resident (1964-2020)
+Sankai,sangha-zmm,ja,,,dharma name in metadata; full name unknown
+Jeanne Seisen Crimp,sangha-zmm,ja,Seisen,,senior lay practitioner
+Susan Seien Wilder,sangha-zmm,ja,Seien;Seien Wilder,,
+Kyusan,sangha-zmm,ja,,,dharma name in metadata; full name unknown
+Mujaku,sangha-zmm,ja,,,dharma name in metadata; full name unknown
+Choko,sangha-zmm,ja,,,dharma name in metadata; full name unknown
+Kiju,sangha-zmm,ja,,,dharma name in metadata; full name unknown
+Joshin,sangha-zmm,ja,,,dharma name in metadata (Sandy Joshin ...); full name unknown
+Ikusei,sangha-zmm,ja,Shea Ikusei,,from a talk title (verify)
+Tenfu Loisel,sangha-zmm,ja,Tenfu,,from a talk title (verify)
+Gerry Shishin Wick,teacher-guest,en,Shishin;Shishin Roshi;Shishin Wick,,Great Mountain Zen Center; 'Shishin' may also be sesshin misheard
+Laren Hogen Bays,teacher-guest,en,Hogen Bays,,Great Vow Zen Monastery
+Pat Enkyo O'Hara,teacher-guest,en,Enkyo;Enkyo Roshi,,Village Zendo
+Melissa Myozen Blacker,teacher-guest,en,Myozen,,
+Josh Jiun Bartok,teacher-guest,en,Jiun,,
+Jay Rinsen Weik,teacher-guest,en,Rinsen,,
+James Ishmael Ford,teacher-guest,en,Zeno Myoun,,
+Barbara Rhodes,teacher-guest,ko,Zen Master Soeng Hyang;Soeng Hyang,,Kwan Um School of Zen
+Jacob Pearl,teacher-guest,en,,,Kwan Um School of Zen
+Robert Thurman,teacher-guest,en,Robert A. F. Thurman,,Tibet House
+Jeffrey Hopkins,teacher-guest,en,,,Tibetologist
+Robert Buswell,teacher-guest,en,Robert E. Buswell,,Korean Buddhism scholar
+Peter N. Gregory,teacher-guest,en,Peter Gregory,,
+Clark Strand,teacher-guest,en,,,
+Mark Epstein,teacher-guest,en,,,
+Mel Ash,teacher-guest,en,,,
+Rita Gross,teacher-guest,en,Rita M. Gross,,
+Rick Fields,teacher-guest,en,,,
+Ed Sanders,teacher-guest,en,,,
+Edgar Mitchell,teacher-guest,en,Ed Mitchell,,Apollo astronaut
+Robert Kennedy,teacher-guest,en,Father Robert Kennedy;Robert Edward Kennedy,,Jesuit Zen teacher
+Jon Kabat-Zinn,teacher-guest,en,Kabat-Zinn,,
+Lex Hixon,teacher-guest,en,,,
+Pauline Oliveros,teacher-guest,en,,,
+Tsultrim Allione,teacher-guest,bo,Lama Tsultrim Allione,,
+Lama Surya Das,teacher-guest,bo,Surya Das,,
+Gioia Timpanelli,teacher-guest,en,,,storyteller
+Natalie Goldberg,teacher-guest,en,,,
+Meredith Monk,teacher-guest,en,,,
+Lou Nordstrom,teacher-guest,en,,,
+Ram Dass,teacher-guest,en,,,
+Zalman Schachter,teacher-guest,en,Reb Zalman;Zalman Schachter-Shalomi,,
+Mugai Nyodai,ancestor-japanese,ja,,,first Japanese woman Zen master
+Zen Arts Center,place,en,,,original name of ZMM (1980)
+Camp Wapanachki,place,en,Wapanachki,,1930s name of the site
+Catskill Mountains,place,en,Catskills,,
+Sangha House,place,en,,,
+Jizo House,place,en,,,
+Basho Pond,place,en,,,
+Dogen Hermitage,place,en,,,
+Zen Environmental Studies Institute,place,en,ZESI,,
+National Buddhist Prison Sangha,place,en,,,
+National Buddhist Archives,place,en,,,
+Society of Mountains and Rivers,place,en,,,
+Ocean Mind Sangha,place,en,,,
+Eight Gates of Zen,doctrine,en,,,Daido Roshi's training matrix
+Great Mountain Zen Center,place,en,,,
+Great Vow Zen Monastery,place,en,,,
+Village Zendo,place,en,,,
+Kwan Um School of Zen,place,ko,Kwan Um,,
+Tibet House,place,en,,,
+tangaryo,practice,ja,,,
+kyudo,practice,ja,,,
+shakuhachi,practice,ja,,,
+qigong,practice,zh,,,
+dojo,practice,ja,,,
+Chikyuu Donohue,sangha-zmm,en,Chikyuu;Chikyu,,
+Chimyo Simone Atkinson,teacher-guest,en,Chimyo;Chimyo Sensei,,
+Ikyo Love,sangha-zmm,en,Ikyo,,
+Jeffrey Kien Martin,sangha-zmm,en,Kien,,
+Joel Sansho Benton,sangha-zmm,en,Sansho,,
+Maureen Jisho Ford,sangha-zmm,en,Jisho,,senior lay student
+Konjin Gaelyn Goodwin,teacher-guest,en,Konjin;Konjin Roshi,,
+Zenkei Blanche Hartman,teacher-guest,en,Blanche Hartman,,San Francisco Zen Center
+Zenju Earthlyn Manuel,teacher-guest,en,Zenju;Zenju Sensei,,
+Ryushin Azuma,teacher-guest,ja,Azuma Sensei,,abbot of Daijoji (Kanazawa)
+Gyokuei Ikita,teacher-guest,ja,,,
+Taiken,sangha-zmm,ja,,,resident from Japan
+Museki Tendo,teacher-guest,ja,Museki,,verify
+Ronnie Nyogetsu Reishin Seldin,teacher-guest,en,Nyogetsu;Reishin,,shakuhachi master; Ki-Sui-An Shakuhachi Dojo
+Samu Sunim,teacher-guest,ko,,,Korean Seon; Jogye Order
+Dharmachari Subhuti,teacher-guest,en,,,Triratna Buddhist Community
+Sangharakshita,teacher-modern,en,,,founder of Triratna
+Rebecca Li,teacher-guest,en,,,Chan teacher (Sheng Yen lineage)
+Ming He Wan,teacher-guest,en,,,translator for Sheng Yen
+Kalu Rinpoche,teacher-modern,bo,,,
+Pema Khandro,teacher-guest,bo,Pema Khandro Rinpoche,,
+Lopon Karla,teacher-guest,bo,,,
+Judy Lief,teacher-guest,en,,,
+David Loy,teacher-guest,en,,,
+William Waldron,teacher-guest,en,,,
+Gina Sharpe,teacher-guest,en,,,
+Joseph Goldstein,teacher-modern,en,,,Insight Meditation Society (IMS)
+Mirabai Bush,teacher-guest,en,,,
+Joanna Macy,teacher-guest,en,Joanna Rogers Macy,,
+Eric Kolvig,teacher-guest,en,,,
+Robert Gimello,teacher-guest,en,Robert M. Gimello,,scholar
+T. Griffith Foulk,teacher-guest,en,Griffith Foulk,,scholar
+James C. Dobbins,teacher-guest,en,James Dobbins,,scholar
+John R. McRae,teacher-guest,en,John McRae,,Chan scholar
+Daniel Stevenson,teacher-guest,en,,,scholar
+Conrad Hyers,teacher-guest,en,,,
+John Stevens,teacher-guest,en,,,translator; Aikido author
+Stephen Morrell,teacher-guest,en,Steven Morrell,,Japanese garden designer
+Laura Sims,teacher-guest,en,,,storyteller
+Jacqueline Mandel,teacher-guest,en,,,
+Mark Finn,teacher-guest,en,,,
+Sandy Huntington,teacher-guest,en,,,
+Eduardo Duran,teacher-guest,en,Dr. Eduardo Duran,,
+Harry Wilmer,teacher-guest,en,Harry A. Wilmer,,
+Gabriele Rico,teacher-guest,en,Gabriele Lusser Rico,,
+Kevin Hunt,teacher-guest,en,Father Kevin Hunt,,Trappist monk
+Anne Waldman,teacher-guest,en,Ann Waldman,,poet
+Allen Ginsberg,teacher-guest,en,,,poet
+Andrew Schelling,teacher-guest,en,,,poet
+Helen Tworkov,teacher-guest,en,,,Tricycle magazine
+Dalong Zhihong,ancestor-chinese,zh,Dalong;Tairyu;Ta Lung,,hard and fast body of reality
+Cuiyan Lingcan,ancestor-chinese,zh,Cuiyan;Suigan;Ts'ui Yen,,Cuiyan's eyebrows
+Wujiu Youxuan,ancestor-chinese,zh,Wujiu;Ukyu;Wu Chiu,,unjust beating
+Dasui Fazhen,ancestor-chinese,zh,Dasui;Daizui,,aeonic fire
+Emperor Suzong,ancestor-chinese,zh,Su Tsung,,ten-body controller
+Daijoji,place,ja,,,Kanazawa
+Zen Peacemaker Order,place,en,Zen Peacemakers,,
+Ki-Sui-An Shakuhachi Dojo,place,en,Sui-An,,
+Insight Meditation Society,place,en,IMS,,
+Triratna Buddhist Community,place,en,Triratna,,
+Jogye Order,place,ko,,,
+Tricycle,place,en,Tricycle magazine,,
+Jataka Tales,text,pi,Jataka,,
+Pali Canon,text,pi,,,
+Bloodstream Sermon,text,en,,,Bodhidharma
+Iron Flute,text,en,,,koan collection
+papanca,doctrine,pi,papañca,Papanka,mental proliferation

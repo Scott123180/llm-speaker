@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import io
 import json
 import os
 import re
@@ -158,7 +159,13 @@ def main() -> None:
 
     # Read the CSV once and stream rows into individual JSON files.
     with csv_path.open(newline="", encoding="utf-8-sig") as csv_file:
-        reader = csv.DictReader(csv_file)
+        # Some exports prepend an HTML search panel before the CSV header; skip it.
+        raw = csv_file.read()
+        start = raw.find(f'"{RESOURCE_ID_FIELD}"')
+        if start > 0:
+            print(f"Skipping {raw.count(chr(10), 0, start)} non-CSV lines before the header.")
+            raw = raw[start:]
+        reader = csv.DictReader(io.StringIO(raw))
 
         if not reader.fieldnames:
             raise ValueError("CSV file contains no headers.")
