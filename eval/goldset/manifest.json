@@ -60,7 +60,7 @@
    "start": 1050,
    "end": 1410,
    "window": "random",
-   "title": "To Be Enlightened by the World: 2016 Fall Ango Intensive, Part 2 \u2013 Sounds",
+   "title": "To Be Enlightened by the World: 2016 Fall Ango Intensive, Part 2 – Sounds",
    "speaker": "Geoffrey Shugen Arnold",
    "speaker_group": "Shugen",
    "era": "2010s",
@@ -68,7 +68,8 @@
    "content": "other",
    "difficulty": "hard",
    "old_logprob": -0.544,
-   "snapped": true
+   "snapped": true,
+   "exclude": "no speech in this window: loud room/nature sound for a talk titled '... – Sounds' (VAD finds 0.7 s of speech; every system outputs only 'Oh'/'Ah' or nothing); legacy transcript is repeated 'Thank you'"
   },
   {
    "clip_id": "29668_n00323",
@@ -558,7 +559,7 @@
    "start": 1193.96,
    "end": 1559.46,
    "window": "term-rich",
-   "title": "Yangshan\u2019s Mind And Environment",
+   "title": "Yangshan’s Mind And Environment",
    "speaker": "Geoffrey Shugen Arnold",
    "speaker_group": "Shugen",
    "era": "2000s",

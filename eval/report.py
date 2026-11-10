@@ -80,6 +80,29 @@ def loop_flag(text):
     return False
 
 
+def _toks(s):
+    return re.findall(r"[a-z']+", (s or "").lower())
+
+
+def echo_segments(o, n=4):
+    """Segments that mostly repeat the context prompt instead of transcribing audio
+    (at least half of their 4-grams occur in the prompt). Returns [(start, end)]."""
+    ctx = o.get("context")
+    if not ctx:
+        return []
+    pt = _toks(" ".join(ctx) if isinstance(ctx, list) else ctx)
+    grams = {tuple(pt[i:i + n]) for i in range(len(pt) - n + 1)}
+    out = []
+    for s in o.get("segments") or []:
+        st = _toks(s["text"])
+        if len(st) < 3:
+            continue
+        hits = sum(1 for i in range(len(st) - n + 1) if tuple(st[i:i + n]) in grams)
+        if hits >= max(1, 0.5 * (len(st) - n + 1)):
+            out.append((s["start"], s["end"]))
+    return out
+
+
 def glossary_hits(gloss, text):
     valid, mis = Counter(), Counter()
     for i, kind, form in gloss.find(text or ""):
@@ -158,6 +181,8 @@ def compute(manifest, systems, refs, gloss):
             "gloss_misheard_share": sum(gm.values()) / max(1, sum(gv.values()) + sum(gm.values())),
             "top_misheard": [f for (_, f), _ in gm.most_common(12)],
             "loops": [c["clip_id"] for c, o in sp if loop_flag(o["text"])],
+            "echo_clips": [c["clip_id"] for c, o in sp if echo_segments(o)],
+            "echo_min": sum(e - s for _, o in sp for s, e in echo_segments(o)) / 60,
             "punct_per_100w": 100 * len(re.findall(r"[.,;:?!]", text_all)) / max(1, nwords),
             "has_word_timestamps": any(o.get("words") for _, o in sp),
         }
@@ -301,6 +326,15 @@ def examples(manifest, systems, gloss, max_n=14):
 
 
 # ---------------------------------------------------------------- report
+def echo_cell(m):
+    if not m["run"] or not (m["run"].get("params") or {}).get("context"):
+        return "—"
+    sp = m["speech"]
+    if not sp["echo_clips"]:
+        return "0 clips"
+    return f"{len(sp['echo_clips'])} clips ({pct(sp['echo_min'] / sp['minutes'])} of audio)"
+
+
 def pct(x, d=1):
     return "—" if x is None else f"{100 * x:.{d}f}%"
 
@@ -360,7 +394,8 @@ def write_report(manifest, systems, refs, M, agree, anchor, ex):
 
     w("## Summary")
     w("")
-    head = "| System | Non-speech clips with invented text | Glossary terms misheard | Loops | Words/min | Punct./100 words |"
+    head = ("| System | Non-speech clips with invented text | Glossary terms misheard | Prompt echo | Loops | "
+            "Words/min | Punct./100 words |")
     if refs:
         head += " WER | CER | Term recall | Term false insertions /100 |"
     w(head)
@@ -370,6 +405,7 @@ def write_report(manifest, systems, refs, M, agree, anchor, ex):
         ns, sp = m["nonspeech"], m["speech"]
         row = (f"| `{s}` | {ns['clips_with_output']}/{ns['clips']} ({pct(ns['rate'], 0)}) | "
                f"{pct(sp['gloss_misheard_share'])} ({sp['gloss_misheard']} of {sp['gloss_misheard'] + sp['gloss_valid']}) | "
+               f"{echo_cell(m)} | "
                f"{len(sp['loops'])} | {fmt(sp['words_per_min'], 0)} | {fmt(sp['punct_per_100w'], 1)} |")
         if refs:
             rf = m.get("ref", {})
@@ -385,6 +421,9 @@ def write_report(manifest, systems, refs, M, agree, anchor, ex):
       "(\"Yakujo\" for Hyakujo, \"doksan\" for dokusan). Lower is better. This only counts misspellings "
       "already listed in the glossary, and a prompt can push the share down by inserting terms that weren't "
       "said, so check it against the false-insertion column once references exist.")
+    w("- **Prompt echo**: speech clips where a stretch of output repeats the context prompt instead of what was "
+      "said (the speech there is lost), and the share of speech audio replaced that way. Only systems given a "
+      "prompt or term list can do this; any non-zero value is serious.")
     w("- **Loops**: speech clips where the output repeats a phrase over and over (a classic Whisper failure).")
     w("- **Words/min**: big differences from the other systems suggest dropped audio or invented text.")
     w("")

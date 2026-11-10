@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last updated: 2026-11-09_
+_Last updated: 2026-11-10_
 
 ## Direction
 
@@ -27,6 +27,9 @@ by public leaderboards. Background: [`reports/Dharma talk transcription options.
       forms mined from 6,032 existing transcripts. See `glossary/README.md`.
 - [x] Per-talk context builder: `transcriber/build_context.py` writes a Whisper prompt and a ranked
       term list for each of the 7,075 talks in about 45 s
+- [x] Gold set selected and cut, ASR runners for three engines, and a first bake-off across 13 system
+      variants. The report is [`reports/ASR bake-off.md`](reports/ASR%20bake-off.md), with the
+      interpretation in `eval/findings.md`. **It has no WER yet: the references still need correcting.**
 
 ---
 
@@ -51,22 +54,29 @@ by public leaderboards. Background: [`reports/Dharma talk transcription options.
 
 Without a gold set, every later choice is a guess.
 
-- [ ] **Select excerpts**: 30–50 talks × 5–10 min each (about 3–6 h of audio), stratified by:
+- [x] **Select excerpts**: 30–50 talks × 5–10 min each (about 3–6 h of audio), stratified by:
   - era / recording medium (1980s cassette → digital)
   - speaker (Daido, Shugen, Ryushin, Hojin, Myotai, Hogen, seniors, guests)
   - content: koan-heavy talks, Q&A / dharma encounter, chanting and bells, long silences
-- [ ] Add 30–60 short **non-speech clips** (silence, bells, chanting, room noise) to measure hallucination
-- [ ] **Correction workflow**: start each excerpt from the best current transcript and fix it while
-      listening. Estimate: 2–3 person-hours per audio hour.
-- [ ] Transcription conventions doc (fillers, false starts, chant text, spelling per the glossary)
-- [ ] **Scoring script** (`eval/`):
+- [x] Add 30–60 short **non-speech clips** (silence, bells, chanting, room noise) to measure hallucination
+      _Done: 40 excerpts × 6 min (2 later excluded for unusable audio) + 76 non-speech clips, in
+      `eval/goldset/manifest.json`. Drafts come from the legacy transcripts, so the set isn't anchored
+      to any new system._
+- [ ] **Correct the references** ← **next step (owner)**: copy drafts from `eval/goldset/drafts/` to
+      `eval/goldset/refs/` and fix them while listening. 15–20 clips give a first usable WER;
+      all 38 take about 8–12 h. Then run `uv run python eval/report.py`.
+- [ ] **Confirm the non-speech clips by ear**: a handful trigger output in almost every system and
+      probably contain faint speech or chanting. Set `verified` in the manifest.
+- [x] Transcription conventions doc (`eval/CONVENTIONS.md`)
+- [x] **Scoring script** (`eval/report.py`; reference-based parts activate once refs exist):
   - WER/CER after Whisper's `EnglishTextNormalizer` (jiwer)
   - **Glossary-term recall and false insertions** (biased vs. unbiased WER)
   - Hallucination rate on the non-speech clips
   - Punctuation/casing error rate
   - Speaker-attributed WER for Q&A excerpts (later, MeetEval)
   - Confidence intervals by resampling whole talks, not utterances
-- [ ] **Baseline**: score the existing raw Whisper transcripts and the existing Llama outputs
+- [ ] **Baseline**: score the existing raw Whisper transcripts (included as `legacy-whisper-cli`) and the
+      existing Llama outputs (not yet)
 
 **Exit criteria:** baseline numbers per stratum. We know where the current pipeline fails.
 
@@ -82,9 +92,28 @@ Can start as a smoke test on 5–10 talks while the gold set is being built.
 | Nemotron-3.5-Transcribe | "context terms" prompt | rented H100 | Check its OpenMDW licence first |
 | ElevenLabs Scribe v2 (hosted) | keyterms | API | **Gold set only**, as an accuracy ceiling |
 
-- [ ] New venv with `faster-whisper`; run with and without prompts (does context help on *this* audio?)
-- [ ] NeMo env for Parakeet; tune `boosting_tree_alpha` on the gold set
-- [ ] Tune the context builder: prompt length, term count, min difficulty, prior weights
+- [x] faster-whisper turbo and large-v3, with and without the per-talk prompt
+- [x] Parakeet with phrase boosting at alpha 0.3 (hard terms only), 0.5 and 1.0
+- [x] Qwen3-ASR plain, with the prose prompt, with VAD, and with VAD plus a term list
+- [ ] Re-score everything once references exist, then pick the engine (see findings)
+- [ ] Tune `boosting_tree_alpha` and the context builder (prompt length, term count, min difficulty)
+      against WER and term false insertions
+- [ ] Whisper large-v3 + prompt: detect prompt echo (a window whose text repeats the prompt) and
+      redo that window without the prompt; re-test
+- [ ] Cloud: Nemotron-3.5-Transcribe (about 60 GB of weights, too big for this PC) and Scribe v2 as a
+      ceiling, both on the gold set only
+
+**Findings so far (no WER yet; details in `eval/findings.md`):**
+- **Whisper turbo + prompt** is the safe front-runner: misheard terms fall from 13% to 3%, with no
+  prompt echo and the same speed (about 2 days for the archive on this PC).
+- **Whisper large-v3 + prompt** spells best among the Whisper setups but **echoes the prompt instead of
+  transcribing** in 12 of 38 clips (2.3% of speech lost).
+- **Qwen3-ASR** needs VAD (without it, it invents text on 97% of silent clips) and takes a term list,
+  not prose (prose gets read aloud). It's promising but about 12 days locally.
+- **Parakeet** is the fastest and least prone to inventing text, but boosting is double-edged: names
+  get fixed, and words like "koan" become "Khan".
+- **Every engine needs VAD gating**, and context format is per-engine (prose prompt for Whisper, term
+  list for Qwen, phrase list for Parakeet).
 - [ ] Note: no official CUDA build of CTranslate2 (faster-whisper / WhisperX) for ARM64 → use an
       x86 H100 for those, and a GH200 for PyTorch-based models (NeMo, transformers, vLLM)
 
@@ -92,6 +121,11 @@ Can start as a smoke test on 5–10 talks while the gold set is being built.
 hallucination rate.
 
 ## Phase 3 — Production transcription run
+
+- [ ] **Audio triage before transcribing**: measure loudness and VAD speech ratio per talk. Flag
+      near-silent or broken recordings: 59 talks have legacy transcripts that are more than half
+      "Thank you"-style filler, and 88 more are 15–50% filler. Test whether loudness normalization
+      rescues any of them (it didn't for 29856), and report the rest to the archive owner.
 
 - [ ] Batch runner: manifest (SQLite/JSON), resumable, atomic writes, a params sidecar per output
       (model, version, prompt or terms used)

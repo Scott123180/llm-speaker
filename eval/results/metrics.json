@@ -30,9 +30,9 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 110.85720737013104,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 116.50220444675321,
     "gloss_valid": 326,
     "gloss_misheard": 41,
     "gloss_misheard_share": 0.11171662125340599,
@@ -51,13 +51,13 @@
      "Wutsu"
     ],
     "loops": [
-     "29668_s01050",
-     "29856_s00180",
      "30643_s01710",
      "31043_s04042",
      "36192_s02610"
     ],
-    "punct_per_100w": 15.200663850331924,
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 15.137545344619106,
     "has_word_timestamps": false
    }
   },
@@ -106,9 +106,9 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 108.30655496760463,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 113.88284185433263,
     "gloss_valid": 264,
     "gloss_misheard": 42,
     "gloss_misheard_share": 0.13725490196078433,
@@ -129,7 +129,91 @@
     "loops": [
      "36192_s02610"
     ],
-    "punct_per_100w": 15.550922708671145,
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 15.539835324133133,
+    "has_word_timestamps": true
+   }
+  },
+  "parakeet-v3+boost0.3f": {
+   "run": {
+    "system": "parakeet-v3+boost0.3f",
+    "model": "nvidia/parakeet-tdt-0.6b-v3",
+    "params": {
+     "decoding": "greedy_batch (TDT label-looping)",
+     "attention": "rel_pos_local_attn [256,256]",
+     "context": "phrase boosting alpha=0.3, hard terms (difficulty>=0.15, with evidence)"
+    },
+    "device": "cuda",
+    "started": "2026-11-10 05:48:00",
+    "clips": 116,
+    "audio_sec": 16600.54999999997,
+    "wall_sec": 86.40346121788025,
+    "load_sec": 13.4,
+    "rtfx": 192.1,
+    "gpu_peak_mb": 5024,
+    "ram_peak_mb": 3705,
+    "finished": "2026-11-10 05:49:59"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 26,
+    "phrases": [
+     [
+      "So that",
+      1
+     ],
+     [
+      "But then you know we do want to write a lot of",
+      1
+     ],
+     [
+      "Thank you.",
+      1
+     ],
+     [
+      "Okay.",
+      1
+     ],
+     [
+      "Just a little bit.",
+      1
+     ],
+     [
+      "Sension be number two.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 113.78599147276414,
+    "gloss_valid": 267,
+    "gloss_misheard": 40,
+    "gloss_misheard_share": 0.13029315960912052,
+    "top_misheard": [
+     "gasho",
+     "Mizumi",
+     "Yakujo",
+     "dogan",
+     "Ingo",
+     "Mayakaya Shapa",
+     "Shapa",
+     "kohan",
+     "doksan",
+     "Orioki",
+     "Secho",
+     "seshin"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 15.545324409022324,
     "has_word_timestamps": true
    }
   },
@@ -182,9 +266,9 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 108.39854570999083,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 113.86083040397615,
     "gloss_valid": 283,
     "gloss_misheard": 35,
     "gloss_misheard_share": 0.11006289308176101,
@@ -205,7 +289,9 @@
     "loops": [
      "36192_s02610"
     ],
-    "punct_per_100w": 15.58015738311989,
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 15.566037735849056,
     "has_word_timestamps": true
    }
   },
@@ -258,9 +344,9 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 108.5072620419018,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 113.97969223590113,
     "gloss_valid": 292,
     "gloss_misheard": 36,
     "gloss_misheard_share": 0.10975609756097561,
@@ -281,7 +367,9 @@
     "loops": [
      "36192_s02610"
     ],
-    "punct_per_100w": 15.483622350674374,
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 15.46869568575953,
     "has_word_timestamps": true
    }
   },
@@ -341,9 +429,9 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 108.46962946547107,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 114.12056551818257,
     "gloss_valid": 297,
     "gloss_misheard": 7,
     "gloss_misheard_share": 0.023026315789473683,
@@ -355,7 +443,9 @@
      "Zhao"
     ],
     "loops": [],
-    "punct_per_100w": 16.71099803400023,
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.695598503259653,
     "has_word_timestamps": false
    }
   },
@@ -415,12 +505,12 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 109.8202208195957,
-    "gloss_valid": 439,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 115.04064414308324,
+    "gloss_valid": 409,
     "gloss_misheard": 8,
-    "gloss_misheard_share": 0.017897091722595078,
+    "gloss_misheard_share": 0.019184652278177457,
     "top_misheard": [
      "Shapa",
      "Mazumi",
@@ -430,7 +520,163 @@
     "loops": [
      "30643_s01710"
     ],
-    "punct_per_100w": 16.60828510508681,
+    "echo_clips": [
+     "31311_s00180",
+     "34725_s00990",
+     "33411_s01620",
+     "31966_s01428",
+     "31043_s04042"
+    ],
+    "echo_min": 4.052833333333333,
+    "punct_per_100w": 16.581203122608297,
+    "has_word_timestamps": false
+   }
+  },
+  "qwen3-asr-1.7b+vad": {
+   "run": {
+    "system": "qwen3-asr-1.7b+vad",
+    "model": "Qwen/Qwen3-ASR-1.7B",
+    "params": {
+     "backend": "transformers",
+     "dtype": "bfloat16",
+     "language": "English",
+     "max_new_tokens": 1024,
+     "chunk_sec": 120,
+     "vad": true,
+     "context": null
+    },
+    "device": "cuda",
+    "started": "2026-11-10 05:51:40",
+    "clips": 111,
+    "audio_sec": 15114.09556249997,
+    "wall_sec": 694.4957737922668,
+    "load_sec": 1.8,
+    "oom_splits": 3,
+    "rtfx": 21.8,
+    "gpu_peak_mb": 5016,
+    "ram_peak_mb": 5199,
+    "finished": "2026-11-10 06:03:23"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 10,
+    "phrases": [
+     [
+      "Oh.",
+      2
+     ],
+     [
+      "Yeah.",
+      2
+     ],
+     [
+      "Thank you.",
+      1
+     ],
+     [
+      "Ah.",
+      1
+     ],
+     [
+      "Sentient beings are.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 113.2753258244939,
+    "gloss_valid": 311,
+    "gloss_misheard": 7,
+    "gloss_misheard_share": 0.0220125786163522,
+    "top_misheard": [
+     "Shapa",
+     "doksan",
+     "Ongo",
+     "Doxan"
+    ],
+    "loops": [],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.660837122537018,
+    "has_word_timestamps": false
+   }
+  },
+  "qwen3-asr-1.7b+vad+terms": {
+   "run": {
+    "system": "qwen3-asr-1.7b+vad+terms",
+    "model": "Qwen/Qwen3-ASR-1.7B",
+    "params": {
+     "backend": "transformers",
+     "dtype": "bfloat16",
+     "language": "English",
+     "max_new_tokens": 1024,
+     "chunk_sec": 120,
+     "vad": true,
+     "context": "system prompt = hard-term list"
+    },
+    "device": "cuda",
+    "started": "2026-11-10 06:03:28",
+    "clips": 116,
+    "audio_sec": 16580.27556249997,
+    "wall_sec": 761.1977496147156,
+    "load_sec": 1.7,
+    "oom_splits": 2,
+    "rtfx": 21.8,
+    "gpu_peak_mb": 5218,
+    "ram_peak_mb": 5200,
+    "finished": "2026-11-10 06:16:17"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 16,
+    "phrases": [
+     [
+      "Yeah.",
+      2
+     ],
+     [
+      "Oh.",
+      1
+     ],
+     [
+      "Thank you.",
+      1
+     ],
+     [
+      "Ango, Kannon, Shobogenzo, mondo.",
+      1
+     ],
+     [
+      "Hyakujo, thangka, oryoki, Kannon.",
+      1
+     ],
+     [
+      "Sanctian beings are.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 115.09787391401008,
+    "gloss_valid": 350,
+    "gloss_misheard": 6,
+    "gloss_misheard_share": 0.016853932584269662,
+    "top_misheard": [
+     "doksan",
+     "Dogon"
+    ],
+    "loops": [],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.504111684834577,
     "has_word_timestamps": false
    }
   },
@@ -449,48 +695,152 @@
      "context": null
     },
     "device": "cuda",
-    "started": "2026-11-09 23:29:04",
-    "clips": 5,
-    "audio_sec": 1459.2099999999998,
-    "wall_sec": 28.57045865058899,
+    "started": "2026-11-09 23:29:42",
+    "clips": 96,
+    "audio_sec": 11055.475562499973,
+    "wall_sec": 172.70594882965088,
     "load_sec": 2.3,
-    "rtfx": 51.1,
-    "gpu_peak_mb": 4442,
-    "ram_peak_mb": 3365,
-    "finished": "2026-11-09 23:29:36"
+    "rtfx": 64.0,
+    "gpu_peak_mb": 4441,
+    "ram_peak_mb": 3364,
+    "finished": "2026-11-09 23:32:42"
    },
    "nonspeech": {
-    "clips": 6,
-    "clips_with_output": 1,
-    "rate": 0.16666666666666666,
-    "words_total": 2,
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 12,
     "phrases": [
      [
       "Thank you.",
+      3
+     ],
+     [
+      "Yeah.",
+      2
+     ],
+     [
+      "Yes.",
+      1
+     ],
+     [
+      "sentient beings are",
       1
      ]
     ]
    },
    "speech": {
-    "clips": 15,
-    "minutes": 89.68133333333334,
-    "words_per_min": 97.74609357577198,
-    "gloss_valid": 144,
-    "gloss_misheard": 17,
-    "gloss_misheard_share": 0.10559006211180125,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 110.48867620936412,
+    "gloss_valid": 325,
+    "gloss_misheard": 26,
+    "gloss_misheard_share": 0.07407407407407407,
     "top_misheard": [
      "Yakujo",
      "Maizumi",
+     "doksan",
      "Shapa",
      "Huiko",
+     "Daito",
      "Setsho",
      "Ingo",
      "Mayakaya Shapa",
      "Mizumi",
-     "Yunmin"
+     "Yunmin",
+     "Ongo"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.07299386405291,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-large-v3+ctx": {
+   "run": {
+    "system": "whisper-large-v3+ctx",
+    "model": "faster-whisper large-v3",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 2,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-09 23:32:42",
+    "clips": 116,
+    "audio_sec": 16580.27556249997,
+    "wall_sec": 278.7546007633209,
+    "load_sec": 2.1,
+    "rtfx": 59.5,
+    "gpu_peak_mb": 4762,
+    "ram_peak_mb": 3365,
+    "finished": "2026-11-09 23:37:30"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 17,
+    "phrases": [
+     [
+      "Opening Talk.",
+      2
+     ],
+     [
+      "Thank you.",
+      2
+     ],
+     [
+      "Thank you for watching!",
+      1
+     ],
+     [
+      "Shobogenzo.",
+      1
+     ],
+     [
+      "Sentient beings are...",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 104.18019453719826,
+    "gloss_valid": 403,
+    "gloss_misheard": 8,
+    "gloss_misheard_share": 0.019464720194647202,
+    "top_misheard": [
+     "Shapa",
+     "Mayakaya Shapa",
+     "Zenda"
     ],
     "loops": [],
-    "punct_per_100w": 15.959388546657541,
+    "echo_clips": [
+     "33528_s01214",
+     "35815_s00540",
+     "33411_s01620",
+     "31587_s01620",
+     "34775_s01976",
+     "34450_s01140",
+     "33728_s03570",
+     "35549_s00390",
+     "34724_s01050",
+     "37196_s01410",
+     "34004_s01972",
+     "34803_s00570"
+    ],
+    "echo_min": 5.156833333333334,
+    "punct_per_100w": 16.974434819353476,
     "has_word_timestamps": true
    }
   },
@@ -548,9 +898,9 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 105.47993033791964,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 111.04776704841859,
     "gloss_valid": 314,
     "gloss_misheard": 47,
     "gloss_misheard_share": 0.13019390581717452,
@@ -569,7 +919,9 @@
      "Setsho"
     ],
     "loops": [],
-    "punct_per_100w": 16.193609767699993,
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.194251734390484,
     "has_word_timestamps": true
    }
   },
@@ -623,9 +975,9 @@
     ]
    },
    "speech": {
-    "clips": 40,
-    "minutes": 239.15449999999998,
-    "words_per_min": 104.31750186594859,
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 109.81072353838468,
     "gloss_valid": 366,
     "gloss_misheard": 12,
     "gloss_misheard_share": 0.031746031746031744,
@@ -638,84 +990,170 @@
      "Zenda"
     ],
     "loops": [],
-    "punct_per_100w": 16.722783389450058,
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.709429121231558,
     "has_word_timestamps": true
    }
   }
  },
  "refs": 0,
  "agreement": {
-  "legacy-whisper-cli vs parakeet-v3": 0.08775157705016522,
-  "legacy-whisper-cli vs parakeet-v3+boost0.5": 0.08746858707475338,
-  "legacy-whisper-cli vs parakeet-v3+boost1": 0.08660296046468054,
-  "legacy-whisper-cli vs qwen3-asr-1.7b": 0.08999403519236504,
-  "legacy-whisper-cli vs qwen3-asr-1.7b+ctx": 0.098798200987982,
-  "legacy-whisper-cli vs whisper-large-v3": 0.07483443708609272,
-  "legacy-whisper-cli vs whisper-turbo": 0.07367172856978924,
+  "legacy-whisper-cli vs parakeet-v3": 0.08662631123810956,
+  "legacy-whisper-cli vs parakeet-v3+boost0.3f": 0.08643136664659844,
+  "legacy-whisper-cli vs parakeet-v3+boost0.5": 0.08535118062866597,
+  "legacy-whisper-cli vs parakeet-v3+boost1": 0.08465727699530516,
+  "legacy-whisper-cli vs qwen3-asr-1.7b": 0.08827040740188032,
+  "legacy-whisper-cli vs qwen3-asr-1.7b+ctx": 0.09432424422050978,
+  "legacy-whisper-cli vs qwen3-asr-1.7b+vad": 0.09005219873070712,
+  "legacy-whisper-cli vs qwen3-asr-1.7b+vad+terms": 0.10786633150968505,
+  "legacy-whisper-cli vs whisper-large-v3": 0.06683834268583289,
+  "legacy-whisper-cli vs whisper-large-v3+ctx": 0.15485553608541505,
+  "legacy-whisper-cli vs whisper-turbo": 0.0727947364394461,
   "legacy-whisper-cli vs whisper-turbo+ctx": 0.0860348162475822,
-  "parakeet-v3 vs legacy-whisper-cli": 0.08588265250445601,
-  "parakeet-v3 vs parakeet-v3+boost0.5": 0.012902741832639435,
-  "parakeet-v3 vs parakeet-v3+boost1": 0.013378302417088251,
-  "parakeet-v3 vs qwen3-asr-1.7b": 0.07731881896808827,
-  "parakeet-v3 vs qwen3-asr-1.7b+ctx": 0.08913957089139571,
-  "parakeet-v3 vs whisper-large-v3": 0.08233995584988962,
-  "parakeet-v3 vs whisper-turbo": 0.07187392418620664,
+  "parakeet-v3 vs legacy-whisper-cli": 0.08395583573224502,
+  "parakeet-v3 vs parakeet-v3+boost0.3f": 0.009933774834437087,
+  "parakeet-v3 vs parakeet-v3+boost0.5": 0.01116709279590916,
+  "parakeet-v3 vs parakeet-v3+boost1": 0.011455399061032864,
+  "parakeet-v3 vs qwen3-asr-1.7b": 0.07599611998209223,
+  "parakeet-v3 vs qwen3-asr-1.7b+ctx": 0.08476585655008892,
+  "parakeet-v3 vs qwen3-asr-1.7b+vad": 0.07232716211648954,
+  "parakeet-v3 vs qwen3-asr-1.7b+vad+terms": 0.08993789738281828,
+  "parakeet-v3 vs whisper-large-v3": 0.07248827734645245,
+  "parakeet-v3 vs whisper-large-v3+ctx": 0.14800929133216512,
+  "parakeet-v3 vs whisper-turbo": 0.07183842093183383,
   "parakeet-v3 vs whisper-turbo+ctx": 0.08197292069632495,
-  "parakeet-v3+boost0.5 vs legacy-whisper-cli": 0.08570077479902513,
-  "parakeet-v3+boost0.5 vs parakeet-v3": 0.012916791829378192,
-  "parakeet-v3+boost0.5 vs parakeet-v3+boost1": 0.01371557054525014,
-  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b": 0.07828810020876827,
-  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b+ctx": 0.08869719088697191,
-  "parakeet-v3+boost0.5 vs whisper-large-v3": 0.07483443708609272,
-  "parakeet-v3+boost0.5 vs whisper-turbo": 0.07099414757296409,
+  "parakeet-v3+boost0.3f vs legacy-whisper-cli": 0.08370076157854461,
+  "parakeet-v3+boost0.3f vs parakeet-v3": 0.009925931496033387,
+  "parakeet-v3+boost0.3f vs parakeet-v3+boost0.5": 0.012295081967213115,
+  "parakeet-v3+boost0.3f vs parakeet-v3+boost1": 0.012507042253521127,
+  "parakeet-v3+boost0.3f vs qwen3-asr-1.7b": 0.07629458289807492,
+  "parakeet-v3+boost0.3f vs qwen3-asr-1.7b+ctx": 0.08469176052163604,
+  "parakeet-v3+boost0.3f vs qwen3-asr-1.7b+vad": 0.07240226820383792,
+  "parakeet-v3+boost0.3f vs qwen3-asr-1.7b+vad+terms": 0.09015969244418158,
+  "parakeet-v3+boost0.3f vs whisper-large-v3": 0.07179644861249904,
+  "parakeet-v3+boost0.3f vs whisper-large-v3+ctx": 0.14743877093606098,
+  "parakeet-v3+boost0.3f vs whisper-turbo": 0.0719531787927473,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx": 0.08177949709864603,
+  "parakeet-v3+boost0.5 vs legacy-whisper-cli": 0.08271690412855737,
+  "parakeet-v3+boost0.5 vs parakeet-v3": 0.011166672933037561,
+  "parakeet-v3+boost0.5 vs parakeet-v3+boost0.3f": 0.012304334738109572,
+  "parakeet-v3+boost0.5 vs parakeet-v3+boost1": 0.011643192488262911,
+  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b": 0.07592150425309656,
+  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b+ctx": 0.08443242442205098,
+  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b+vad": 0.07202673776709602,
+  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b+vad+terms": 0.08982699985213663,
+  "parakeet-v3+boost0.5 vs whisper-large-v3": 0.06891382888769314,
+  "parakeet-v3+boost0.5 vs whisper-large-v3+ctx": 0.14654223888504014,
+  "parakeet-v3+boost0.5 vs whisper-turbo": 0.07095861066483054,
   "parakeet-v3+boost0.5 vs whisper-turbo+ctx": 0.08015473887814313,
-  "parakeet-v3+boost1 vs legacy-whisper-cli": 0.08493688843621548,
-  "parakeet-v3+boost1 vs parakeet-v3": 0.013404926404325623,
-  "parakeet-v3+boost1 vs parakeet-v3+boost0.5": 0.01372791718240126,
-  "parakeet-v3+boost1 vs qwen3-asr-1.7b": 0.0770205785863406,
-  "parakeet-v3+boost1 vs qwen3-asr-1.7b+ctx": 0.0876649708766497,
-  "parakeet-v3+boost1 vs whisper-large-v3": 0.0782560706401766,
-  "parakeet-v3+boost1 vs whisper-turbo": 0.07007611980262403,
+  "parakeet-v3+boost1 vs legacy-whisper-cli": 0.0821338774915279,
+  "parakeet-v3+boost1 vs parakeet-v3": 0.011467458735947664,
+  "parakeet-v3+boost1 vs parakeet-v3+boost0.3f": 0.012530102347983142,
+  "parakeet-v3+boost1 vs parakeet-v3+boost0.5": 0.011655888103474206,
+  "parakeet-v3+boost1 vs qwen3-asr-1.7b": 0.07483957618265931,
+  "parakeet-v3+boost1 vs qwen3-asr-1.7b+ctx": 0.08328393598103141,
+  "parakeet-v3+boost1 vs qwen3-asr-1.7b+vad": 0.070637275151151,
+  "parakeet-v3+boost1 vs qwen3-asr-1.7b+vad+terms": 0.08842229779683572,
+  "parakeet-v3+boost1 vs whisper-large-v3": 0.06979783226996694,
+  "parakeet-v3+boost1 vs whisper-large-v3+ctx": 0.1470720078242797,
+  "parakeet-v3+boost1 vs whisper-turbo": 0.07004054777752276,
   "parakeet-v3+boost1 vs whisper-turbo+ctx": 0.08019342359767892,
-  "qwen3-asr-1.7b vs legacy-whisper-cli": 0.08781055618202321,
-  "qwen3-asr-1.7b vs parakeet-v3": 0.07768849504355663,
-  "qwen3-asr-1.7b vs parakeet-v3+boost0.5": 0.07857919807959192,
-  "qwen3-asr-1.7b vs parakeet-v3+boost1": 0.07723440134907252,
-  "qwen3-asr-1.7b vs qwen3-asr-1.7b+ctx": 0.0321462803214628,
-  "qwen3-asr-1.7b vs whisper-large-v3": 0.07792494481236203,
-  "qwen3-asr-1.7b vs whisper-turbo": 0.07589029568144437,
+  "qwen3-asr-1.7b vs legacy-whisper-cli": 0.08621506395073425,
+  "qwen3-asr-1.7b vs parakeet-v3": 0.07658758506598488,
+  "qwen3-asr-1.7b vs parakeet-v3+boost0.3f": 0.0769491270319085,
+  "qwen3-asr-1.7b vs parakeet-v3+boost0.5": 0.07651526545345165,
+  "qwen3-asr-1.7b vs parakeet-v3+boost1": 0.07534272300469484,
+  "qwen3-asr-1.7b vs qwen3-asr-1.7b+ctx": 0.02756372258446947,
+  "qwen3-asr-1.7b vs qwen3-asr-1.7b+vad": 0.0386420819407413,
+  "qwen3-asr-1.7b vs qwen3-asr-1.7b+vad+terms": 0.05755581842377643,
+  "qwen3-asr-1.7b vs whisper-large-v3": 0.07218079790913982,
+  "qwen3-asr-1.7b vs whisper-large-v3+ctx": 0.14862056318513386,
+  "qwen3-asr-1.7b vs whisper-turbo": 0.0757019355825874,
   "qwen3-asr-1.7b vs whisper-turbo+ctx": 0.08553191489361703,
-  "qwen3-asr-1.7b+ctx vs legacy-whisper-cli": 0.0974864501109454,
-  "qwen3-asr-1.7b+ctx vs parakeet-v3": 0.08959146890958246,
-  "qwen3-asr-1.7b+ctx vs parakeet-v3+boost0.5": 0.08904392183338959,
-  "qwen3-asr-1.7b+ctx vs parakeet-v3+boost1": 0.08791455874086565,
-  "qwen3-asr-1.7b+ctx vs qwen3-asr-1.7b": 0.03250820161049806,
-  "qwen3-asr-1.7b+ctx vs whisper-large-v3": 0.09150110375275938,
-  "qwen3-asr-1.7b+ctx vs whisper-turbo": 0.08633286156906246,
+  "qwen3-asr-1.7b+ctx vs legacy-whisper-cli": 0.09277411361731588,
+  "qwen3-asr-1.7b+ctx vs parakeet-v3": 0.08602473963228936,
+  "qwen3-asr-1.7b+ctx vs parakeet-v3+boost0.3f": 0.08601745936183022,
+  "qwen3-asr-1.7b+ctx vs parakeet-v3+boost0.5": 0.08568957738005716,
+  "qwen3-asr-1.7b+ctx vs parakeet-v3+boost1": 0.08443192488262911,
+  "qwen3-asr-1.7b+ctx vs qwen3-asr-1.7b": 0.027757051186390092,
+  "qwen3-asr-1.7b+ctx vs qwen3-asr-1.7b+vad": 0.048405873296030646,
+  "qwen3-asr-1.7b+ctx vs qwen3-asr-1.7b+vad+terms": 0.06391394351619104,
+  "qwen3-asr-1.7b+ctx vs whisper-large-v3": 0.07902221538934584,
+  "qwen3-asr-1.7b+ctx vs whisper-large-v3+ctx": 0.1559965768776234,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo": 0.08511208017749215,
   "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx": 0.09307543520309478,
-  "whisper-large-v3 vs legacy-whisper-cli": 0.07449066213921901,
-  "whisper-large-v3 vs parakeet-v3": 0.0853298326222514,
-  "whisper-large-v3 vs parakeet-v3+boost0.5": 0.08092485549132948,
-  "whisper-large-v3 vs parakeet-v3+boost1": 0.08351457155284907,
-  "whisper-large-v3 vs qwen3-asr-1.7b": 0.07809792027729635,
-  "whisper-large-v3 vs qwen3-asr-1.7b+ctx": 0.09850809438154692,
-  "whisper-large-v3 vs whisper-turbo": 0.02993227004588158,
-  "whisper-large-v3 vs whisper-turbo+ctx": 0.03791625453346521,
-  "whisper-turbo vs legacy-whisper-cli": 0.07093230511803864,
-  "whisper-turbo vs parakeet-v3": 0.07183088014418744,
-  "whisper-turbo vs parakeet-v3+boost0.5": 0.07201530325194104,
-  "whisper-turbo vs parakeet-v3+boost1": 0.07086378115045906,
-  "whisper-turbo vs qwen3-asr-1.7b": 0.0745228153892037,
-  "whisper-turbo vs qwen3-asr-1.7b+ctx": 0.08696453586964537,
-  "whisper-turbo vs whisper-large-v3": 0.030242825607064018,
+  "qwen3-asr-1.7b+vad vs legacy-whisper-cli": 0.0873811172247932,
+  "qwen3-asr-1.7b+vad vs parakeet-v3": 0.0724141820506072,
+  "qwen3-asr-1.7b+vad vs parakeet-v3+boost0.3f": 0.07254665863937387,
+  "qwen3-asr-1.7b+vad vs parakeet-v3+boost0.5": 0.07211610768536622,
+  "qwen3-asr-1.7b+vad vs parakeet-v3+boost1": 0.07064788732394366,
+  "qwen3-asr-1.7b+vad vs qwen3-asr-1.7b": 0.03838979256827339,
+  "qwen3-asr-1.7b+vad vs qwen3-asr-1.7b+ctx": 0.04775489033787789,
+  "qwen3-asr-1.7b+vad vs qwen3-asr-1.7b+vad+terms": 0.027539553452609788,
+  "qwen3-asr-1.7b+vad vs whisper-large-v3": 0.07018218156660773,
+  "qwen3-asr-1.7b+vad vs whisper-large-v3+ctx": 0.1397367455886548,
+  "qwen3-asr-1.7b+vad vs whisper-turbo": 0.06858694820595211,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx": 0.07798839458413927,
+  "qwen3-asr-1.7b+vad+terms vs legacy-whisper-cli": 0.10632948292825128,
+  "qwen3-asr-1.7b+vad+terms vs parakeet-v3": 0.09147648231003497,
+  "qwen3-asr-1.7b+vad+terms vs parakeet-v3+boost0.3f": 0.09177453341360627,
+  "qwen3-asr-1.7b+vad+terms vs parakeet-v3+boost0.5": 0.09136712287562039,
+  "qwen3-asr-1.7b+vad+terms vs parakeet-v3+boost1": 0.08984037558685445,
+  "qwen3-asr-1.7b+vad+terms vs qwen3-asr-1.7b": 0.05808834502313088,
+  "qwen3-asr-1.7b+vad+terms vs qwen3-asr-1.7b+ctx": 0.06405601659751037,
+  "qwen3-asr-1.7b+vad+terms vs qwen3-asr-1.7b+vad": 0.027977017537271397,
+  "qwen3-asr-1.7b+vad+terms vs whisper-large-v3": 0.08943808132831117,
+  "qwen3-asr-1.7b+vad+terms vs whisper-large-v3+ctx": 0.15901218468560252,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo": 0.08859306862520083,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx": 0.09640232108317215,
+  "whisper-large-v3 vs legacy-whisper-cli": 0.07714171191196298,
+  "whisper-large-v3 vs parakeet-v3": 0.07429409331879536,
+  "whisper-large-v3 vs parakeet-v3+boost0.3f": 0.07371312462372065,
+  "whisper-large-v3 vs parakeet-v3+boost0.5": 0.07091291923597534,
+  "whisper-large-v3 vs parakeet-v3+boost1": 0.0715868544600939,
+  "whisper-large-v3 vs qwen3-asr-1.7b": 0.07704074018803164,
+  "whisper-large-v3 vs qwen3-asr-1.7b+ctx": 0.08439537640782455,
+  "whisper-large-v3 vs qwen3-asr-1.7b+vad": 0.07018663862706072,
+  "whisper-large-v3 vs qwen3-asr-1.7b+vad+terms": 0.08760904923850363,
+  "whisper-large-v3 vs whisper-large-v3+ctx": 0.09112025754920738,
+  "whisper-large-v3 vs whisper-turbo": 0.023295845765434933,
+  "whisper-large-v3 vs whisper-turbo+ctx": 0.033655705996131526,
+  "whisper-large-v3+ctx vs legacy-whisper-cli": 0.13846882629450133,
+  "whisper-large-v3+ctx vs parakeet-v3": 0.1365567545211866,
+  "whisper-large-v3+ctx vs parakeet-v3+boost0.3f": 0.1361378687537628,
+  "whisper-large-v3+ctx vs parakeet-v3+boost0.5": 0.1352083020003008,
+  "whisper-large-v3+ctx vs parakeet-v3+boost1": 0.1355492957746479,
+  "whisper-large-v3+ctx vs qwen3-asr-1.7b": 0.13606178182360842,
+  "whisper-large-v3+ctx vs qwen3-asr-1.7b+ctx": 0.1418197984588026,
+  "whisper-large-v3+ctx vs qwen3-asr-1.7b+vad": 0.1287693867587968,
+  "whisper-large-v3+ctx vs qwen3-asr-1.7b+vad+terms": 0.1442407215732663,
+  "whisper-large-v3+ctx vs whisper-large-v3": 0.08586363286955184,
+  "whisper-large-v3+ctx vs whisper-turbo": 0.09058220488103436,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx": 0.09005802707930367,
+  "whisper-turbo vs legacy-whisper-cli": 0.06934373064169369,
+  "whisper-turbo vs parakeet-v3": 0.0706094672331466,
+  "whisper-turbo vs parakeet-v3+boost0.3f": 0.07077814569536424,
+  "whisper-turbo vs parakeet-v3+boost0.5": 0.06974733042562792,
+  "whisper-turbo vs parakeet-v3+boost1": 0.0687699530516432,
+  "whisper-turbo vs qwen3-asr-1.7b": 0.07383226384121773,
+  "whisper-turbo vs qwen3-asr-1.7b+ctx": 0.08243183165382335,
+  "whisper-turbo vs qwen3-asr-1.7b+vad": 0.0673326073078223,
+  "whisper-turbo vs qwen3-asr-1.7b+vad+terms": 0.08561289368623393,
+  "whisper-turbo vs whisper-large-v3": 0.02336843723575986,
+  "whisper-turbo vs whisper-large-v3+ctx": 0.09649944985533233,
   "whisper-turbo vs whisper-turbo+ctx": 0.02251450676982592,
-  "whisper-turbo+ctx vs legacy-whisper-cli": 0.08264522934778655,
-  "whisper-turbo+ctx vs parakeet-v3": 0.08088014418744367,
-  "whisper-turbo+ctx vs parakeet-v3+boost0.5": 0.08015453283822813,
-  "whisper-turbo+ctx vs parakeet-v3+boost1": 0.07993254637436763,
-  "whisper-turbo+ctx vs qwen3-asr-1.7b": 0.08317178645988667,
-  "whisper-turbo+ctx vs qwen3-asr-1.7b+ctx": 0.09363710093637101,
-  "whisper-turbo+ctx vs whisper-large-v3": 0.03818984547461369,
-  "whisper-turbo+ctx vs whisper-turbo": 0.022300424587843783
+  "whisper-turbo+ctx vs legacy-whisper-cli": 0.08104070254709762,
+  "whisper-turbo+ctx vs parakeet-v3": 0.07967063954581344,
+  "whisper-turbo+ctx vs parakeet-v3+boost0.3f": 0.07954545454545454,
+  "whisper-turbo+ctx vs parakeet-v3+boost0.5": 0.07790645209805985,
+  "whisper-turbo+ctx vs parakeet-v3+boost1": 0.07785915492957747,
+  "whisper-turbo+ctx vs qwen3-asr-1.7b": 0.08248768840471571,
+  "whisper-turbo+ctx vs qwen3-asr-1.7b+ctx": 0.08913752222880854,
+  "whisper-turbo+ctx vs qwen3-asr-1.7b+vad": 0.07570693604716662,
+  "whisper-turbo+ctx vs qwen3-asr-1.7b+vad+terms": 0.09211888215289073,
+  "whisper-turbo+ctx vs whisper-large-v3": 0.03336151894842032,
+  "whisper-turbo+ctx vs whisper-large-v3+ctx": 0.09486939158074902,
+  "whisper-turbo+ctx vs whisper-turbo": 0.02226302501721368
  }
 }

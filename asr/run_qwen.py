@@ -73,9 +73,22 @@ def main():
                 pieces = [(audio[int(s * 16000):int(e * 16000)], s) for s, e in vad_chunks(clip, args.chunk_sec)]
             else:
                 pieces = split_audio_into_chunks(audio, 16000, max_chunk_sec=args.chunk_sec)
-            for chunk, offset in pieces:
-                with torch.inference_mode():
-                    res = model.transcribe(audio=(chunk, 16000), context=prompt, language="English")[0]
+            pieces = list(pieces)
+            while pieces:
+                chunk, offset = pieces.pop(0)
+                try:
+                    with torch.inference_mode():
+                        res = model.transcribe(audio=(chunk, 16000), context=prompt, language="English")[0]
+                except torch.OutOfMemoryError:
+                    # Free VRAM varies with whatever else is on the GPU; halve the chunk and retry.
+                    torch.cuda.empty_cache()
+                    if len(chunk) < 10 * 16000:
+                        raise
+                    half = len(chunk) // 2
+                    log(f"    OOM on {len(chunk)/16000:.0f}s chunk at {offset:.0f}s; splitting")
+                    run.meta["oom_splits"] = run.meta.get("oom_splits", 0) + 1
+                    pieces[:0] = [(chunk[:half], offset), (chunk[half:], offset + half / 16000)]
+                    continue
                 txt = (res.text or "").strip()
                 if txt:
                     texts.append(txt)
