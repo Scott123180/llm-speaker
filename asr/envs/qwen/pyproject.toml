@@ -1,0 +1,12 @@
+[project]
+name = "asr-qwen"
+version = "0.1.0"
+description = "Isolated env for Qwen3-ASR (pins transformers 4.57.x)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "qwen-asr>=0.0.6",
+    "torch>=2.6",
+]
+
+[tool.uv]
+package = false

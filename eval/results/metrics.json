@@ -1,0 +1,721 @@
+{
+ "systems": {
+  "legacy-whisper-cli": {
+   "run": {
+    "system": "legacy-whisper-cli",
+    "model": "openai-whisper CLI turbo (existing transcripts)",
+    "params": {
+     "vad_filter": false,
+     "condition_on_previous_text": true,
+     "prompt": null
+    },
+    "device": "unknown",
+    "rtfx": null,
+    "note": "sliced from full-talk transcripts by segment midpoint"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 76,
+    "rate": 1.0,
+    "words_total": 152,
+    "phrases": [
+     [
+      "Thank you.",
+      73
+     ],
+     [
+      "thank you",
+      3
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 110.85720737013104,
+    "gloss_valid": 326,
+    "gloss_misheard": 41,
+    "gloss_misheard_share": 0.11171662125340599,
+    "top_misheard": [
+     "Zhao",
+     "Yakujo",
+     "Maizumi",
+     "doksan",
+     "Shapa",
+     "Daito",
+     "Ingo",
+     "Huiko",
+     "Ongan",
+     "Setsho",
+     "Zazengi",
+     "Wutsu"
+    ],
+    "loops": [
+     "29668_s01050",
+     "29856_s00180",
+     "30643_s01710",
+     "31043_s04042",
+     "36192_s02610"
+    ],
+    "punct_per_100w": 15.200663850331924,
+    "has_word_timestamps": false
+   }
+  },
+  "parakeet-v3": {
+   "run": {
+    "system": "parakeet-v3",
+    "model": "nvidia/parakeet-tdt-0.6b-v3",
+    "params": {
+     "decoding": "greedy_batch (TDT label-looping)",
+     "attention": "rel_pos_local_attn [256,256]",
+     "context": null
+    },
+    "device": "cuda",
+    "started": "2026-11-09 22:51:53",
+    "clips": 69,
+    "audio_sec": 3700.7999999999993,
+    "wall_sec": 16.520679473876953,
+    "load_sec": 12.9,
+    "rtfx": 224.0,
+    "gpu_peak_mb": 5045,
+    "ram_peak_mb": 3706,
+    "finished": "2026-11-09 22:52:23"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 4,
+    "rate": 0.05263157894736842,
+    "words_total": 11,
+    "phrases": [
+     [
+      "So that",
+      1
+     ],
+     [
+      "Okay.",
+      1
+     ],
+     [
+      "Just working on the",
+      1
+     ],
+     [
+      "Sension be number two.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 108.30655496760463,
+    "gloss_valid": 264,
+    "gloss_misheard": 42,
+    "gloss_misheard_share": 0.13725490196078433,
+    "top_misheard": [
+     "gasho",
+     "Yakujo",
+     "Mizumi",
+     "dogan",
+     "Ingo",
+     "Mayakaya Shapa",
+     "Shapa",
+     "kohan",
+     "doksan",
+     "Orioki",
+     "Secho",
+     "seshin"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "punct_per_100w": 15.550922708671145,
+    "has_word_timestamps": true
+   }
+  },
+  "parakeet-v3+boost0.5": {
+   "run": {
+    "system": "parakeet-v3+boost0.5",
+    "model": "nvidia/parakeet-tdt-0.6b-v3",
+    "params": {
+     "decoding": "greedy_batch (TDT label-looping)",
+     "attention": "rel_pos_local_attn [256,256]",
+     "context": "phrase boosting alpha=0.5, top 40 talk terms"
+    },
+    "device": "cuda",
+    "started": "2026-11-09 22:52:29",
+    "clips": 116,
+    "audio_sec": 16600.54999999997,
+    "wall_sec": 85.87754821777344,
+    "load_sec": 12.9,
+    "rtfx": 193.3,
+    "gpu_peak_mb": 5023,
+    "ram_peak_mb": 3707,
+    "finished": "2026-11-09 22:54:28"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 5,
+    "rate": 0.06578947368421052,
+    "words_total": 14,
+    "phrases": [
+     [
+      "So that",
+      1
+     ],
+     [
+      "Okay.",
+      1
+     ],
+     [
+      "Just working on the",
+      1
+     ],
+     [
+      "Sension be number two.",
+      1
+     ],
+     [
+      "No, no, baby.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 108.39854570999083,
+    "gloss_valid": 283,
+    "gloss_misheard": 35,
+    "gloss_misheard_share": 0.11006289308176101,
+    "top_misheard": [
+     "gasho",
+     "Yakujo",
+     "Mizumi",
+     "Mayakaya Shapa",
+     "Shapa",
+     "doksan",
+     "Orioki",
+     "Secho",
+     "Ingo",
+     "seshin",
+     "Ongo",
+     "Zazengi"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "punct_per_100w": 15.58015738311989,
+    "has_word_timestamps": true
+   }
+  },
+  "parakeet-v3+boost1": {
+   "run": {
+    "system": "parakeet-v3+boost1",
+    "model": "nvidia/parakeet-tdt-0.6b-v3",
+    "params": {
+     "decoding": "greedy_batch (TDT label-looping)",
+     "attention": "rel_pos_local_attn [256,256]",
+     "context": "phrase boosting alpha=1.0, top 40 talk terms"
+    },
+    "device": "cuda",
+    "started": "2026-11-09 22:54:34",
+    "clips": 116,
+    "audio_sec": 16600.54999999997,
+    "wall_sec": 86.06153726577759,
+    "load_sec": 12.8,
+    "rtfx": 192.9,
+    "gpu_peak_mb": 5023,
+    "ram_peak_mb": 3706,
+    "finished": "2026-11-09 22:56:33"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 5,
+    "rate": 0.06578947368421052,
+    "words_total": 15,
+    "phrases": [
+     [
+      "So that",
+      1
+     ],
+     [
+      "Thank you.",
+      1
+     ],
+     [
+      "Okay.",
+      1
+     ],
+     [
+      "Just a little bit of a",
+      1
+     ],
+     [
+      "Sension be number two.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 108.5072620419018,
+    "gloss_valid": 292,
+    "gloss_misheard": 36,
+    "gloss_misheard_share": 0.10975609756097561,
+    "top_misheard": [
+     "gasho",
+     "Yakujo",
+     "Mizumi",
+     "Mayakaya Shapa",
+     "Shapa",
+     "doksan",
+     "Orioki",
+     "Secho",
+     "Ingo",
+     "seshin",
+     "Ongo",
+     "Zazengi"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "punct_per_100w": 15.483622350674374,
+    "has_word_timestamps": true
+   }
+  },
+  "qwen3-asr-1.7b": {
+   "run": {
+    "system": "qwen3-asr-1.7b",
+    "model": "Qwen/Qwen3-ASR-1.7B",
+    "params": {
+     "backend": "transformers",
+     "dtype": "bfloat16",
+     "language": "English",
+     "max_new_tokens": 1024,
+     "chunk_sec": 120,
+     "context": null
+    },
+    "device": "cuda",
+    "started": "2026-11-09 22:56:40",
+    "clips": 116,
+    "audio_sec": 16580.27556249997,
+    "wall_sec": 955.0412583351135,
+    "load_sec": 1.8,
+    "rtfx": 17.4,
+    "gpu_peak_mb": 5180,
+    "ram_peak_mb": 5199,
+    "finished": "2026-11-09 23:12:43"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 74,
+    "rate": 0.9736842105263158,
+    "words_total": 294,
+    "phrases": [
+     [
+      "The.",
+      24
+     ],
+     [
+      "Oh.",
+      12
+     ],
+     [
+      "Okay.",
+      8
+     ],
+     [
+      "Oh, oh,",
+      3
+     ],
+     [
+      "The first thing that you need to do is to get a good underst",
+      3
+     ],
+     [
+      "Yeah.",
+      2
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 108.46962946547107,
+    "gloss_valid": 297,
+    "gloss_misheard": 7,
+    "gloss_misheard_share": 0.023026315789473683,
+    "top_misheard": [
+     "Mazumi",
+     "Ongo",
+     "seshin",
+     "doksan",
+     "Zhao"
+    ],
+    "loops": [],
+    "punct_per_100w": 16.71099803400023,
+    "has_word_timestamps": false
+   }
+  },
+  "qwen3-asr-1.7b+ctx": {
+   "run": {
+    "system": "qwen3-asr-1.7b+ctx",
+    "model": "Qwen/Qwen3-ASR-1.7B",
+    "params": {
+     "backend": "transformers",
+     "dtype": "bfloat16",
+     "language": "English",
+     "max_new_tokens": 1024,
+     "chunk_sec": 120,
+     "context": "system prompt = talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-09 23:12:49",
+    "clips": 116,
+    "audio_sec": 16580.27556249997,
+    "wall_sec": 918.1429543495178,
+    "load_sec": 1.6,
+    "rtfx": 18.1,
+    "gpu_peak_mb": 5220,
+    "ram_peak_mb": 5199,
+    "finished": "2026-11-09 23:28:15"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 74,
+    "rate": 0.9736842105263158,
+    "words_total": 2148,
+    "phrases": [
+     [
+      "This is a dharma talk by John Daido Loori, Daido Roshi, at Z",
+      54
+     ],
+     [
+      "This is a dharma talk by Geoffrey Shugen Arnold, Shugen Rosh",
+      4
+     ],
+     [
+      "Yeah.",
+      2
+     ],
+     [
+      "This is a dharma talk by Mark Sando Mininberg at Zen Mountai",
+      2
+     ],
+     [
+      "This is a dharma talk by Ron Hogen Green, Hogen Sensei, at Z",
+      2
+     ],
+     [
+      "So that being.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 109.8202208195957,
+    "gloss_valid": 439,
+    "gloss_misheard": 8,
+    "gloss_misheard_share": 0.017897091722595078,
+    "top_misheard": [
+     "Shapa",
+     "Mazumi",
+     "Ongo",
+     "doksan"
+    ],
+    "loops": [
+     "30643_s01710"
+    ],
+    "punct_per_100w": 16.60828510508681,
+    "has_word_timestamps": false
+   }
+  },
+  "whisper-large-v3": {
+   "run": {
+    "system": "whisper-large-v3",
+    "model": "faster-whisper large-v3",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 2,
+     "compute_type": "float16",
+     "context": null
+    },
+    "device": "cuda",
+    "started": "2026-11-09 23:29:04",
+    "clips": 5,
+    "audio_sec": 1459.2099999999998,
+    "wall_sec": 28.57045865058899,
+    "load_sec": 2.3,
+    "rtfx": 51.1,
+    "gpu_peak_mb": 4442,
+    "ram_peak_mb": 3365,
+    "finished": "2026-11-09 23:29:36"
+   },
+   "nonspeech": {
+    "clips": 6,
+    "clips_with_output": 1,
+    "rate": 0.16666666666666666,
+    "words_total": 2,
+    "phrases": [
+     [
+      "Thank you.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 15,
+    "minutes": 89.68133333333334,
+    "words_per_min": 97.74609357577198,
+    "gloss_valid": 144,
+    "gloss_misheard": 17,
+    "gloss_misheard_share": 0.10559006211180125,
+    "top_misheard": [
+     "Yakujo",
+     "Maizumi",
+     "Shapa",
+     "Huiko",
+     "Setsho",
+     "Ingo",
+     "Mayakaya Shapa",
+     "Mizumi",
+     "Yunmin"
+    ],
+    "loops": [],
+    "punct_per_100w": 15.959388546657541,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo": {
+   "run": {
+    "system": "whisper-turbo",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 8,
+     "compute_type": "float16",
+     "context": null
+    },
+    "device": "cuda",
+    "started": "2026-11-09 21:13:53",
+    "clips": 117,
+    "audio_sec": 16580.27556249997,
+    "wall_sec": 108.14148664474487,
+    "load_sec": 1.8,
+    "rtfx": 153.3,
+    "gpu_peak_mb": 3337,
+    "ram_peak_mb": 1980,
+    "finished": "2026-11-09 21:15:49"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 11,
+    "phrases": [
+     [
+      "Amen.",
+      2
+     ],
+     [
+      "Thank you.",
+      2
+     ],
+     [
+      "Bye.",
+      1
+     ],
+     [
+      "Yeah.",
+      1
+     ],
+     [
+      "Sentient beings are",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 105.47993033791964,
+    "gloss_valid": 314,
+    "gloss_misheard": 47,
+    "gloss_misheard_share": 0.13019390581717452,
+    "top_misheard": [
+     "doksan",
+     "Yakujo",
+     "gasho",
+     "Shapa",
+     "Maizumi",
+     "Gashow",
+     "Mayakaya Shapa",
+     "Huiko",
+     "Daito",
+     "Zhao",
+     "Ingo",
+     "Setsho"
+    ],
+    "loops": [],
+    "punct_per_100w": 16.193609767699993,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctx": {
+   "run": {
+    "system": "whisper-turbo+ctx",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 8,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-09 22:08:21",
+    "clips": 117,
+    "audio_sec": 16580.27556249997,
+    "wall_sec": 109.13509035110474,
+    "load_sec": 1.5,
+    "rtfx": 151.9,
+    "gpu_peak_mb": 3325,
+    "ram_peak_mb": 1981,
+    "finished": "2026-11-09 22:10:19"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 14,
+    "phrases": [
+     [
+      "Thank you.",
+      4
+     ],
+     [
+      "Amen.",
+      1
+     ],
+     [
+      "Shobogenzo.",
+      1
+     ],
+     [
+      "Sentient beings are...",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 40,
+    "minutes": 239.15449999999998,
+    "words_per_min": 104.31750186594859,
+    "gloss_valid": 366,
+    "gloss_misheard": 12,
+    "gloss_misheard_share": 0.031746031746031744,
+    "top_misheard": [
+     "Shapa",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "seshin",
+     "Zenda"
+    ],
+    "loops": [],
+    "punct_per_100w": 16.722783389450058,
+    "has_word_timestamps": true
+   }
+  }
+ },
+ "refs": 0,
+ "agreement": {
+  "legacy-whisper-cli vs parakeet-v3": 0.08775157705016522,
+  "legacy-whisper-cli vs parakeet-v3+boost0.5": 0.08746858707475338,
+  "legacy-whisper-cli vs parakeet-v3+boost1": 0.08660296046468054,
+  "legacy-whisper-cli vs qwen3-asr-1.7b": 0.08999403519236504,
+  "legacy-whisper-cli vs qwen3-asr-1.7b+ctx": 0.098798200987982,
+  "legacy-whisper-cli vs whisper-large-v3": 0.07483443708609272,
+  "legacy-whisper-cli vs whisper-turbo": 0.07367172856978924,
+  "legacy-whisper-cli vs whisper-turbo+ctx": 0.0860348162475822,
+  "parakeet-v3 vs legacy-whisper-cli": 0.08588265250445601,
+  "parakeet-v3 vs parakeet-v3+boost0.5": 0.012902741832639435,
+  "parakeet-v3 vs parakeet-v3+boost1": 0.013378302417088251,
+  "parakeet-v3 vs qwen3-asr-1.7b": 0.07731881896808827,
+  "parakeet-v3 vs qwen3-asr-1.7b+ctx": 0.08913957089139571,
+  "parakeet-v3 vs whisper-large-v3": 0.08233995584988962,
+  "parakeet-v3 vs whisper-turbo": 0.07187392418620664,
+  "parakeet-v3 vs whisper-turbo+ctx": 0.08197292069632495,
+  "parakeet-v3+boost0.5 vs legacy-whisper-cli": 0.08570077479902513,
+  "parakeet-v3+boost0.5 vs parakeet-v3": 0.012916791829378192,
+  "parakeet-v3+boost0.5 vs parakeet-v3+boost1": 0.01371557054525014,
+  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b": 0.07828810020876827,
+  "parakeet-v3+boost0.5 vs qwen3-asr-1.7b+ctx": 0.08869719088697191,
+  "parakeet-v3+boost0.5 vs whisper-large-v3": 0.07483443708609272,
+  "parakeet-v3+boost0.5 vs whisper-turbo": 0.07099414757296409,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx": 0.08015473887814313,
+  "parakeet-v3+boost1 vs legacy-whisper-cli": 0.08493688843621548,
+  "parakeet-v3+boost1 vs parakeet-v3": 0.013404926404325623,
+  "parakeet-v3+boost1 vs parakeet-v3+boost0.5": 0.01372791718240126,
+  "parakeet-v3+boost1 vs qwen3-asr-1.7b": 0.0770205785863406,
+  "parakeet-v3+boost1 vs qwen3-asr-1.7b+ctx": 0.0876649708766497,
+  "parakeet-v3+boost1 vs whisper-large-v3": 0.0782560706401766,
+  "parakeet-v3+boost1 vs whisper-turbo": 0.07007611980262403,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx": 0.08019342359767892,
+  "qwen3-asr-1.7b vs legacy-whisper-cli": 0.08781055618202321,
+  "qwen3-asr-1.7b vs parakeet-v3": 0.07768849504355663,
+  "qwen3-asr-1.7b vs parakeet-v3+boost0.5": 0.07857919807959192,
+  "qwen3-asr-1.7b vs parakeet-v3+boost1": 0.07723440134907252,
+  "qwen3-asr-1.7b vs qwen3-asr-1.7b+ctx": 0.0321462803214628,
+  "qwen3-asr-1.7b vs whisper-large-v3": 0.07792494481236203,
+  "qwen3-asr-1.7b vs whisper-turbo": 0.07589029568144437,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx": 0.08553191489361703,
+  "qwen3-asr-1.7b+ctx vs legacy-whisper-cli": 0.0974864501109454,
+  "qwen3-asr-1.7b+ctx vs parakeet-v3": 0.08959146890958246,
+  "qwen3-asr-1.7b+ctx vs parakeet-v3+boost0.5": 0.08904392183338959,
+  "qwen3-asr-1.7b+ctx vs parakeet-v3+boost1": 0.08791455874086565,
+  "qwen3-asr-1.7b+ctx vs qwen3-asr-1.7b": 0.03250820161049806,
+  "qwen3-asr-1.7b+ctx vs whisper-large-v3": 0.09150110375275938,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo": 0.08633286156906246,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx": 0.09307543520309478,
+  "whisper-large-v3 vs legacy-whisper-cli": 0.07449066213921901,
+  "whisper-large-v3 vs parakeet-v3": 0.0853298326222514,
+  "whisper-large-v3 vs parakeet-v3+boost0.5": 0.08092485549132948,
+  "whisper-large-v3 vs parakeet-v3+boost1": 0.08351457155284907,
+  "whisper-large-v3 vs qwen3-asr-1.7b": 0.07809792027729635,
+  "whisper-large-v3 vs qwen3-asr-1.7b+ctx": 0.09850809438154692,
+  "whisper-large-v3 vs whisper-turbo": 0.02993227004588158,
+  "whisper-large-v3 vs whisper-turbo+ctx": 0.03791625453346521,
+  "whisper-turbo vs legacy-whisper-cli": 0.07093230511803864,
+  "whisper-turbo vs parakeet-v3": 0.07183088014418744,
+  "whisper-turbo vs parakeet-v3+boost0.5": 0.07201530325194104,
+  "whisper-turbo vs parakeet-v3+boost1": 0.07086378115045906,
+  "whisper-turbo vs qwen3-asr-1.7b": 0.0745228153892037,
+  "whisper-turbo vs qwen3-asr-1.7b+ctx": 0.08696453586964537,
+  "whisper-turbo vs whisper-large-v3": 0.030242825607064018,
+  "whisper-turbo vs whisper-turbo+ctx": 0.02251450676982592,
+  "whisper-turbo+ctx vs legacy-whisper-cli": 0.08264522934778655,
+  "whisper-turbo+ctx vs parakeet-v3": 0.08088014418744367,
+  "whisper-turbo+ctx vs parakeet-v3+boost0.5": 0.08015453283822813,
+  "whisper-turbo+ctx vs parakeet-v3+boost1": 0.07993254637436763,
+  "whisper-turbo+ctx vs qwen3-asr-1.7b": 0.08317178645988667,
+  "whisper-turbo+ctx vs qwen3-asr-1.7b+ctx": 0.09363710093637101,
+  "whisper-turbo+ctx vs whisper-large-v3": 0.03818984547461369,
+  "whisper-turbo+ctx vs whisper-turbo": 0.022300424587843783
+ }
+}
