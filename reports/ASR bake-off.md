@@ -1,8 +1,8 @@
 # ASR bake-off
 
-_Generated 2026-11-10 20:05 by `eval/report.py`. Re-run after adding systems or references._
+_Generated 2026-11-10 21:18 by `eval/report.py`. Re-run after adding systems or references._
 
-**Gold set:** 38 speech excerpts (3.8 h, one per talk, stratified by era / speaker / content / audio difficulty) and 76 non-speech clips (38 min of bells, silence and room noise where VAD finds <10% speech). **Corrected references: 0/38.**
+**Gold set:** 50 speech excerpts (5.0 h, one per talk, stratified by era / speaker / content / audio difficulty) and 76 non-speech clips (38 min of bells, silence and room noise where VAD finds <10% speech). **Corrected references: 0/50.**
 
 ## Findings
 
@@ -60,19 +60,19 @@ These notes are based on 13 systems, 38 speech excerpts (3.8 h) and 76 non-speec
 | System | Model | Context | Device | Speed (× real time) | GPU peak | Archive time on this PC* |
 |---|---|---|---|---|---|---|
 | `legacy-whisper-cli` | openai-whisper CLI turbo (existing transcripts) | — | unknown | — | — | — |
-| `parakeet-ft-v1+vad90` | freetranscribe/parakeet-ft-v1 | — | cuda | 211 | 4181 MB | 1.3 days |
-| `parakeet-v3` | nvidia/parakeet-tdt-0.6b-v3 | — | cuda | 224 | 5045 MB | 1.2 days |
-| `parakeet-v3+boost0.3f` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=0.3, hard terms (difficulty>=0.15, with evidence) | cuda | 192 | 5024 MB | 1.4 days |
-| `parakeet-v3+boost0.5` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=0.5, top 40 talk terms | cuda | 193 | 5023 MB | 1.4 days |
-| `parakeet-v3+boost1` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=1.0, top 40 talk terms | cuda | 193 | 5023 MB | 1.4 days |
-| `qwen3-asr-1.7b` | Qwen/Qwen3-ASR-1.7B | — | cuda | 17 | 5180 MB | 15.6 days |
-| `qwen3-asr-1.7b+ctx` | Qwen/Qwen3-ASR-1.7B | system prompt = talk prompt | cuda | 18 | 5220 MB | 15.0 days |
-| `qwen3-asr-1.7b+vad` | Qwen/Qwen3-ASR-1.7B | — | cuda | 22 | 5016 MB | 12.4 days |
-| `qwen3-asr-1.7b+vad+terms` | Qwen/Qwen3-ASR-1.7B | system prompt = hard-term list | cuda | 22 | 5218 MB | 12.4 days |
-| `whisper-large-v3` | faster-whisper large-v3 | — | cuda | 64 | 4441 MB | 4.2 days |
-| `whisper-large-v3+ctx` | faster-whisper large-v3 | hotwords=talk prompt | cuda | 60 | 4762 MB | 4.6 days |
-| `whisper-turbo` | faster-whisper large-v3-turbo | — | cuda | 153 | 3337 MB | 1.8 days |
-| `whisper-turbo+ctx` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 152 | 3325 MB | 1.8 days |
+| `parakeet-ft-v1+vad90` | freetranscribe/parakeet-ft-v1 | — | cuda | 189 | 3509 MB | 1.4 days |
+| `parakeet-v3` | nvidia/parakeet-tdt-0.6b-v3 | — | cuda | 228 | 5003 MB | 1.2 days |
+| `parakeet-v3+boost0.3f` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=0.3, hard terms (difficulty>=0.15, with evidence) | cuda | 194 | 5003 MB | 1.4 days |
+| `parakeet-v3+boost0.5` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=0.5, top 40 talk terms | cuda | 193 | 5003 MB | 1.4 days |
+| `parakeet-v3+boost1` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=1.0, top 40 talk terms | cuda | 194 | 5003 MB | 1.4 days |
+| `qwen3-asr-1.7b` | Qwen/Qwen3-ASR-1.7B | — | cuda | 22 | 5160 MB | 12.4 days |
+| `qwen3-asr-1.7b+ctx` | Qwen/Qwen3-ASR-1.7B | system prompt = talk prompt | cuda | 21 | 5649 MB | 12.7 days |
+| `qwen3-asr-1.7b+vad` | Qwen/Qwen3-ASR-1.7B | — | cuda | 21 | 5396 MB | 12.7 days |
+| `qwen3-asr-1.7b+vad+terms` | Qwen/Qwen3-ASR-1.7B | system prompt = hard-term list | cuda | 21 | 5310 MB | 12.7 days |
+| `whisper-large-v3` | faster-whisper large-v3 | — | cuda | 61 | 4501 MB | 4.4 days |
+| `whisper-large-v3+ctx` | faster-whisper large-v3 | hotwords=talk prompt | cuda | 58 | 4995 MB | 4.7 days |
+| `whisper-turbo` | faster-whisper large-v3-turbo | — | cuda | 150 | 3320 MB | 1.8 days |
+| `whisper-turbo+ctx` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 151 | 3336 MB | 1.8 days |
 
 \* 6,500 h of audio at the measured speed on short clips (includes per-clip overhead, so full talks run somewhat faster). `legacy-whisper-cli` = the existing transcripts (Whisper CLI turbo, no VAD, no prompt, `condition_on_previous_text=True`).
 
@@ -80,20 +80,20 @@ These notes are based on 13 systems, 38 speech excerpts (3.8 h) and 76 non-speec
 
 | System | Non-speech clips with invented text | Glossary terms misheard | Prompt echo | Loops | Words/min | Punct./100 words |
 |---|---|---|---|---|---|---|
-| `legacy-whisper-cli` | 76/76 (100%) | 11.2% (41 of 367) | — | 3 | 117 | 15.1 |
-| `parakeet-ft-v1+vad90` | 4/76 (5%) | 15.9% (49 of 309) | — | 1 | 116 | 12.6 |
-| `parakeet-v3` | 4/76 (5%) | 13.7% (42 of 306) | — | 1 | 114 | 15.5 |
-| `parakeet-v3+boost0.3f` | 7/76 (9%) | 13.0% (40 of 307) | 0 clips | 1 | 114 | 15.5 |
-| `parakeet-v3+boost0.5` | 5/76 (7%) | 11.0% (35 of 318) | 0 clips | 1 | 114 | 15.6 |
-| `parakeet-v3+boost1` | 5/76 (7%) | 11.0% (36 of 328) | 0 clips | 1 | 114 | 15.5 |
-| `qwen3-asr-1.7b` | 74/76 (97%) | 2.3% (7 of 304) | — | 0 | 114 | 16.7 |
-| `qwen3-asr-1.7b+ctx` | 74/76 (97%) | 1.9% (8 of 417) | 5 clips (1.8% of audio) | 1 | 115 | 16.6 |
-| `qwen3-asr-1.7b+vad` | 7/76 (9%) | 2.2% (7 of 318) | — | 0 | 113 | 16.7 |
-| `qwen3-asr-1.7b+vad+terms` | 7/76 (9%) | 1.7% (6 of 356) | 0 clips | 0 | 115 | 16.5 |
-| `whisper-large-v3` | 7/76 (9%) | 7.4% (26 of 351) | — | 1 | 110 | 16.1 |
-| `whisper-large-v3+ctx` | 7/76 (9%) | 1.9% (8 of 411) | 12 clips (2.3% of audio) | 0 | 104 | 17.0 |
-| `whisper-turbo` | 7/76 (9%) | 13.0% (47 of 361) | — | 0 | 111 | 16.2 |
-| `whisper-turbo+ctx` | 7/76 (9%) | 3.2% (12 of 378) | 0 clips | 0 | 110 | 16.7 |
+| `legacy-whisper-cli` | 76/76 (100%) | 11.3% (48 of 425) | — | 3 | 112 | 13.7 |
+| `parakeet-ft-v1+vad90` | 4/76 (5%) | 16.4% (60 of 366) | — | 1 | 111 | 12.4 |
+| `parakeet-v3` | 4/76 (5%) | 14.2% (51 of 360) | — | 1 | 109 | 15.5 |
+| `parakeet-v3+boost0.3f` | 7/76 (9%) | 13.6% (49 of 359) | 0 clips | 1 | 109 | 15.5 |
+| `parakeet-v3+boost0.5` | 5/76 (7%) | 10.9% (41 of 375) | 0 clips | 1 | 109 | 15.5 |
+| `parakeet-v3+boost1` | 5/76 (7%) | 10.8% (42 of 388) | 0 clips | 1 | 109 | 15.4 |
+| `qwen3-asr-1.7b` | 74/76 (97%) | 2.3% (8 of 354) | — | 0 | 110 | 16.7 |
+| `qwen3-asr-1.7b+ctx` | 74/76 (97%) | 2.1% (10 of 476) | 6 clips (1.4% of audio) | 1 | 110 | 16.6 |
+| `qwen3-asr-1.7b+vad` | 7/76 (9%) | 2.7% (10 of 373) | — | 0 | 109 | 16.6 |
+| `qwen3-asr-1.7b+vad+terms` | 7/76 (9%) | 1.7% (7 of 414) | 0 clips | 0 | 110 | 16.5 |
+| `whisper-large-v3` | 7/76 (9%) | 8.0% (33 of 411) | — | 1 | 106 | 15.9 |
+| `whisper-large-v3+ctx` | 7/76 (9%) | 2.5% (12 of 475) | 13 clips (2.0% of audio) | 0 | 100 | 16.9 |
+| `whisper-turbo` | 7/76 (9%) | 13.1% (55 of 421) | — | 0 | 107 | 16.0 |
+| `whisper-turbo+ctx` | 7/76 (9%) | 3.9% (17 of 440) | 0 clips | 0 | 106 | 16.6 |
 
 How to read this:
 - **Non-speech clips with invented text**: any words output on a clip with no speech. All of them are errors, so lower is better. Most of these clips were *chosen* at spots where the legacy transcripts invented text, so legacy's score there is near 100% by construction. Compare the new systems with each other.
@@ -102,18 +102,49 @@ How to read this:
 - **Loops**: speech clips where the output repeats a phrase over and over (a classic Whisper failure).
 - **Words/min**: big differences from the other systems suggest dropped audio or invented text.
 
+## Accuracy against silver references (automatic, no human)
+
+Each speech clip's reference is built without a human, by `eval/silver.py`:
+- **Vote:** a word-level majority vote across one plain system per model family.
+- **Glossary:** known misheard spellings are corrected.
+- **Book:** for the 12 *book* clips, disputed words are settled against Daido Roshi's edited talks.
+
+**No system grades itself.** Each system is scored against a reference rebuilt *without its own family*.
+The *voters* column shows how many families that reference used, and with fewer than about 4 the reference
+is weak.
+
+**Errors every system makes go unseen** unless the glossary or the book catches them. Treat these numbers
+as a ranking aid until corrected references exist. Browse the flagged spots with `uv run python eval/viewer.py`.
+
+| System | Silver WER (all) | substitutions / deletions / insertions | Stratified set | Book set | Voters |
+|---|---|---|---|---|---|
+| `whisper-turbo` | 6.0% | 1.5% / 4.0% / 0.5% | 6.1% | 5.5% | 2.0 |
+| `whisper-large-v3` | 6.1% | 1.4% / 4.2% / 0.4% | 6.4% | 5.1% | 2.0 |
+| `parakeet-ft-v1+vad90` | 6.5% | 1.7% / 0.6% / 4.1% | 6.7% | 5.5% | 2.0 |
+| `whisper-turbo+ctx` | 6.7% | 1.3% / 4.9% / 0.5% | 7.0% | 5.7% | 2.0 |
+| `legacy-whisper-cli` | 7.0% | 2.0% / 1.9% / 3.1% | 7.3% | 5.7% | 2.0 |
+| `parakeet-v3+boost0.5` | 7.2% | 2.0% / 1.8% / 3.3% | 7.4% | 6.5% | 2.0 |
+| `parakeet-v3+boost1` | 7.3% | 2.0% / 1.9% / 3.5% | 7.4% | 6.8% | 2.0 |
+| `qwen3-asr-1.7b+vad` | 7.4% | 2.7% / 1.3% / 3.4% | 7.4% | 7.4% | 2.0 |
+| `parakeet-v3` | 7.6% | 2.1% / 2.0% / 3.5% | 7.7% | 7.0% | 2.0 |
+| `parakeet-v3+boost0.3f` | 7.6% | 2.0% / 2.1% / 3.5% | 7.6% | 7.4% | 2.0 |
+| `qwen3-asr-1.7b` | 7.9% | 2.9% / 1.2% / 3.8% | 7.9% | 8.0% | 2.0 |
+| `qwen3-asr-1.7b+ctx` | 8.5% | 2.8% / 1.2% / 4.4% | 8.6% | 8.1% | 2.0 |
+| `qwen3-asr-1.7b+vad+terms` | 8.8% | 2.8% / 1.3% / 4.7% | 9.2% | 7.2% | 2.0 |
+| `whisper-large-v3+ctx` | 12.0% | 1.9% / 9.6% / 0.5% | 12.5% | 10.1% | 2.0 |
+
 ## Effect of per-talk context
 
 | Base → variant | Misheard terms: base → variant | Non-speech output: base → variant | Disagreement between the two |
 |---|---|---|---|
-| `parakeet-v3` → `parakeet-v3+boost0.3f` | 13.7% → 13.0% | 4 → 7 clips | 1.0% of words |
-| `parakeet-v3` → `parakeet-v3+boost0.5` | 13.7% → 11.0% | 4 → 5 clips | 1.1% of words |
-| `parakeet-v3` → `parakeet-v3+boost1` | 13.7% → 11.0% | 4 → 5 clips | 1.1% of words |
-| `qwen3-asr-1.7b` → `qwen3-asr-1.7b+ctx` | 2.3% → 1.9% | 74 → 74 clips | 2.8% of words |
-| `qwen3-asr-1.7b` → `qwen3-asr-1.7b+vad` | 2.3% → 2.2% | 74 → 7 clips | 3.8% of words |
-| `qwen3-asr-1.7b+vad` → `qwen3-asr-1.7b+vad+terms` | 2.2% → 1.7% | 7 → 7 clips | 2.8% of words |
-| `whisper-large-v3` → `whisper-large-v3+ctx` | 7.4% → 1.9% | 7 → 7 clips | 8.6% of words |
-| `whisper-turbo` → `whisper-turbo+ctx` | 13.0% → 3.2% | 7 → 7 clips | 2.2% of words |
+| `parakeet-v3` → `parakeet-v3+boost0.3f` | 14.2% → 13.6% | 4 → 7 clips | 1.1% of words |
+| `parakeet-v3` → `parakeet-v3+boost0.5` | 14.2% → 10.9% | 4 → 5 clips | 1.1% of words |
+| `parakeet-v3` → `parakeet-v3+boost1` | 14.2% → 10.8% | 4 → 5 clips | 1.1% of words |
+| `qwen3-asr-1.7b` → `qwen3-asr-1.7b+ctx` | 2.3% → 2.1% | 74 → 74 clips | 2.6% of words |
+| `qwen3-asr-1.7b` → `qwen3-asr-1.7b+vad` | 2.3% → 2.7% | 74 → 7 clips | 4.0% of words |
+| `qwen3-asr-1.7b+vad` → `qwen3-asr-1.7b+vad+terms` | 2.7% → 1.7% | 7 → 7 clips | 2.3% of words |
+| `whisper-large-v3` → `whisper-large-v3+ctx` | 8.0% → 2.5% | 7 → 7 clips | 8.1% of words |
+| `whisper-turbo` → `whisper-turbo+ctx` | 13.1% → 3.9% | 7 → 7 clips | 2.0% of words |
 
 Disagreement is the word error rate between the two outputs: how much of the text the context changed.
 
@@ -121,20 +152,20 @@ Disagreement is the word error rate between the two outputs: how much of the tex
 
 | System | Top known misspellings in its output |
 |---|---|
-| `legacy-whisper-cli` | Zhao, Yakujo, Maizumi, doksan, Shapa, Daito, Ingo, Huiko, Ongan, Setsho, Zazengi, Wutsu |
-| `parakeet-ft-v1+vad90` | gasho, dogan, Yakujo, Mizumi, Mayakaya Shapa, Shapa, kohan, Orioki, Zhao, Secho, Ingo, Huiko |
-| `parakeet-v3` | gasho, Yakujo, Mizumi, dogan, Ingo, Mayakaya Shapa, Shapa, kohan, doksan, Orioki, Secho, seshin |
-| `parakeet-v3+boost0.3f` | gasho, Mizumi, Yakujo, dogan, Ingo, Mayakaya Shapa, Shapa, kohan, doksan, Orioki, Secho, seshin |
-| `parakeet-v3+boost0.5` | gasho, Yakujo, Mizumi, Mayakaya Shapa, Shapa, doksan, Orioki, Secho, Ingo, seshin, Ongo, Zazengi |
-| `parakeet-v3+boost1` | gasho, Yakujo, Mizumi, Mayakaya Shapa, Shapa, doksan, Orioki, Secho, Ingo, seshin, Ongo, Zazengi |
-| `qwen3-asr-1.7b` | Mazumi, Ongo, seshin, doksan, Zhao |
-| `qwen3-asr-1.7b+ctx` | Shapa, Mazumi, Ongo, doksan |
-| `qwen3-asr-1.7b+vad` | Shapa, doksan, Ongo, Doxan |
-| `qwen3-asr-1.7b+vad+terms` | doksan, Dogon |
-| `whisper-large-v3` | Yakujo, Maizumi, doksan, Shapa, Huiko, Daito, Setsho, Ingo, Mayakaya Shapa, Mizumi, Yunmin, Ongo |
-| `whisper-large-v3+ctx` | Shapa, Mayakaya Shapa, Zenda |
-| `whisper-turbo` | doksan, Yakujo, gasho, Shapa, Maizumi, Gashow, Mayakaya Shapa, Huiko, Daito, Zhao, Ingo, Setsho |
-| `whisper-turbo+ctx` | Shapa, Yakujo, Mayakaya Shapa, Sashen, seshin, Zenda |
+| `legacy-whisper-cli` | Zhao, Yakujo, Shapa, Maizumi, doksan, Daito, Ingo, Huiko, Ongan, Setsho, Zazengi, Wutsu |
+| `parakeet-ft-v1+vad90` | dogan, gasho, Yakujo, Secho, Mizumi, Mayakaya Shapa, Shapa, kohan, Orioki, Zhao, Ingo, Huiko |
+| `parakeet-v3` | gasho, Yakujo, Secho, Mizumi, dogan, Ingo, Mayakaya Shapa, Shapa, kohan, doksan, seshin, Orioki |
+| `parakeet-v3+boost0.3f` | gasho, Secho, Mizumi, Yakujo, dogan, Ingo, Mayakaya Shapa, Shapa, kohan, doksan, Orioki, seshin |
+| `parakeet-v3+boost0.5` | gasho, Yakujo, Mizumi, Secho, Mayakaya Shapa, Shapa, doksan, Orioki, Ingo, seshin, Ongo, Zazengi |
+| `parakeet-v3+boost1` | gasho, Yakujo, Mizumi, Secho, Mayakaya Shapa, Shapa, doksan, Orioki, Ingo, seshin, Ongo, Zazengi |
+| `qwen3-asr-1.7b` | Mazumi, Ongo, seshin, doksan, Zhao, Uman |
+| `qwen3-asr-1.7b+ctx` | Shapa, Mazumi, Ongo, doksan, Genjo |
+| `qwen3-asr-1.7b+vad` | Shapa, doksan, Uman, Ongo, Doxan, Genjo |
+| `qwen3-asr-1.7b+vad+terms` | doksan, Dogon, Genjo |
+| `whisper-large-v3` | Yakujo, Shapa, Maizumi, doksan, Setsho, Huiko, Daito, Ingo, Mayakaya Shapa, Mizumi, Yunmin, Ongo |
+| `whisper-large-v3+ctx` | Shapa, Mayakaya Shapa, Setsho, Zenda, Dogon |
+| `whisper-turbo` | doksan, Yakujo, Shapa, gasho, Maizumi, Gashow, Setsho, Mayakaya Shapa, Huiko, Daito, Zhao, Ingo |
+| `whisper-turbo+ctx` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, seshin, Zenda, Sazen |
 
 ## What systems output on non-speech
 
@@ -157,271 +188,271 @@ Disagreement is the word error rate between the two outputs: how much of the tex
 
 Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts a few words before the term. Listen to the clip (`data/goldset/clips/<clip>.wav`, at the given offset) to judge which is right.
 
-**Muge Daido** — `37196_s01410` at 5:29 · Konrad Ryushin Marchaj · 2010s · easy audio
+**dharma** — `30766_s00180` at 1:03 · John Daido Loori · 1980s · hard audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | of the teachings now of Zen, of Tantra, of Mahayana, of Tibet, that's where it opens up. You know, this is your oyster. |
-| `parakeet-ft-v1+vad90` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
-| `parakeet-v3` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
-| `parakeet-v3+boost0.3f` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
-| `parakeet-v3+boost0.5` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
-| `parakeet-v3+boost1` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
-| `qwen3-asr-1.7b` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your abstractions. |
-| `qwen3-asr-1.7b+ctx` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your abstractions. |
-| `qwen3-asr-1.7b+vad` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your abstractions. |
-| `qwen3-asr-1.7b+vad+terms` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your abstractions. |
-| `whisper-large-v3` | of the teachings now of Zen, of Tantra, of Mahayana, of Tibet, that's where it opens up. You know, this is your oyster. |
-| `whisper-large-v3+ctx` | Daido, and Mazu. Attention! -1. We'll be talking about Fukanzazengi, Daido, and Mazu. Attention! -1. We'll be talking about Fukanzazengi, Daido, and Mazu. |
-| `whisper-turbo` | of the teachings now of Zen, of Tantra, of Mahayana, of Tibet, that's where it opens up. You know, this is your oyster. |
-| `whisper-turbo+ctx` | of the teachings now of Zen, of Tantra, of Mahayana, of Tibet, that's where it opens up. You know, this is your oyster. |
+| `legacy-whisper-cli` | is clear and obvious. In the sphere of the unstained Dharma, not yielding to attachment is called the precept of refraining from |
+| `parakeet-ft-v1+vad90` | nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `parakeet-v3` | is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `parakeet-v3+boost0.3f` | is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `parakeet-v3+boost0.5` | is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `parakeet-v3+boost1` | is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `qwen3-asr-1.7b` | nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment, is called the precept of refraining from |
+| `qwen3-asr-1.7b+ctx` | nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `qwen3-asr-1.7b+vad` | nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment, is called the precept of refraining from |
+| `qwen3-asr-1.7b+vad+terms` | nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment, is called the precept of refraining from |
+| `whisper-large-v3` | -nature is clear and obvious. In the sphere of the unstained Dharma, not yielding to attachment is called a precept of refraining from |
+| `whisper-large-v3+ctx` | -nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment is called a precept of refraining from |
+| `whisper-turbo` | -nature is clear and obvious. In the sphere of the unstained Dharma, not yielding to attachment is called a precept of refraining from |
+| `whisper-turbo+ctx` | -nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment is called a precept of refraining from |
 
-**koan** — `31311_s00180` at 1:36 · John Daido Loori · 1980s · hard audio
-
-| System | Text |
-|---|---|
-| `legacy-whisper-cli` | these things are meant to eliminate the point of the koan, the point that's being made in the koan. And in this pointer, |
-| `parakeet-ft-v1+vad90` | these things are meant to illuminate the point of the con, the point that's being made in the coan. And in this pointer, |
-| `parakeet-v3` | these things are meant to illuminate the point of the Koan, the point that's being made in the Koan. And in this pointer |
-| `parakeet-v3+boost0.3f` | these things are meant to illuminate the point of the Koan, the point that's being made in the Koan. And in this pointer |
-| `parakeet-v3+boost0.5` | these things are meant to illuminate the point of the Koan, the point that's being made in the koan. And in this pointer |
-| `parakeet-v3+boost1` | these things are meant to illuminate the point of the Khan, the point that's being made in the koan. And in this pointer |
-| `qwen3-asr-1.7b` | these things are meant to illuminate the point of the koan, the point that's being made in the koan. And in this pointer, |
-| `qwen3-asr-1.7b+ctx` | these things are meant to illuminate the point of the koan, the point that's being made in the koan. And in this pointer, |
-| `qwen3-asr-1.7b+vad` | these things are meant to illuminate the point of the koan, the point that's being made in the koan. And in this pointer, |
-| `qwen3-asr-1.7b+vad+terms` | these things are meant to illuminate the point of the koan, the point that's being made in the koan. And in this pointer, |
-| `whisper-large-v3` | these things are meant to illuminate the point of the koan. the point that's being made in the koan. And in this pointer, |
-| `whisper-large-v3+ctx` | these things are meant to illuminate the point of the koan. The point that's being made in the koan. And in this pointer, |
-| `whisper-turbo` | these things are meant to illuminate the point of the koan. The point that's being made in the koan. And in this pointer, |
-| `whisper-turbo+ctx` | these things are meant to illuminate the point of the koan. The point that's being made in the koan. And in this pointer, |
-
-**Deshan Xuanjian** — `34004_s01972` at 1:05 · Other · 1990s · hard audio
+**zendo** — `32995_s00180` at 2:36 · Konrad Ryushin Marchaj · 2010s · hard audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | well. Attention. Shuso, you and I had a meal shift together. You were sweeping under the pizza oven and you swept down a little critter and it was caught in flypaper and you ran over in a panic. I don't know if it's dead or alive. There's something in the flypaper. What's the constant principle of that? May your life go well. Attention. First, I want to let you know I've never done this before so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attached to the sense of matter. If you do not agree, |
-| `parakeet-ft-v1+vad90` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was hot in fly paper and you ran over in a panic. Uh I don't know if it's dead or live. There's there's something in the fly paper. What's the constant principle for that? May your life go well. Attention. First, I want to let you know I've never done this before, so I'm actually being kind of nervous about this. As far as the last line of the call on it, if you agree, then you're still attached to sense of matter. If you do not agree, |
-| `parakeet-v3` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper and you ran |
-| `parakeet-v3+boost0.3f` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper and you ran it over in a panic. I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. As far as the last line of the call on it, if you agree, |
-| `parakeet-v3+boost0.5` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper, and you ran it over in a panic. I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. As far as the last line of the call on it, if you agree, |
-| `parakeet-v3+boost1` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper, and you ran it over in a panic. Uh I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. First, I want to let you know I've never done this before, so I'm actually being kind of nervous. As far as the last line of the call on it, if you agree, |
-| `qwen3-asr-1.7b` | well. Attention. Just so you and I had a meal shift together, you were sweeping under the pizza oven and you swept out little critters. Caught in the flypaper, and you ran over a pan. I don't think there's a lot. There's there's something in the flypaper. What's the constant principle? That. May your life go well. Attention. So I want to let you know I've never done this before, so I'm actually in kinder. As far as the last line of the poem, if you |
-| `qwen3-asr-1.7b+ctx` | well. Attention. Just so you and I had a meal shift together. You were sweeping under the pizza oven and you swept out little critters. Caught in the fly paper. You ran over a pan. I don't think there's a lot. There's there's something in the fly paper. What's the constant principle? That. May your life go well. Attention. Just so I let you know, I've never done this before, so I'm actually in kinder. As far as the last line of the poem, if you |
-| `qwen3-asr-1.7b+vad` | well. Attention, Queso. You and I had a meal shift together. You were sweeping up a pizza oven, and you swept down a little critter that was caught in the flypaper. You ran over, panicked. I don't think there's a lie. There's something in the flypaper. What's the constant principle? May your life go well. Attention. I just want to let you know I've never done this before. So naturally, I'm nervous. As |
-| `qwen3-asr-1.7b+vad+terms` | well. Attention, Quito. You and I had a meal shift together. You were sweeping up a pizza oven, and you swept down a little critter that was caught in the flypaper. You ran over, panicked. I don't think there's a lie. There's something in the flypaper. What's the constant principle? May your life go well. Attention. I just want to let you know I've never done this before. So naturally, I'm not nervous. As |
-| `whisper-large-v3` | well. caught in flypaper and ran over in a panic. I don't know if it's dead or alive. There's something in the flypaper. What's the constant principle of that? May your life go well. Attention. Chris, I want to let you know I've never done this before, so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attached to the sense of matter. If you do not agree... |
-| `whisper-large-v3+ctx` | well. We'll be talking about John Daido Loori, Bernie Glassman, Tokusan, Zen Peacemaker Order, and Ganto. We'll be talking about John Daido Loori, |
-| `whisper-turbo` | well. caught in flypaper and ran over in a panic. I don't know if it's dead or alive. There's something in the flypaper. What's the constant principle of that? May your life go well. Attention. First, I want to let you know I've never done this before, so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attached to the sense of manner. If you do not agree... |
-| `whisper-turbo+ctx` | well. May your life go well. Attention. Chris, I want to let you know I've never done this before, so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attached to the |
+| `legacy-whisper-cli` | our life. If we were to leave this within the Zenda, that question of what good does it really do, should be on |
+| `parakeet-ft-v1+vad90` | our life. If we were to leave this within the Zenda, that question of what good does it really do should be on |
+| `parakeet-v3` | our life. If we were to leave this within the Zenda, that question of what good does it really do should be on |
+| `parakeet-v3+boost0.3f` | our life. If we were to leave this within the Zenda, that question of what good does it really do should be on |
+| `parakeet-v3+boost0.5` | our life. If we were to leave this within the Zenda, that question of what good does it really do should be on |
+| `parakeet-v3+boost1` | our life. If we were to leave this within the Zenda, that question of what good does it really do should be on |
+| `qwen3-asr-1.7b` | our life. For to leave this within the zendo, that question of what good does it really do should be on |
+| `qwen3-asr-1.7b+ctx` | our life. For to leave this within the zendo, that question of what good does it really do should be on |
+| `qwen3-asr-1.7b+vad` | our life. For us to leave this within the zendo, that question of what good does it really do should be on |
+| `qwen3-asr-1.7b+vad+terms` | our life. For us to leave this within the zendo, that question of what good does it really do should be on |
+| `whisper-large-v3` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
+| `whisper-large-v3+ctx` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
+| `whisper-turbo` | our life. If we were to leave this within the Zenda, that question of what good does it really do, should be on |
+| `whisper-turbo+ctx` | our life. If we were to leave this within the zenda, that question of what good does it really do, should be on |
 
-**Huangbo Xiyun** — `35351_s00900` at 2:10 · Geoffrey Shugen Arnold · 1990s · hard audio
-
-| System | Text |
-|---|---|
-| `legacy-whisper-cli` | mind? That Vasa was pointing to. A monk asked Master Obaku, From earliest times, all the masters say mind is Buddha. I wonder |
-| `parakeet-ft-v1+vad90` | mind that Basa was pointing to? A monk asked Master Obaku, from earliest times all the masters say mind is Buddha. I wonder |
-| `parakeet-v3` | mind that Basava is pointing to? Monk asks Master Obaku, from earliest times all the masters say mind is Buddha. I wonder |
-| `parakeet-v3+boost0.3f` | mind that Basava is pointing to? Monk asks Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
-| `parakeet-v3+boost0.5` | mind? Monk asks Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
-| `parakeet-v3+boost1` | mind that Basava is pointing to? Monk asks Master Obaku, from earliest times all the masters say mind is Buddha. I wonder |
-| `qwen3-asr-1.7b` | mind? The master was pointing to. A monk asked Master Obaku, "From earliest times, all the masters say mind is Buddha. I wonder |
-| `qwen3-asr-1.7b+ctx` | mind? The boss was pointing to. A monk asked Master Obaku, "From earliest times, all the masters say mind is Buddha. I wonder |
-| `qwen3-asr-1.7b+vad` | mind? The bossa was pointing to. A monk asked Master Obaku, "From earliest times, all the masters say mind is Buddha. I wonder |
-| `qwen3-asr-1.7b+vad+terms` | mind? The bossa was pointing to. A monk asked Master Obaku, "From earliest times, all the masters say mind is Buddha. I wonder |
-| `whisper-large-v3` | mind that Basava is pointing to? A monk asked Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
-| `whisper-large-v3+ctx` | mind that Mazu was pointing to? A monk asked Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
-| `whisper-turbo` | mind that Bhasa was pointing to? A monk asked Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
-| `whisper-turbo+ctx` | mind? Mazu was pointing to. A monk asked Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
-
-**dokusan** — `35934_s02640` at 5:04 · John Daido Loori · 2000s · medium audio
+**Baizhang Huaihai** — `31268_s00240` at 0:59 · John Daido Loori · 1980s · medium audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | they don't even come to doksan because they don't do doksan in soto school the way we do it in the inside school and |
-| `parakeet-ft-v1+vad90` | there don't even come to Dokesan because they don't do Dokson in uh soto school the way we do it in Rinse School. And |
-| `parakeet-v3` | there don't even come to Dokesan because they don't do Doksan in uh Soto school the way we do it in Rinsei School. And |
-| `parakeet-v3+boost0.3f` | there don't even come to Dokesan because they don't do Doksan in uh soto school the way we do it in the Rinsei School. And |
-| `parakeet-v3+boost0.5` | there don't even come to Dokesan because they don't do Doksan in uh Soto school the way we do it in the Rinzai School. And |
-| `parakeet-v3+boost1` | there don't even come to Dokesan because they don't do Doksan in uh Soto school the way we do it in the Rinzai School. And |
-| `qwen3-asr-1.7b` | they don't even come to dokusan because they don't do dokusan in Soto school. We do it in Rinzai school. And |
-| `qwen3-asr-1.7b+ctx` | they don't even come to dokusan because they don't do dokusan in Soto school. We do it in Rinzai school, and |
-| `qwen3-asr-1.7b+vad` | don't even come to Dogen because they don't do Dogen in Soto school the way we do it in Rinzai school. And |
-| `qwen3-asr-1.7b+vad+terms` | don't even come to doksan because they don't do doksan in Soto school the way we do it in Rinzai school. And |
-| `whisper-large-v3` | there don't even come to Doksang, because they don't do Doksang in Soto school the way we do it in Rinzai school. And |
-| `whisper-large-v3+ctx` | there don't even come to dokusan, because they don't do dokusan in Soto school the way we do it in Rinzai school. And |
-| `whisper-turbo` | there don't even come to doksan, because they don't do doksan in Soto school the way we do it in Rinzai school. And |
-| `whisper-turbo+ctx` | there don't even come to dokusan, because they don't do dokusan in Soto school the way we do it in Rinzai school. And |
+| `legacy-whisper-cli` | was Yakujo, as we talked about in the colon of Yakujo and the fox. And another was Nansen. Basso once said of his |
+| `parakeet-ft-v1+vad90` | was Yakujo, as we talked about in the cone of Yakujo and the Fox, and another was nonsense. Baso once said of these |
+| `parakeet-v3` | was Yakujo, that we talked about in the column of Yakujo and the fox. And another was nonsense. Baso once said of these |
+| `parakeet-v3+boost0.3f` | was Yakujo, that we talked about in the column of Yakujo and the Fox. And another was nonsense. Baso once said of these |
+| `parakeet-v3+boost0.5` | was Yakujo, that we talked about in the column of Yakujo and the fox. And another was nonsense. Baso once said of these |
+| `parakeet-v3+boost1` | was Yakujo, that we talked about in the corner of Yakujo and the fox. And another was nonsense. Baso once said of these |
+| `qwen3-asr-1.7b` | was Yakujyo, that we talked about, the cone, Yakujyo, and the fox; and the other was Nansen. Baso once said of these |
+| `qwen3-asr-1.7b+ctx` | was Hyakujo, that we talked about the cone, Hyakujo, and the fox, and the other was Nansen. Baso once said of these |
+| `qwen3-asr-1.7b+vad` | was Yakujyo, that we talked about, the cone of Yakujyo and the fox, and the other was Nansen. Baso once said of these |
+| `qwen3-asr-1.7b+vad+terms` | was Hyakujo, that we talked about, the cone of Hyakujo and the fox, and the other was Nansen. Baso once said of these |
+| `whisper-large-v3` | was Yakujo, that we talked about in the calling of Yakujo and the fox. And another was Nansen. Basso once said of these |
+| `whisper-large-v3+ctx` | was Hyakujo, that we talked about in the calling of Hyakujo and the fox, and another was Nansen. Basso once said of these |
+| `whisper-turbo` | was Yakujo, that we talked about in the colon of Yakujo and the fox. And another was Nansen. Basso once said of these |
+| `whisper-turbo+ctx` | was Hyakujo, that we talked about in the colon of Hyakujo and the fox, and another was Nansen. Baso once said of these |
 
-**sangha** — `34736_s02010` at 2:15 · Ron Hogen Green · 2020s · hard audio
-
-| System | Text |
-|---|---|
-| `legacy-whisper-cli` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
-| `parakeet-ft-v1+vad90` | taken refuge in the Dharma I have taken refuge in the sangha take refuge in the Buddha I have taken refuge |
-| `parakeet-v3` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
-| `parakeet-v3+boost0.3f` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
-| `parakeet-v3+boost0.5` | taken refuge in the Dharma. I |
-| `parakeet-v3+boost1` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
-| `qwen3-asr-1.7b` | taken refuge in the Dharma. I have taken refuge in the Sangha. Take refuge in the Buddha. I have taken refuge |
-| `qwen3-asr-1.7b+ctx` | taken refuge in the Dharma. I have taken refuge in the Sangha. Take refuge in the Buddha. I have taken refuge |
-| `qwen3-asr-1.7b+vad` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
-| `qwen3-asr-1.7b+vad+terms` | taken refuge in the Dharma. I have taken refuge in the Sangha. Take refuge in the Buddha. I have taken refuge |
-| `whisper-large-v3` | Dharma I |
-| `whisper-large-v3+ctx` | taken refuge in the Dharma. I have taken refuge in the Sangha. I have taken refuge in the Buddha. I have taken refuge |
-| `whisper-turbo` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
-| `whisper-turbo+ctx` | taken refuge in the dharma. I have taken refuge in the sangha. Refuge in the Buddha. I have taken refuge |
-
-**Mahakashyapa** — `29973_s00810` at 2:48 · Konrad Ryushin Marchaj · 2010s · medium audio
+**densho** — `33528_s01214` at 2:09 · John Daido Loori · 1990s · medium audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | predicated and harking to that, this moment. And so Mahakaya Shapa sees the form of the flower and smiles. seeing the form he |
-| `parakeet-ft-v1+vad90` | predicated and harking to that this moment and so Mahakayashapa sees the form of the flower and smiles seeing the form he |
-| `parakeet-v3` | predicated. And harking to that, this moment. And so Mahakayashapa sees the form of the flower and smiles. Seeing the form, he |
-| `parakeet-v3+boost0.3f` | predicated and harking to that, this moment. And so Mahakayashapa sees the form of the flower and smiles. Seeing the form, he |
-| `parakeet-v3+boost0.5` | predicated. And harking to that, this moment. And so Mahakayashapa sees the form of the flower and smiles. Seeing the form, he |
-| `parakeet-v3+boost1` | predicated and harking to that, this moment. And so Mahakayashapa sees the form of the flower and smiles. Seeing the form, he |
-| `qwen3-asr-1.7b` | predicated and harking to that this moment. And so Mahakaya Shabha sees the form of the flower and smiles, seeing the form. He |
-| `qwen3-asr-1.7b+ctx` | predicated. And harking to that, this moment. And so Mahakasyapa sees the form of the flower and smiles. Seeing the form, he |
-| `qwen3-asr-1.7b+vad` | predicated and harking to that this moment. And so Mahakaya Shabas sees the form of the flower and smiles. Seeing the form, he |
-| `qwen3-asr-1.7b+vad+terms` | predicated and harking to that this moment. And so Mahakasyapa sees the form of the flower and smiles. Seeing the form, he |
-| `whisper-large-v3` | predicated and harking to that, this moment. And so Mahakaya Shapa sees the form of the flower and smiles. Seeing the form, he |
-| `whisper-large-v3+ctx` | predicated and harking to that, this moment. And so Mahakaya Shapa sees the form of the flower and smiles. Seeing the form, he |
-| `whisper-turbo` | predicated and harking to that, this moment. And so Mahakaya Shapa sees the form of the flower in smiles. Seeing the form, he |
-| `whisper-turbo+ctx` | predicated and harking to that, this moment. And so Mahakaya Shapa sees the form of the flower in smiles. Seeing the form, he |
+| `legacy-whisper-cli` | is communication. It's what it is. You know, the bell rings, the dencho rings. It's time to go to the Buddha Hall for |
+| `parakeet-ft-v1+vad90` | it's communication is what it is. You know the bell rings the dent show rings it's time to go to the Buddha hall for |
+| `parakeet-v3` | is communication, is what it is. You know, the bell rings, the dentro rings, it's time to go to the Buddha Hall for |
+| `parakeet-v3+boost0.3f` | is communication, is what it is. You know, the bell rings, the dentro rings, it's time to go to the Buddha Hall for |
+| `parakeet-v3+boost0.5` | is communication, is what it is. You know, the bell rings, the dentro rings, it's time to go to the Buddha Hall for |
+| `parakeet-v3+boost1` | is communication, is what it is. You know, the bell rings, the dentro rings, it's time to go to the Buddha Hall for |
+| `qwen3-asr-1.7b` | It's communication. It's what it is. You know, the bell rings, the dento rings. It's time to go to the Buddha hall for |
+| `qwen3-asr-1.7b+ctx` | It's communication. It's what it is. You know, the bell rings, the dento rings. It's time to go to the Buddha hall for |
+| `qwen3-asr-1.7b+vad` | It's communication. It's what it is. You know, the bell rings. The bell rings. It's time to go to the Buddha Hall for |
+| `qwen3-asr-1.7b+vad+terms` | It's communication. It's what it is. You know, the bell rings. The bell rings. It's time to go to the Buddha Hall for |
+| `whisper-large-v3` | is communication, is what it is. You know, the bell rings, the denture rings, it's time to go to the Buddha Hall for |
+| `whisper-large-v3+ctx` | It's communication, it's what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo` | is communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha hall for |
+| `whisper-turbo+ctx` | is communication, is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
 
-**zendo** — `35687_s00990` at 0:43 · Bonnie Myotai Treace · 1990s · easy audio
-
-| System | Text |
-|---|---|
-| `legacy-whisper-cli` | raised fist in the hut, this raised blind in the zendo? Akin says, Ultimately, Feiyan is not saying merely that gain is gain, |
-| `parakeet-ft-v1+vad90` | raised fist in the hut, this raised blind in the Zendo? Aiken says ultimately Fayein is not saying merely that gain is gain, |
-| `parakeet-v3` | raised fist in the hut, this raised blind in the Zendo? Aiken says, ultimately Fayin is not saying merely that gain is gain, |
-| `parakeet-v3+boost0.3f` | raised fist in the hut, this raised blind in the Zendo? Aiken says, ultimately Fayin is not saying merely that gain is gain, |
-| `parakeet-v3+boost0.5` | raised fist in the hut, this raised blind in the Zendo? Aiken says ultimately Fayin is not saying merely that gain is gain, |
-| `parakeet-v3+boost1` | raised fist in the hut, this raised blind in the zendo? Aiken says, ultimately Fayin is not saying merely that gain is gain, |
-| `qwen3-asr-1.7b` | raised fist in the hut, this raised blind in the zendo? Aiken says, ultimately, Fayen is not saying merely that gain is gain, |
-| `qwen3-asr-1.7b+ctx` | raised fist in the hut, this raised blind in the zendo? Akin says, ultimately Fayan is not saying merely that gain is gain, |
-| `qwen3-asr-1.7b+vad` | raised fist in the hut, this raised blind in the zendo? Aiken says, ultimately, Fayen is not saying merely that gain is gain, |
-| `qwen3-asr-1.7b+vad+terms` | raised fist in the hut, this raised blind in the zendo? Aiken says, ultimately, Fayen is not saying merely that gain is gain, |
-| `whisper-large-v3` | raised fist in the hut, this raised blind in the zendo? Akin says, Ultimately, Fayan is not saying merely that gain is gain, |
-| `whisper-large-v3+ctx` | raised fist in the hut, this raised blind in the zendo. Akin says, Ultimately, Feiyan is not saying merely that gain is gain, |
-| `whisper-turbo` | raised fist in the hut, this raised blind in the zendo? Aiken says, Ultimately, Feyen is not saying merely that gain is gain, |
-| `whisper-turbo+ctx` | raised fist in the hut, this raised blind in the zendo? Aiken says, Ultimately, Fayin is not saying merely that gain is gain, |
-
-**gassho** — `35549_s00390` at 4:41 · Bonnie Myotai Treace · 1990s · easy audio
+**Zhaozhou Congshen** — `34803_s00570` at 4:05 · Geoffrey Shugen Arnold · 2020s · medium audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | of gatha not. And how is that not requesting, not gatha? Because it presents that, first of all, the person who's trying to be happy doesn't have the ability to be at themselves, and they don't need to meet you. But there's a, there's a point at which you haven't requested entry into the reality |
-| `parakeet-ft-v1+vad90` | of gosho not. And how is that not requesting? Not Gasho Because it suggests that, first of all, the person who trying to make happy doesn't have the ability to do it where you need it. And also I think imposes the real under the live of that. Okay. But there's a there's a point at which you haven't requested entry into the reality |
-| `parakeet-v3` | of gosho not. And how is that not requesting? Not gosha. Okay. But there's a there's a point at which you haven't requested entry into the reality |
-| `parakeet-v3+boost0.3f` | of gosh o not. And how is that not requesting? Not Gosho. Okay. But there's a there's a point at which you haven't requested entry into the reality |
-| `parakeet-v3+boost0.5` | of gosh o not. And how is that not requesting? Not Gosho. Okay. But there's a there's a point at which you haven't requested entry into the reality |
-| `parakeet-v3+boost1` | of gosho not. And how is that not requesting? Not Gosho. Okay. But there's a there's a point at which you haven't requested entry into the reality |
-| `qwen3-asr-1.7b` | of gasha not. And how is that not requesting, not gasha? But there's a there's a point at which you haven't requested entry into the reality |
-| `qwen3-asr-1.7b+ctx` | of gassho, not. And how is that not requesting, not gassho? But there's a there's a point at which you haven't requested entry into the reality |
-| `qwen3-asr-1.7b+vad` | of gasha. Not. And how is that not requesting? Not gasha. But there's a there's a point at which you haven't requested entry into the reality |
-| `qwen3-asr-1.7b+vad+terms` | of gassho, not. And how is that not requesting, not gassho? But there's a there's a point at which you haven't requested entry into the reality |
-| `whisper-large-v3` | of gassho not. And how is that not requesting? Not gassho. There's a point at which you haven't requested entry into the reality |
-| `whisper-large-v3+ctx` | of gassho not. And how is that not requesting? Not gassho. There's a point at which you haven't requested entry into the reality |
-| `whisper-turbo` | of gasho not. And how is that not requesting? Not gasho. There's a point at which you haven't requested entry into the reality |
-| `whisper-turbo+ctx` | of gassho not. And how is that not requesting? Not gassho. But there's a point at which you haven't requested entry into the reality |
+| `legacy-whisper-cli` | What was her power? She's a tea woman offering refreshment to travelers. Zhao Zhao, you could, from one perspective, say, is a great master. |
+| `parakeet-ft-v1+vad90` | What was her power? She's a T woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, |
+| `parakeet-v3` | What was her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master. |
+| `parakeet-v3+boost0.3f` | What was her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, |
+| `parakeet-v3+boost0.5` | What was her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, |
+| `parakeet-v3+boost1` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master, |
+| `qwen3-asr-1.7b` | What was her power? She's a tea woman offering refreshment to travelers. Zhao, you could, from one perspective, say, is a great master. |
+| `qwen3-asr-1.7b+ctx` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could, from one perspective, say, is a great master, |
+| `qwen3-asr-1.7b+vad` | What was her power? She's a tea woman offering refreshment to travelers. Jangjo, you could, from one perspective, say is a great master, |
+| `qwen3-asr-1.7b+vad+terms` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could, from one perspective, say is a great master, |
+| `whisper-large-v3` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
+| `whisper-large-v3+ctx` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
+| `whisper-turbo` | What was her power? She's a tea woman offering refreshment to travelers. Zhao Zhao, you could from one perspective say, is a great master. |
+| `whisper-turbo+ctx` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
 
-**dharma** — `31268_s00240` at 3:11 · John Daido Loori · 1980s · medium audio
-
-| System | Text |
-|---|---|
-| `legacy-whisper-cli` | with Nansen, deepening his understanding. Taifu was a student of this Dharma Master Joe, a scholar in the 5th century in China. And |
-| `parakeet-ft-v1+vad90` | with Nansen deepening his understanding. Taifu was a student of this Dharma Master Zhou, a scholar of the fifth century in China. And |
-| `parakeet-v3` | with Nansen, deepening his understanding. Taifu was a student of this Dhamma Master Zhou, a scholar of the fifth century in China. During the walk with his deep. |
-| `parakeet-v3+boost0.3f` | with Nansen, deepening his understanding. Typho was a student of this Dhamma Master Zhou, a scholar of the fifth century in China. |
-| `parakeet-v3+boost0.5` | with Nansen, deepening his understanding. Typhoo was a student of this Dhamma Master Zhou, a scholar of the fifth century in China. |
-| `parakeet-v3+boost1` | with Nansen, deepening his understanding. Typhoo was a student of this Dhamma Master Zhou, a scholar of the fifth century in China. |
-| `qwen3-asr-1.7b` | with Nansen, deepening his understanding. Taifu was a student of the Dharma Master Joe, a scholar in the fifth century China. And |
-| `qwen3-asr-1.7b+ctx` | with Nansen, deepening his understanding. Taifu was a student of the Dharma Master Joe, a scholar in the fifth century China. And |
-| `qwen3-asr-1.7b+vad` | with Nansen, deepening his understanding. Taifu was a student of the Dharma Master Joe, a scholar of the fifth century China. And |
-| `qwen3-asr-1.7b+vad+terms` | with Nansen, deepening his understanding. Taifu was a student of the Dharma Master Joe, a scholar of the fifth century China. And |
-| `whisper-large-v3` | with Nansen, deepening his understanding. And Taifu was a student of this Dharma Master Joe, a scholar in the 5th century in China. And |
-| `whisper-large-v3+ctx` | with Nansen, deepening his understanding. Taifu was a student of this Dharma Master Joe, a scholar in the 5th century in China. And |
-| `whisper-turbo` | with Nansen, deepening his understanding. And Tai Fu was a student of this Dharma Master Joe, a scholar of the fifth century in China. And |
-| `whisper-turbo+ctx` | with Nansen, deepening his understanding. And Tai Fu was a student of this dharma master Joe, a scholar of the 5th century in China. And |
-
-**zmm.org** — `31587_s01620` at 4:25 · Vanessa Zuisei Goddard · 2010s · easy audio
+**Yantou Quanhuo** — `34004_s01972` at 1:08 · Other · 1990s · hard audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, you know, I'm really thinking of taking the train because every time I go into the city my car gets broken into. And she said, oh, don't be ridiculous. Just take the car. It'll be easier. So he did. He took his car. They go to |
-| `parakeet-ft-v1+vad90` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, you know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the take the car, it'll be easier. So he did. He took his car. They go to |
-| `parakeet-v3` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the car, it'll be easier. So he did. He took his car. They go to |
-| `parakeet-v3+boost0.3f` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the car, it'll be easier. So he did. He took his car. They go to |
-| `parakeet-v3+boost0.5` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the car, it'll be easier. So he did. He took his car. They go to |
-| `parakeet-v3+boost1` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the car, it'll be easier. So he did. He took his car. They go to |
-| `qwen3-asr-1.7b` | teach. So I think she was here one time, and he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, "You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into." And she said, "Oh, don't be ridiculous. Just take the take the car. It'll be easier." So he did. He took his car to go to |
-| `qwen3-asr-1.7b+ctx` | teach. So I think she was here one time, and he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, "You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into." And she said, "Oh, don't be ridiculous. Just take the take the car. It'll be easier." So he did. He took his car to go to |
-| `qwen3-asr-1.7b+vad` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, "You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into." And she said, "Oh, don't be ridiculous! Just take the take the car; it'll be easier." So he did. He took his car to go to |
-| `qwen3-asr-1.7b+vad+terms` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, "You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into." And she said, "Oh, don't be ridiculous. Just take the take the car. It'll be easier." So he did. He took his car to go to |
-| `whisper-large-v3` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, you know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, oh, don't be ridiculous. Just take the car. It'll be easier. So he did. He took his car. They go to |
-| `whisper-large-v3+ctx` | be talking about Blue Cliff Record, Deshan, Shugen, Wuzu, and zmm .mro .org. So he did. He took his car. They go to |
-| `whisper-turbo` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, you know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, oh, don't be ridiculous. Just take the car. It'll be easier. So he did. He took his car. They go to |
-| `whisper-turbo+ctx` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, you know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, oh, don't be ridiculous. Just take the car. It'll be easier. So he did. He took his car. They go to |
+| `legacy-whisper-cli` | shift together. You were sweeping under the pizza oven and you swept down a little critter and it was caught in flypaper and you ran over in a panic. I don't know if it's dead or alive. There's something in the flypaper. What's the constant principle of that? May your life go well. Attention. First, I want to let you know I've never done this before so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attached to the sense of matter. If you do not agree, then you're forever sunk in |
+| `parakeet-ft-v1+vad90` | together, and you were sweeping under the pizza oven, and you swept down a little critter that was hot in fly paper and you ran over in a panic. Uh I don't know if it's dead or live. There's there's something in the fly paper. What's the constant principle for that? May your life go well. Attention. First, I want to let you know I've never done this before, so I'm actually being kind of nervous about this. As far as the last line of the call on it, if you agree, then you're still attached to sense of matter. If you do not agree, then you're forever sunk in |
+| `parakeet-v3` | together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper and you ran it over in a panic. |
+| `parakeet-v3+boost0.3f` | together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper and you ran it over in a panic. I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. As far as the last line of the call on it, if you agree, then you're still attached to |
+| `parakeet-v3+boost0.5` | together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper, and you ran it over in a panic. I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. As far as the last line of the call on it, if you agree, then you're still attached to |
+| `parakeet-v3+boost1` | together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper, and you ran it over in a panic. Uh I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. First, I want to let you know I've never done this before, so I'm actually being kind of nervous. As far as the last line of the call on it, if you agree, then you're still attached to |
+| `qwen3-asr-1.7b` | shift together, you were sweeping under the pizza oven and you swept out little critters. Caught in the flypaper, and you ran over a pan. I don't think there's a lot. There's there's something in the flypaper. What's the constant principle? That. May your life go well. Attention. So I want to let you know I've never done this before, so I'm actually in kinder. As far as the last line of the poem, if you agree, then you're still a |
+| `qwen3-asr-1.7b+ctx` | shift together. You were sweeping under the pizza oven and you swept out little critters. Caught in the fly paper. You ran over a pan. I don't think there's a lot. There's there's something in the fly paper. What's the constant principle? That. May your life go well. Attention. Just so I let you know, I've never done this before, so I'm actually in kinder. As far as the last line of the poem, if you agree that you're still a |
+| `qwen3-asr-1.7b+vad` | shift together. You were sweeping up a pizza oven, and you swept down a little critter that was caught in the flypaper. You ran over, panicked. I don't think there's a lie. There's something in the flypaper. What's the constant principle? May your life go well. Attention. I just want to let you know I've never done this before. So naturally, I'm nervous. As far as the last line |
+| `qwen3-asr-1.7b+vad+terms` | shift together. You were sweeping up a pizza oven, and you swept down a little critter that was caught in the flypaper. You ran over, panicked. I don't think there's a lie. There's something in the flypaper. What's the constant principle? May your life go well. Attention. I just want to let you know I've never done this before. So naturally, I'm not nervous. As far as the last line |
+| `whisper-large-v3` | koan, if you agree, then you're still attached to the sense of matter. If you do not agree... Then you're forever sunk in |
+| `whisper-large-v3+ctx` | John Daido Loori, Bernie Glassman, Tokusan, Zen Peacemaker Order, and Ganto. We'll be talking about John Daido Loori, Bernie Glassman, Tokusan, Zen Peacemaker |
+| `whisper-turbo` | koan, if you agree, then you're still attached to the sense of manner. If you do not agree... Then you're forever sunk in |
+| `whisper-turbo+ctx` | As far as the last line of the koan, if you agree, then you're still attached to the sentiment. If you do not |
 
-**Eihei Dogen** — `36533_s00180` at 4:44 · John Daido Loori · 2000s · easy audio
-
-| System | Text |
-|---|---|
-| `legacy-whisper-cli` | words completely devoid of any violent or spiteful language and Dogen says as you take the light in affectionate words they will gradually flourish |
-| `parakeet-ft-v1+vad90` | words, completely devoid of any violent or spiteful language. And Dogan says, as you take delight in affectionate words, they will gradually flourish, |
-| `parakeet-v3` | words, completely devoid of any violent or spiteful language. And Dogan says, as you take delight in affectionate words, they will gradually flourish, |
-| `parakeet-v3+boost0.3f` | words, completely devoid of any violent or spiteful language. And Dogan says, as you take delight in affectionate words, they will gradually flourish, |
-| `parakeet-v3+boost0.5` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take delight in affectionate words, they will gradually flourish, |
-| `parakeet-v3+boost1` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take delight in affectionate words, they will gradually flourish, |
-| `qwen3-asr-1.7b` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take the light in affectionate words, they will gradually flourish, |
-| `qwen3-asr-1.7b+ctx` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take the light in affectionate words, they will gradually flourish, |
-| `qwen3-asr-1.7b+vad` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take delight in affectionate words, they will gradually flourish, |
-| `qwen3-asr-1.7b+vad+terms` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take delight in affectionate words, they will gradually flourish, |
-| `whisper-large-v3` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take the light in affectionate words, they will gradually flourish. |
-| `whisper-large-v3+ctx` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take delight in affectionate words, they will gradually flourish. |
-| `whisper-turbo` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take the light in affectionate words, they will gradually flourish, |
-| `whisper-turbo+ctx` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take the light in affectionate words, they will gradually flourish, |
-
-**Geoffrey Shugen Arnold** — `32903_s00720` at 3:33 · Vanessa Zuisei Goddard · 2010s · easy audio
+**Shariputra** — `30671_b01435` at 4:12 · John Daido Loori · 1980s · easy audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | least we know, and then we can proceed. At least, as Ryushin Sensei said, we have our position, it's fixed, and we can |
-| `parakeet-ft-v1+vad90` | least we know. And then we can proceed. At least, as Rishan Sensei said, we're we have our position, it's fixed, and we can |
-| `parakeet-v3` | least we know. And then we can proceed. At least, as Rishan Sensei said, we have our position, it's fixed, and we can |
-| `parakeet-v3+boost0.3f` | least we know. And then we can proceed. At least, as Rishan Sensei said, we're we have our position, it's fixed, and we can |
-| `parakeet-v3+boost0.5` | least we know. And then we can proceed. At least, as Rishan Sensei said, we're we have our position, it's fixed, and we can |
-| `parakeet-v3+boost1` | least we know. And then we can proceed. At least, as Rishan Sensei said, we have our position, it's fixed, and we can |
-| `qwen3-asr-1.7b` | least we know, and then we can proceed. At least, as Rishin Sensei said, we have our position; it's fixed, and we can |
-| `qwen3-asr-1.7b+ctx` | least we know, and then we can proceed. At least, as Shugen Sensei said, we have our position; it's fixed, and we can |
-| `qwen3-asr-1.7b+vad` | least we know, and then we can proceed. At least, as Rieschenssen said, we have our position; it's fixed, and we can |
-| `qwen3-asr-1.7b+vad+terms` | least we know, and then we can proceed. At least, as Rishin Sensei said, we have our position; it's fixed, and we can |
-| `whisper-large-v3` | least we know, and then we can proceed. At least, as Rishon Sensei said, we have our position. It's fixed, and we can |
-| `whisper-large-v3+ctx` | least we know, and then we can proceed. At least, as Shugen Sensei said, we have our position. It's fixed, and we can |
-| `whisper-turbo` | least we know, and then we can proceed. At least, as Rishun Sensei said, we have our position. It's fixed, and we can |
-| `whisper-turbo+ctx` | least we know, and then we can proceed. At least, as Rishun Sensei said, we have our position. It's fixed, and we can |
+| `legacy-whisper-cli` | the brain works linearly and sequentially and we grasp things dualistically relatively our whole definition of the universe is based on that relativity everything is known in reference to something else it's one big reference system i remember when i began to realize that in science i mean i used to think of science for 17 years that was my field science it was my god and then i realized one day the whole thing just back and forth referring to different reference systems what's the absolute basis of |
+| `parakeet-ft-v1+vad90` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean I used to think of science for 17 years that was my field science it was my God and then I realized one day the whole thing just back and forth referring to different reference systems what's the absolute basis of |
+| `parakeet-v3` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day, the whole thing. Just back and forth, referring to different reference systems. What's the absolute basis of |
+| `parakeet-v3+boost0.3f` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day, the whole thing. Just back and forth, referring to different reference systems. What's the absolute basis of |
+| `parakeet-v3+boost0.5` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day the whole thing. Just back and forth, referring to different reference systems. What's the absolute basis of |
+| `parakeet-v3+boost1` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day, the whole thing. Just back and forth, referring to different reference systems. What's the absolute basis of |
+| `qwen3-asr-1.7b` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think it's science for seventeen years. That was my field, science. It was my god. And then I realized one day, the whole thing is just back and forth referring to different reference systems. What's the absolute basis of |
+| `qwen3-asr-1.7b+ctx` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think it's science for 17 years. That was my field, science. It was my god. And then I realized one day, the whole thing is just back and forth referring to different reference systems. What's the absolute basis of |
+| `qwen3-asr-1.7b+vad` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that science. I mean, I used to think that science, for 17 years, that was my field, science, that was my guide. And then I realized one day, the whole thing is just back and forth, referring to different reference systems. What's the absolute basis of |
+| `qwen3-asr-1.7b+vad+terms` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think that science, for 17 years, that was my field, science, that was my guide. And then I realized one day, the whole thing is just back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-large-v3` | the brain works linearly and sequentially. And we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think that science for 17 years, that was my field, science. It was my God. And then I realized one day, the whole thing just... back and forth referring to different reference systems what's the absolute basis of |
+| `whisper-large-v3+ctx` | the brain works linearly and sequentially. Avalokitesvara, jukai, Eno, and Shariputra. Back and forth, referring to different references. What's the absolute basis of |
+| `whisper-turbo` | the brain works linearly and sequentially. And we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day the whole thing just... back and forth referring to different reference systems what's the absolute basis of |
+| `whisper-turbo+ctx` | the brain works linearly and sequentially. And we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my god. And then I realized one day the whole thing just... Back and forth, referring to different reference systems. What's the absolute basis of |
 
-**Zhaozhou Congshen** — `34803_s00570` at 4:09 · Geoffrey Shugen Arnold · 2020s · medium audio
+**Shakyamuni** — `36533_s00180` at 2:25 · John Daido Loori · 2000s · easy audio
 
 | System | Text |
 |---|---|
-| `legacy-whisper-cli` | her power? She's a tea woman offering refreshment to travelers. Zhao Zhao, you could, from one perspective, say, is a great master. He's an |
-| `parakeet-ft-v1+vad90` | her power? She's a T woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, he's an |
-| `parakeet-v3` | her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master. He's an |
-| `parakeet-v3+boost0.3f` | her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, he's an |
-| `parakeet-v3+boost0.5` | her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, he's an |
-| `parakeet-v3+boost1` | her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master, he's an |
-| `qwen3-asr-1.7b` | her power? She's a tea woman offering refreshment to travelers. Zhao, you could, from one perspective, say, is a great master. He's an |
-| `qwen3-asr-1.7b+ctx` | her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could, from one perspective, say, is a great master, is an |
-| `qwen3-asr-1.7b+vad` | her power? She's a tea woman offering refreshment to travelers. Jangjo, you could, from one perspective, say is a great master, is an |
-| `qwen3-asr-1.7b+vad+terms` | her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could, from one perspective, say is a great master, is an |
-| `whisper-large-v3` | her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. He's an |
-| `whisper-large-v3+ctx` | her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. He's an |
-| `whisper-turbo` | her power? She's a tea woman offering refreshment to travelers. Zhao Zhao, you could from one perspective say, is a great master. He's an |
-| `whisper-turbo+ctx` | her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. He's an |
+| `legacy-whisper-cli` | Dogen says let us offer flowers of the distant mountains to the Tathagatha or share the treasures with all sentient beings and spiritual things as well as material things when the way is surrendered to the way you attain the way upon being awakened you necessarily let the way come through itself the self the self gives the self for the sake of giving the self the other gives the other for the sake of giving |
+| `parakeet-ft-v1+vad90` | Dogan says, let us offer flowers of the distant mountains to the Tathagatha, or share the treasures with all sentient beings in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `parakeet-v3` | Dogan says, let us offer flowers of the distant mountains to the Tathagatha, or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `parakeet-v3+boost0.3f` | Dogan says, let us offer flowers of the distant mountains to the Tathagatha, or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `parakeet-v3+boost0.5` | Dogan says, let us offer flowers of the distant mountains to the Tathagatha, or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `parakeet-v3+boost1` | Dogan says, let us offer flowers of the distant mountains to the Tathagatha, or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `qwen3-asr-1.7b` | Dogen says, "Let us offer flowers of the distant mountains to the Tathagata, or share the treasures with all sentient beings in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `qwen3-asr-1.7b+ctx` | Dogen says, "Let us offer flowers of the distant mountains to the Tathagata, or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `qwen3-asr-1.7b+vad` | Dogen says, "Let us offer flowers of the distant mountains to the Tathagata, or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `qwen3-asr-1.7b+vad+terms` | Dogen says, "Let us offer flowers of the distant mountains to the Tathagata, or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-large-v3` | Dogen says, let us offer flowers of the distant mountains to the Tathagata. or share the treasures with all sentient beings in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-large-v3+ctx` | Dogen says, let us offer flowers of the distant mountains to the tathagata. The other gives the other for the sake of giving |
+| `whisper-turbo` | Dogen says let us offer flowers of the distant mountains to the Tathagatha or share the treasures with all sentient beings in spiritual things as well as material things when the way is surrendered to the way you attain the way upon being awakened you necessarily let the way come through itself the self gives the self for the sake of giving the self the other gives the other for the sake of giving |
+| `whisper-turbo+ctx` | Dogen says let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+
+**gassho** — `35549_s00390` at 3:01 · Bonnie Myotai Treace · 1990s · easy audio
+
+| System | Text |
+|---|---|
+| `legacy-whisper-cli` | experience. Have you experienced that? Have you experienced acting on the world? Gatha not. Anybody? Ever entered a situation, a moment, a relationship? |
+| `parakeet-ft-v1+vad90` | experience. Have you experienced that? Have you experienced acting on the world? Gasho, not. Anybody? Ever entered a situation, a moment, a relationship? |
+| `parakeet-v3` | experience? Have you experienced that? Have you experienced acting on the world? Gasho, not. Anybody? Ever entered a situation, a moment, a relationship? |
+| `parakeet-v3+boost0.3f` | experience? Have you experienced that? Have you experienced acting on the world? Gasho, not. Anybody ever entered a situation, a moment, a relationship? |
+| `parakeet-v3+boost0.5` | experience? Have you experienced that? Have you experienced acting on the world? Gasho, not. Anybody ever entered a situation, a moment, a relationship? |
+| `parakeet-v3+boost1` | experience? Have you experienced that? Have you experienced acting on the world? Gasho, not. Anybody ever entered a situation, a moment, a relationship? |
+| `qwen3-asr-1.7b` | experience. Have you experienced that? Have you experienced acting on the world, ghasho not? Anybody ever enter a situation, a moment of relationship? |
+| `qwen3-asr-1.7b+ctx` | experience. Have you experienced that? Have you experienced acting on the world gassho not? Anybody ever enter a situation, a moment, a relationship? |
+| `qwen3-asr-1.7b+vad` | experience. Have you experienced that? Have you experienced acting on the world? Ghasho not. Anybody ever entered a situation, a moment, a relationship? |
+| `qwen3-asr-1.7b+vad+terms` | experience. Have you experienced that? Have you experienced acting on the world? Gassho not. Anybody ever entered a situation, a moment, a relationship? |
+| `whisper-large-v3` | experience have you experienced that have you experienced acting on the world gassho not anybody Ever entered a situation, a moment, a relationship? |
+| `whisper-large-v3+ctx` | experience. Have you experienced that? Have you experienced acting on the world? Gassho not. Anybody? Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo` | experience have you experienced that have you experienced acting on the world gacho not anybody Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo+ctx` | experience. Have you experienced that? Have you experienced acting on the world, gassho, not? Anybody? Ever entered a situation, a moment, a relationship? |
+
+**sangha** — `34736_s02010` at 1:44 · Ron Hogen Green · 2020s · hard audio
+
+| System | Text |
+|---|---|
+| `legacy-whisper-cli` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `parakeet-ft-v1+vad90` | Buddha I take refuge in the Dharma I take refuge in the Sangha I take refuge in the Buddha the incomparably honored one |
+| `parakeet-v3` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `parakeet-v3+boost0.3f` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `parakeet-v3+boost0.5` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `parakeet-v3+boost1` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `qwen3-asr-1.7b` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `qwen3-asr-1.7b+ctx` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `qwen3-asr-1.7b+vad` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparable honored one. |
+| `qwen3-asr-1.7b+vad+terms` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparable honored one. |
+| `whisper-large-v3` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. |
+| `whisper-large-v3+ctx` | Buddha. I take refuge in the dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx` | Buddha. I take refuge in the Dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+
+**ango** — `34775_s01976` at 3:04 · Jody Hojin Kimmel · 2020s · medium audio
+
+| System | Text |
+|---|---|
+| `legacy-whisper-cli` | of all my fear and all of my you know like no way and so and I keep coming too I walk in the door for session I feel like I'm getting an infusion like I need an infusion and and so and every session you know I'll be sitting and I don't |
+| `parakeet-ft-v1+vad90` | of all my fear and all of my you know I like no way um and so um and and I keep coming too I I I walk in the door for session I feel like I'm getting an infusion like I need an infusion and um and so and every session you know I'll I'll be sitting and and I don't |
+| `parakeet-v3` | of all my fear and all of my, you know, I like no way. Um and so um and and I keep coming too, I I I walk in the door for session, I feel like I'm getting an infusion, like I need an infusion. And um and so and every session, you know, I'll I'll be sitting and and I don't |
+| `parakeet-v3+boost0.3f` | of all my fear and all of my, you know, I like no way. Um and so um and and I keep coming too. I I I walk in the door for session, I feel like I'm getting an infusion, like I need an infusion. And um and so and every session, you know, I'll I'll be sitting and and I don't |
+| `parakeet-v3+boost0.5` | of all my fear and all of my, you know, I like no way. Um and so um and and I keep coming too. I I I walk in the door for session, I feel like I'm getting an infusion, like I need an infusion. And um and so and every session, you know, I'll I'll be sitting and and I don't |
+| `parakeet-v3+boost1` | of all my fear and all of my, you know, I like no way. Um and so um and and I keep coming too, I I I walk in the door for session, I feel like I'm getting an infusion, like I need an infusion. And um and so and every session, you know, I'll I'll be sitting and and I don't |
+| `qwen3-asr-1.7b` | of all my fear and all of my, you know, like no way. And so, and and I keep coming too. I I walk in the door for session. I feel like I'm getting an infusion. Like I need an infusion, and and so and every session, you know, I'll be sitting and and I don't |
+| `qwen3-asr-1.7b+ctx` | of all my fear and all of my, you know, like no way. And so, and and I keep coming too. I I walk in the door for session. I feel like I'm getting an infusion. Like I need an infusion, and and so and every session, you know, I'll be sitting and and I don't |
+| `qwen3-asr-1.7b+vad` | of all my fear and all of my, you know, I like no way. And so, and and I keep coming to. I I walk in the door for session. I feel like I'm getting infusion, like I need an infusion, and and so and every session, you know, I'll be sitting and and I don't |
+| `qwen3-asr-1.7b+vad+terms` | of all my fear and all of my, you know, I like no way. And so, and and I keep coming to. I I walk in the door for session. I feel like I'm getting infusion, like I need an infusion, and and so and every session, you know, I'll be sitting and and I don't |
+| `whisper-large-v3` | of all my fear and all of my... You know, like, no way. And so, and I keep coming, too. I walk in the door for session. I feel like I'm getting an infusion, like I need an infusion. And so, and every session, you know, I'll be sitting, and I don't |
+| `whisper-large-v3+ctx` | of all my fear and all of my We'll be talking about ango, Sozan, and zmm .org. We'll be talking about ango, Sozan, |
+| `whisper-turbo` | of all my fear and all of my... You know, like, no way. And so, and I keep coming, too. I walk in the door for session. I feel like I'm getting an infusion, like I need an infusion. And so, and every session, you know, I'll be sitting, and I don't |
+| `whisper-turbo+ctx` | of all my fear and all of my... You know, like, no way. And so, and I keep coming, too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And so, and every Sashen, you know, I'll be sitting and I don't |
+
+**karma** — `33782_s02428` at 5:54 · Ron Hogen Green · 2010s · easy audio
+
+| System | Text |
+|---|---|
+| `legacy-whisper-cli` | to. Um, and that's our responsibility. And there's a karma from that. |
+| `parakeet-ft-v1+vad90` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `parakeet-v3` | to. Um and that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `parakeet-v3+boost0.3f` | to. Um, and that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `parakeet-v3+boost0.5` | to. Um, and that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `parakeet-v3+boost1` | to. Um and that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `qwen3-asr-1.7b` | to, and that's our responsibility. And there's a karma for that, and a karma came out of all of those things. |
+| `qwen3-asr-1.7b+ctx` | to, and that's our responsibility. And there's a karma for that, and a karma came out of all of those things. |
+| `qwen3-asr-1.7b+vad` | to, and that's our responsibility. And there's a karma for that, and karma came out of all of those things. |
+| `qwen3-asr-1.7b+vad+terms` | to, and that's our responsibility. And there's a karma for that, and karma came out of all of those things. |
+| `whisper-large-v3` | to. And that's our responsibility. And there's a karma from that. Karma came out of all of those things. |
+| `whisper-large-v3+ctx` | to. And that's our responsibility. And there's a karma from that. Karma came out of all of those things. |
+| `whisper-turbo` | to. And that's our responsibility. And there's a karma for that. Karma came out of all of those things. |
+| `whisper-turbo+ctx` | to. And that's our responsibility. And there's a karma for that. Karma came out of all of those things. |
+
+**Konrad Ryushin Marchaj** — `29973_s00810` at 4:32 · Konrad Ryushin Marchaj · 2010s · medium audio
+
+| System | Text |
+|---|---|
+| `legacy-whisper-cli` | through and expose the fallacy of all the laws of nature. As you can sense I was mentioning yesterday, every koan in a sense is |
+| `parakeet-ft-v1+vad90` | through and expose the fallacy of all the laws of nature. Mr. Vincenzo was mentioning yesterday, every koan in a sense is |
+| `parakeet-v3` | through and expose the fallacy of all the laws of nature. |
+| `parakeet-v3+boost0.3f` | through and expose the fallacy of all the laws of nature. |
+| `parakeet-v3+boost0.5` | through and expose the fallacy of all the laws of nature. |
+| `parakeet-v3+boost1` | through and expose the fallacy of all the laws of nature. |
+| `qwen3-asr-1.7b` | through and expose the fallacy of all the laws of nature. This reminds me, I was mentioning yesterday, every koan in a sense is |
+| `qwen3-asr-1.7b+ctx` | through and expose the fallacy of all the laws of nature. The Shoben Sensei was mentioning yesterday. Every koan, in a sense, is |
+| `qwen3-asr-1.7b+vad` | through and expose the falsity of all the laws of nature. The Sri Venanda was mentioning yesterday every koan in a sense is |
+| `qwen3-asr-1.7b+vad+terms` | through and expose the falsity of all the laws of nature. The Shubhendra was mentioning yesterday every koan in a sense is |
+| `whisper-large-v3` | through and expose the fallacy of all the laws of nature. As Ruben Sanza was mentioning yesterday, every koan, in a sense, is |
+| `whisper-large-v3+ctx` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo` | through and expose the fallacy of all the laws of nature. As you can sense, I was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+
+**Bodhidharma** — `31369_b00637` at 2:00 · John Daido Loori · 1980s · easy audio
+
+| System | Text |
+|---|---|
+| `legacy-whisper-cli` | it possible to listen to the buddhadharma the master replied the buddhadharma cannot be attained by following others that is one has to |
+| `parakeet-ft-v1+vad90` | it possible to listen to the Buddha Dharma? The master replied, the Buddha Dharma cannot be attained by following others. That is, one has to |
+| `parakeet-v3` | it possible to listen to the Buddha Dharma? The master replied, The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `parakeet-v3+boost0.3f` | it possible to listen to the Buddha Dharma? The master replied, The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `parakeet-v3+boost0.5` | it possible to listen to the Buddha Dharma? The master replied, The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `parakeet-v3+boost1` | it possible to listen to the Buddha Dharma? The master replied, The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `qwen3-asr-1.7b` | it possible to listen to the Buddha Dharma?" The master replied, "The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `qwen3-asr-1.7b+ctx` | it possible to listen to the Buddha Dharma?" The master replied, "The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `qwen3-asr-1.7b+vad` | it possible to listen to the Buddha Dharma?" The master replied, "The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `qwen3-asr-1.7b+vad+terms` | it possible to listen to the Buddha Dharma?" The master replied, "The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `whisper-large-v3` | it possible to listen to the Buddha Dharma? The master replied, The Buddha Dharma cannot be attained by following others. That is, one has to |
+| `whisper-large-v3+ctx` | it possible to listen to the Bodhidharma? The master replied, The Bodhidharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo` | it possible to listen to the Buddha Dharma? The master replied, the Buddha Dharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
 
 ## Agreement between systems
 
@@ -429,19 +460,19 @@ Word error rate of each row's output measured against each column's output, on s
 
 | | `legacy-whisper-cli` | `parakeet-ft-v1+vad90` | `parakeet-v3` | `parakeet-v3+boost0.3f` | `parakeet-v3+boost0.5` | `parakeet-v3+boost1` | `qwen3-asr-1.7b` | `qwen3-asr-1.7b+ctx` | `qwen3-asr-1.7b+vad` | `qwen3-asr-1.7b+vad+terms` | `whisper-large-v3` | `whisper-large-v3+ctx` | `whisper-turbo` | `whisper-turbo+ctx` |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `legacy-whisper-cli` | · | 6% | 9% | 9% | 9% | 8% | 9% | 9% | 9% | 11% | 7% | 15% | 7% | 9% |
-| `parakeet-ft-v1+vad90` | 7% | · | 4% | 5% | 4% | 4% | 6% | 7% | 6% | 8% | 6% | 14% | 6% | 7% |
-| `parakeet-v3` | 8% | 4% | · | 1% | 1% | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `parakeet-v3+boost0.3f` | 8% | 4% | 1% | · | 1% | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `parakeet-v3+boost0.5` | 8% | 4% | 1% | 1% | · | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `parakeet-v3+boost1` | 8% | 4% | 1% | 1% | 1% | · | 7% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `qwen3-asr-1.7b` | 9% | 6% | 8% | 8% | 8% | 8% | · | 3% | 4% | 6% | 7% | 15% | 8% | 9% |
-| `qwen3-asr-1.7b+ctx` | 9% | 7% | 9% | 9% | 9% | 8% | 3% | · | 5% | 6% | 8% | 16% | 9% | 9% |
-| `qwen3-asr-1.7b+vad` | 9% | 6% | 7% | 7% | 7% | 7% | 4% | 5% | · | 3% | 7% | 14% | 7% | 8% |
-| `qwen3-asr-1.7b+vad+terms` | 11% | 7% | 9% | 9% | 9% | 9% | 6% | 6% | 3% | · | 9% | 16% | 9% | 10% |
-| `whisper-large-v3` | 8% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 9% | · | 9% | 2% | 3% |
-| `whisper-large-v3+ctx` | 14% | 12% | 14% | 14% | 14% | 14% | 14% | 14% | 13% | 14% | 9% | · | 9% | 9% |
-| `whisper-turbo` | 7% | 6% | 7% | 7% | 7% | 7% | 7% | 8% | 7% | 9% | 2% | 10% | · | 2% |
+| `legacy-whisper-cli` | · | 6% | 9% | 9% | 8% | 8% | 9% | 9% | 9% | 10% | 7% | 15% | 7% | 8% |
+| `parakeet-ft-v1+vad90` | 7% | · | 5% | 5% | 5% | 5% | 6% | 7% | 6% | 7% | 6% | 13% | 6% | 7% |
+| `parakeet-v3` | 8% | 4% | · | 1% | 1% | 1% | 8% | 9% | 8% | 9% | 7% | 14% | 7% | 8% |
+| `parakeet-v3+boost0.3f` | 8% | 4% | 1% | · | 1% | 1% | 8% | 9% | 8% | 9% | 7% | 14% | 7% | 8% |
+| `parakeet-v3+boost0.5` | 8% | 4% | 1% | 1% | · | 1% | 8% | 9% | 7% | 9% | 7% | 14% | 7% | 8% |
+| `parakeet-v3+boost1` | 8% | 4% | 1% | 1% | 1% | · | 8% | 8% | 7% | 9% | 7% | 14% | 7% | 8% |
+| `qwen3-asr-1.7b` | 8% | 6% | 8% | 8% | 8% | 8% | · | 3% | 4% | 6% | 7% | 15% | 8% | 9% |
+| `qwen3-asr-1.7b+ctx` | 9% | 7% | 9% | 9% | 9% | 9% | 3% | · | 5% | 6% | 8% | 15% | 8% | 9% |
+| `qwen3-asr-1.7b+vad` | 8% | 6% | 8% | 8% | 7% | 7% | 4% | 5% | · | 2% | 7% | 14% | 7% | 8% |
+| `qwen3-asr-1.7b+vad+terms` | 10% | 7% | 9% | 9% | 9% | 9% | 6% | 6% | 2% | · | 9% | 15% | 9% | 9% |
+| `whisper-large-v3` | 8% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | · | 9% | 2% | 3% |
+| `whisper-large-v3+ctx` | 13% | 12% | 13% | 13% | 13% | 13% | 13% | 14% | 13% | 14% | 8% | · | 9% | 8% |
+| `whisper-turbo` | 7% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | 2% | 9% | · | 2% |
 | `whisper-turbo+ctx` | 8% | 7% | 8% | 8% | 8% | 8% | 8% | 9% | 8% | 9% | 3% | 9% | 2% | · |
 
 ## Clips with repetition loops

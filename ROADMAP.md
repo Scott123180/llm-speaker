@@ -62,9 +62,23 @@ Without a gold set, every later choice is a guess.
       _Done: 40 excerpts × 6 min (2 later excluded for unusable audio) + 76 non-speech clips, in
       `eval/goldset/manifest.json`. Drafts come from the legacy transcripts, so the set isn't anchored
       to any new system._
-- [ ] **Correct the references** ← **next step (owner)**: copy drafts from `eval/goldset/drafts/` to
-      `eval/goldset/refs/` and fix them while listening. 15–20 clips give a first usable WER;
-      all 38 take about 8–12 h. Then run `uv run python eval/report.py`.
+- [x] **Book set:** 12 talks from 1981–85 are also published, edited, in *Mountain Record of Zen Talks*
+      (1988). `eval/book.py` matches chapters to recordings by shared phrases and adds a 6-min window per
+      talk where the book is densest (`"set": "book"` in the manifest). The book text stays in
+      `data/book/`, which git ignores.
+- [x] **Silver references** (automatic, no human), built by `eval/silver.py`:
+  - a majority vote across one plain system per model family
+  - glossary spelling fixes and tie-breaks
+  - book confirmation for the book clips
+  - per-word confidence and flagged regions
+  - leave-one-family-out WER in the report
+- [x] **Viewer:** `uv run python eval/viewer.py` shows each system side by side with the reference, its
+      flags, the book passage and the audio.
+- [ ] More voter families make silver references stronger. Only 3 run locally (Whisper, Parakeet, Qwen);
+      the A10 cloud run adds Granite, VibeVoice and Nemotron.
+- [ ] Optional, to measure errors every system shares: hand-correct a few clips
+      (`eval/goldset/drafts/` → `eval/goldset/refs/`, see `eval/CONVENTIONS.md`), starting with the
+      viewer's most-flagged clips.
 - [ ] **Confirm the non-speech clips by ear**: a handful trigger output in almost every system and
       probably contain faint speech or chanting. Set `verified` in the manifest.
 - [x] Transcription conventions doc (`eval/CONVENTIONS.md`)

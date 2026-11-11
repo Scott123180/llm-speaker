@@ -253,7 +253,7 @@ Upali,figure,sa,,,
 Sudhana,figure,sa,,,pilgrim of the Avatamsaka
 Vimalakirti,figure,sa,Yuima,Vimla Kirti;Vermilakurte;Vimalakurte;Virmala;Kirti,
 Mara,figure,sa,,,
-Indra,figure,sa,Indra's Net,,
+Indra,figure,sa,Indra's Net;Diamond Net of Indra,,
 Shobogenzo,text,ja,Treasury of the True Dharma Eye;Shobo Genzo,Shovogenzo>Shobogenzo;Shobo Ginzo>Shobogenzo;Genzo>Shobogenzo,Dogen's masterwork
 Shinji Shobogenzo,text,ja,True Dharma Eye;Dogen's Three Hundred Koans,,koan collection with Daido Loori's commentary; 'Shinji' alone may be Linda Shinji Hoffman
 Mumonkan,text,ja,Gateless Gate;Gateless Barrier;Wumenguan,Mumankan,koan collection
@@ -309,7 +309,7 @@ Platform Sutra,text,en,Sutra of Hui-neng,,
 Enmei Jukku Kannon Gyo,liturgy,ja,Ten Verse Kannon Sutra of Timeless Life;Emmei Jukku Kannon Gyo,Jukku,
 Sandokai,liturgy,ja,Identity of Relative and Absolute;Harmony of Difference and Equality,,
 Hokyo Zanmai,liturgy,ja,Jewel Mirror Samadhi;Song of the Jewel Mirror Samadhi,,
-Shinjinmei,liturgy,ja,Faith in Mind;Affirming Faith in Mind,,
+Shinjinmei,liturgy,ja,Faith in Mind;Affirming Faith in Mind;Faith Mind Sutra;Hsin Hsin Ming;Xinxin Ming,,
 Shodoka,liturgy,ja,Song of Enlightenment,,
 Zazen Wasan,liturgy,ja,Hakuin's Song of Zazen;Song of Zazen,,
 Dai Hi Shin Dharani,liturgy,ja,Great Compassionate Heart Dharani,,
@@ -512,7 +512,7 @@ Rochester Zen Center,place,en,,,
 Naropa University,place,en,,,
 Plum Village,place,en,,,
 Mount Wutai,place,zh,Wutaishan;Wutai,,
-Vulture Peak,place,en,Gridhrakuta,,
+Vulture Peak,place,en,Gridhrakuta;Mount Gridhrakuta,,
 Bodh Gaya,place,sa,Bodhgaya,,
 Shaolin,place,zh,,,
 Mount Hiei,place,ja,,,
@@ -686,3 +686,5 @@ Pali Canon,text,pi,,,
 Bloodstream Sermon,text,en,,,Bodhidharma
 Iron Flute,text,en,,,koan collection
 papanca,doctrine,pi,papañca,Papanka,mental proliferation
+Ingen,lineage-chinese,ja,Yinyuan Longqi;Ingen Ryuki,,founder of the Obaku school in Japan; spelling per Mountain Record of Zen Talks glossary (1988)
+sumi-e,practice,ja,sumie,,ink painting; spelling per Mountain Record of Zen Talks glossary (1988)

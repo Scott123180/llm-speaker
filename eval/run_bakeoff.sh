@@ -31,7 +31,9 @@ for s in $SYSTEMS; do
       $R              >>"$LOG/parakeet.log" 2>&1
       $R --boost 0.5  >>"$LOG/parakeet.log" 2>&1
       $R --boost 1.0  >>"$LOG/parakeet.log" 2>&1
-      $R --boost 0.3 --hard-only >>"$LOG/parakeet.log" 2>&1 ;;
+      $R --boost 0.3 --hard-only >>"$LOG/parakeet.log" 2>&1
+      fetch asr/envs/nemo freetranscribe/parakeet-ft-v1
+      $R --model freetranscribe/parakeet-ft-v1 --cut-sec 90 >>"$LOG/parakeet.log" 2>&1 ;;
     qwen)
       fetch asr/envs/qwen Qwen/Qwen3-ASR-1.7B
       R="uv run --project asr/envs/qwen python asr/run_qwen.py"

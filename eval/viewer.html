@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Silver Reference Viewer</title>
+<style>
+/* Layout: clip list | reference + side-by-side | details (flags, word detail, book passage) */
+:root {
+  --bg: #f5f6f4; --panel: #ffffff; --fg: #1d2420; --muted: #5d6762; --line: #dfe3e0; --accent: #2f5d50;
+  --hi-bg: #e3eeea; --med: #a86b00; --med-bg: #fbefd2; --low: #b3261e; --low-bg: #fbe1de;
+  --gl: #2457a6; --gl-bg: #e2ebfa; --ok: #1d7a46; --now: #fff2a8; --sel: #cfe6dc;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #121614; --panel: #1a1f1d; --fg: #e5eae7; --muted: #9aa5a0; --line: #2c3431; --accent: #8cc4b0;
+    --hi-bg: #1f2d28; --med: #e5b45a; --med-bg: rgba(229, 180, 90, 0.20); --low: #f4a097; --low-bg: rgba(240, 138, 128, 0.24);
+    --gl: #8fb3f0; --gl-bg: #1b2538; --ok: #6fcf97; --now: rgba(255, 226, 120, 0.30); --sel: rgba(140, 196, 176, 0.32);
+    color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--sans); display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 340px; grid-template-rows: auto minmax(0, 1fr); }
+header { grid-column: 1 / -1; display: flex; gap: 16px; align-items: center; padding: 10px 16px;
+  border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+header h1 { font-size: 15px; margin: 0; }
+header .muted { font-size: 12px; }
+.muted { color: var(--muted); }
+select, input, button { font: inherit; color: inherit; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 3px 8px; }
+button { cursor: pointer; }
+button:focus-visible, .tok:focus-visible, .clip:focus-visible, .flag:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+#list { overflow: auto; border-right: 1px solid var(--line); background: var(--panel); }
+.clip { padding: 8px 12px; border-bottom: 1px solid var(--line); cursor: pointer; display: grid; gap: 2px; }
+.clip:hover { background: var(--hi-bg); }
+.clip.sel { background: var(--hi-bg); box-shadow: inset 3px 0 0 var(--accent); }
+.clip .id { font-family: var(--mono); font-size: 12px; display: flex; justify-content: space-between; gap: 8px; }
+.clip .meta { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge { font-size: 11px; border-radius: 999px; padding: 0 7px; background: var(--low-bg); color: var(--low); font-family: var(--sans); }
+.badge.zero { background: var(--hi-bg); color: var(--ok); }
+.chip { display: inline-block; font-size: 11px; border-radius: 999px; padding: 0 7px; background: var(--hi-bg); color: var(--accent); margin-right: 4px; }
+main { overflow: auto; padding: 14px 18px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+#head h2 { margin: 0; font-size: 18px; }
+#player { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: sticky; top: -14px; z-index: 2;
+  background: var(--bg); padding: 8px 0; }
+audio { width: min(520px, 100%); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.panel h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+#ref { font: 16px/1.85 var(--serif); }
+.tok { cursor: pointer; border-radius: 3px; padding: 0 1px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.tok:focus { outline: none; }
+.tok.medium { background: var(--med-bg); }
+.tok.low { background: var(--low-bg); color: var(--low); font-weight: 600; }
+.tok.gloss { text-decoration: underline dotted var(--gl) 2px; text-underline-offset: 3px; }
+.tok.bookset { text-decoration: underline solid var(--ok) 2px; text-underline-offset: 3px; }
+.tok.drop { color: var(--low); font-family: var(--sans); font-size: 12px; }
+.tok.now { background-color: var(--now); }
+.tok.sel { background-color: var(--sel); box-shadow: inset 0 -2px 0 var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.legend span { display: inline-flex; gap: 4px; align-items: center; }
+.sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; }
+#sbs-wrap { overflow-x: auto; }
+#sbs { border-collapse: collapse; width: 100%; font-size: 13px; }
+#sbs td { border-top: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+#sbs td.sys { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; width: 1%; }
+#sbs .diff { background: var(--med-bg); border-radius: 2px; }
+#sysbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+#sysbar label { font-family: var(--mono); font-size: 11px; display: inline-flex; gap: 4px; align-items: center;
+  border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; cursor: pointer; }
+aside { overflow: auto; border-left: 1px solid var(--line); background: var(--panel); padding: 12px; display: grid; gap: 12px; align-content: start; }
+aside h3 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+#flags { display: grid; gap: 4px; max-height: 40vh; overflow: auto; }
+.flag { text-align: left; border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; background: var(--panel); display: grid; gap: 2px; }
+.flag:hover, .flag.sel { background: var(--hi-bg); }
+.flag .t { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+#detail table { border-collapse: collapse; width: 100%; font-size: 13px; }
+#detail td { border-top: 1px solid var(--line); padding: 3px 4px; }
+#detail td:first-child { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+#book { font: 14px/1.6 var(--serif); }
+#book mark { background: var(--hi-bg); color: var(--fg); border-radius: 2px; outline: 1px solid var(--accent); }
+.kbd { font-family: var(--mono); font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+@media (max-width: 1100px) { body { grid-template-columns: 220px minmax(0, 1fr); } aside { grid-column: 2; border-left: 0; } }
+@media (max-width: 760px) { body { display: block; } #list { max-height: 30vh; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Silver reference viewer</h1>
+  <label>Set <select id="setf"><option value="">all</option><option value="stratified">stratified</option><option value="book">book</option></select></label>
+  <label>Sort <select id="sortf"><option value="flags">most flags</option><option value="id">clip id</option></select></label>
+  <label><input type="checkbox" id="follow" checked> follow audio</label>
+  <span class="muted">Keys: <span class="kbd">space</span> play/pause · <span class="kbd">n</span>/<span class="kbd">p</span> next/prev flag · <span class="kbd">←</span>/<span class="kbd">→</span> 5 s</span>
+</header>
+<nav id="list" aria-label="Clips"></nav>
+<main>
+  <div id="head"></div>
+  <div id="player"><audio id="audio" controls preload="metadata"></audio>
+    <label>Speed <select id="rate"><option>0.75</option><option selected>1</option><option>1.25</option><option>1.5</option></select></label>
+    <span id="clock" class="muted"></span></div>
+  <section class="panel">
+    <h3>Silver reference</h3>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--med-bg)"></i>medium: only a narrow majority agrees</span>
+      <span><i class="sw" style="background:var(--low-bg)"></i>low: tie, weak vote, or the book doesn't settle it</span>
+      <span><u style="text-decoration:underline dotted var(--gl) 2px">word</u> glossary spelling</span>
+      <span><u style="text-decoration:underline solid var(--ok) 2px">word</u> settled by the book</span>
+      <span style="color:var(--low)">⟂ dropped word some systems heard</span>
+    </div>
+    <div id="ref"></div>
+  </section>
+  <section class="panel">
+    <h3>Side by side at the playhead <span class="muted" style="text-transform:none;letter-spacing:0">(words not in the reference nearby are highlighted)</span></h3>
+    <div id="sysbar"></div>
+    <div id="sbs-wrap"><table id="sbs"></table></div>
+  </section>
+</main>
+<aside>
+  <section><h3>Flags <span id="nflags" class="muted"></span></h3><div id="flags"></div></section>
+  <section><h3>Selected word</h3><div id="detail" class="muted">Click a word or a flag.</div></section>
+  <section id="booksec" hidden><h3>Book passage <span id="bookcov" class="muted"></span></h3><div id="book"></div></section>
+</aside>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nrm = w => String(w || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+const mmss = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+const st = { index: null, data: null, clip: null, sel: null, shown: new Set(), timesCache: {} };
+const audio = $("#audio");
+
+function store(k, v) { try { localStorage.setItem("silverviewer." + k, JSON.stringify(v)); } catch (e) {} }
+function recall(k, d) { try { const v = localStorage.getItem("silverviewer." + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+
+async function init() {
+  st.index = await (await fetch("index.json")).json();
+  $("#setf").value = recall("set", ""); $("#sortf").value = recall("sort", "flags");
+  $("#setf").onchange = () => { store("set", $("#setf").value); renderList(); };
+  $("#sortf").onchange = () => { store("sort", $("#sortf").value); renderList(); };
+  $("#rate").onchange = () => { audio.playbackRate = +$("#rate").value; };
+  renderList();
+  const first = location.hash.slice(1) || recall("clip", null) || st.index.clips[0]?.id;
+  if (first) loadClip(first);
+}
+
+function renderList() {
+  const f = $("#setf").value;
+  let clips = st.index.clips.filter(c => !f || c.set === f);
+  clips = $("#sortf").value === "flags" ? clips.sort((a, b) => b.flags - a.flags) : clips.sort((a, b) => a.id.localeCompare(b.id));
+  $("#list").innerHTML = clips.map(c => `<div class="clip ${c.id === st.clip ? "sel" : ""}" tabindex="0" data-id="${c.id}">
+    <div class="id"><span>${c.id}</span><span class="badge ${c.flags ? "" : "zero"}">${c.flags} flags</span></div>
+    <div class="meta">${esc(c.speaker || "")} · ${esc(c.era || "")} · ${esc(c.difficulty || "")}${c.set === "book" ? " · book" : ""}</div>
+    <div class="meta">${esc(c.chapter || c.title || "")}</div></div>`).join("");
+  $("#list").querySelectorAll(".clip").forEach(el => {
+    el.onclick = () => loadClip(el.dataset.id);
+    el.onkeydown = e => { if (e.key === "Enter") loadClip(el.dataset.id); };
+  });
+}
+
+async function loadClip(id) {
+  st.clip = id; store("clip", id); history.replaceState(null, "", "#" + id);
+  st.data = await (await fetch(`clips/${id}.json`)).json();
+  st.sel = null; st.timesCache = {};
+  const d = st.data, c = d.clip, s = d.silver;
+  audio.src = `/audio/${id}.wav`; audio.playbackRate = +$("#rate").value;
+  const voters = s ? s.voters : [];
+  const saved = recall("shown", null);
+  st.shown = new Set((saved || [...voters, "whisper-turbo+ctx", "legacy-whisper-cli"]).filter(x => d.systems[x]));
+  if (!st.shown.size) Object.keys(d.systems).slice(0, 4).forEach(x => st.shown.add(x));
+  const stats = s ? s.stats : {};
+  $("#head").innerHTML = `<h2>${esc(c.title || id)}</h2>
+    <div class="muted">${id} · ${esc(c.speaker || "")} · ${c.year || c.era || ""} · ${esc(c.difficulty || "")} audio${c.book_chapter ? ` · book chapter “${esc(c.book_chapter)}”` : ""}</div>
+    <div style="margin-top:6px">${voters.map(v => `<span class="chip">${esc(v)}</span>`).join("")}
+    <span class="muted">${s ? `${stats.words} words · ${Math.round(100 * stats.high / Math.max(1, stats.words))}% high confidence · pivot ${esc(s.pivot)}` : "no silver reference yet"}</span></div>`;
+  renderList(); renderRef(); renderFlags(); renderSysbar(); renderSbs(0); renderBook(null);
+  $("#detail").innerHTML = '<span class="muted">Click a word or a flag.</span>';
+}
+
+function tokClass(t) {
+  if (!t.n) return "tok drop";
+  let k = "tok " + (t.conf === "high" ? "" : t.conf);
+  if (t.how === "glossary" || t.how === "glossary-tiebreak") k += " gloss";
+  if (t.book === "settles") k += " bookset";
+  return k;
+}
+
+function renderRef() {
+  const s = st.data.silver;
+  if (!s) { $("#ref").innerHTML = '<span class="muted">Run eval/silver.py build.</span>'; return; }
+  $("#ref").innerHTML = s.tokens.map((t, i) => `<span class="${tokClass(t)}" data-i="${i}">${t.n ? esc(t.w) : "⟂"}</span>`).join(" ");
+  $("#ref").onclick = e => { const el = e.target.closest(".tok"); if (el) selectTok(+el.dataset.i, true); };
+}
+
+function renderFlags() {
+  const s = st.data.silver, regs = s ? s.regions : [];
+  $("#nflags").textContent = `(${regs.length})`;
+  $("#flags").innerHTML = regs.map((r, k) => `<button class="flag" data-k="${k}"><span class="t">${mmss(r.t)} · ${r.kinds.map(esc).join(", ")}</span>
+    <span>${esc(r.text || "(dropped word)")}</span></button>`).join("") || '<span class="muted">No flags: every word is backed by a majority, the glossary or the book.</span>';
+  $("#flags").querySelectorAll(".flag").forEach(b => b.onclick = () => { st.flag = +b.dataset.k; selectTok(regs[st.flag].start, true); });
+}
+
+function selectTok(i, seek) {
+  const s = st.data.silver, t = s.tokens[i];
+  st.sel = i;
+  document.querySelectorAll(".tok.sel").forEach(e => e.classList.remove("sel"));
+  const el = $(`.tok[data-i="${i}"]`); if (el) { el.classList.add("sel"); el.scrollIntoView({ block: "nearest" }); }
+  if (seek) { audio.currentTime = Math.max(0, t.t - 1.5); }
+  const cands = t.cands ? Object.entries(t.cands) : [];
+  const how = { vote: "majority vote", tie: "tie (medoid system's word kept)", insert: "majority inserted",
+    drop: "dropped by majority", glossary: `glossary spelling (heard “${esc(t.was || "")}”)`,
+    "glossary-tiebreak": "only candidate that is a known term", book: `settled by the book (was “${esc(t.was || "")}”)`, single: "single voter" }[t.how] || t.how;
+  const bookTxt = { confirms: "book has the same word", settles: "book settled the dispute", unresolved: "book doesn't settle it",
+    differs: `book has “${esc(t.book_word || "")}” here (all systems agree)` }[t.book] || "";
+  $("#detail").innerHTML = `<div style="font:18px var(--serif)">${t.n ? esc(t.w) : "⟂ (dropped)"}</div>
+    <div class="muted">${mmss(t.t)} · ${t.conf} confidence · ${Math.round(100 * t.agree)}% of voters · ${how}${bookTxt ? " · " + bookTxt : ""}</div>
+    ${cands.length ? `<table>${cands.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v) || '<span class="muted">(nothing)</span>'}</td></tr>`).join("")}</table>` : '<div class="muted">All voters agree.</div>'}
+    <button id="playhere" style="margin-top:6px">▶ play from here</button>`;
+  $("#playhere").onclick = () => { audio.currentTime = Math.max(0, t.t - 1.5); audio.play(); };
+  renderBook(t);
+  renderSbs(t.t);
+}
+
+function renderBook(t) {
+  const b = st.data.silver && st.data.silver.book;
+  $("#booksec").hidden = !(b && b.region);
+  if (!b || !b.region) return;
+  $("#bookcov").textContent = `(${Math.round(100 * b.coverage)}% of words match)`;
+  let j = t && t.bj != null ? t.bj : null;
+  if (j == null) {  // nearest aligned token to the playhead
+    const toks = st.data.silver.tokens.filter(x => x.bj != null);
+    const now = audio.currentTime || 0;
+    let best = toks[0]; for (const x of toks) if (x.t <= now) best = x;
+    j = best ? best.bj : 0;
+  }
+  const a = Math.max(0, j - 45), z = Math.min(b.region.length, j + 45);
+  $("#book").innerHTML = b.region.slice(a, z).map((w, k) => a + k === j ? `<mark>${esc(w)}</mark>` : esc(w)).join(" ");
+}
+
+function renderSysbar() {
+  const names = Object.keys(st.data.systems);
+  $("#sysbar").innerHTML = names.map(n => `<label><input type="checkbox" value="${esc(n)}" ${st.shown.has(n) ? "checked" : ""}>${esc(n)}</label>`).join("");
+  $("#sysbar").querySelectorAll("input").forEach(cb => cb.onchange = () => {
+    cb.checked ? st.shown.add(cb.value) : st.shown.delete(cb.value);
+    store("shown", [...st.shown]); renderSbs(audio.currentTime);
+  });
+}
+
+function sysWords(name) {  // [[t, word]] with interpolated times for systems without word timestamps
+  if (st.timesCache[name]) return st.timesCache[name];
+  const o = st.data.systems[name]; let out = [];
+  if (o.words) out = o.words.map(([t, w]) => [t, String(w).trim()]);
+  else for (const s of o.segments) {
+    const parts = s.text.split(/\s+/).filter(Boolean), span = Math.max(0, s.end - s.start);
+    parts.forEach((p, k) => out.push([s.start + span * k / Math.max(1, parts.length), p]));
+  }
+  return (st.timesCache[name] = out);
+}
+
+function renderSbs(now) {
+  const s = st.data.silver, a = now - 4, z = now + 10;
+  const refNear = new Set((s ? s.tokens : []).filter(t => t.t >= a - 6 && t.t <= z + 6).map(t => t.n));
+  const rows = [];
+  if (s) rows.push(`<tr><td class="sys">silver reference</td><td>${s.tokens.filter(t => t.n && t.t >= a && t.t <= z).map(t => `<span class="${tokClass(t)}">${esc(t.w)}</span>`).join(" ")}</td></tr>`);
+  for (const n of Object.keys(st.data.systems)) {
+    if (!st.shown.has(n)) continue;
+    const ws = sysWords(n).filter(([t]) => t >= a && t <= z);
+    rows.push(`<tr><td class="sys">${esc(n)}</td><td>${ws.map(([, w]) => refNear.has(nrm(w)) || !nrm(w) ? esc(w) : `<span class="diff">${esc(w)}</span>`).join(" ") || '<span class="muted">—</span>'}</td></tr>`);
+  }
+  $("#sbs").innerHTML = rows.join("");
+}
+
+let lastT = -1;
+audio.ontimeupdate = () => {
+  const now = audio.currentTime; $("#clock").textContent = mmss(now);
+  if (Math.abs(now - lastT) < 0.4) return; lastT = now;
+  const s = st.data && st.data.silver; if (!s) return;
+  if ($("#follow").checked) {
+    let cur = -1; s.tokens.forEach((t, i) => { if (t.n && t.t <= now) cur = i; });
+    document.querySelectorAll(".tok.now").forEach(e => e.classList.remove("now"));
+    const el = cur >= 0 && $(`#ref .tok[data-i="${cur}"]`); if (el) { el.classList.add("now"); el.scrollIntoView({ block: "nearest" }); }
+    if (st.sel == null) { renderSbs(now); renderBook(null); }
+  }
+};
+audio.onseeked = () => { lastT = -1; if (st.sel == null) renderSbs(audio.currentTime); };
+document.addEventListener("keydown", e => {
+  if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+  const regs = st.data && st.data.silver ? st.data.silver.regions : [];
+  if (e.key === " ") { e.preventDefault(); audio.paused ? audio.play() : audio.pause(); }
+  else if (e.key === "n" && regs.length) { st.flag = Math.min(regs.length - 1, (st.flag ?? -1) + 1); selectTok(regs[st.flag].start, true); }
+  else if (e.key === "p" && regs.length) { st.flag = Math.max(0, (st.flag ?? 1) - 1); selectTok(regs[st.flag].start, true); }
+  else if (e.key === "ArrowRight") audio.currentTime += 5;
+  else if (e.key === "ArrowLeft") audio.currentTime = Math.max(0, audio.currentTime - 5);
+  else if (e.key === "Escape") { st.sel = null; document.querySelectorAll(".tok.sel").forEach(x => x.classList.remove("sel")); }
+});
+init();
+</script>
+</body>
+</html>

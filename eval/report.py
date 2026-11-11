@@ -343,7 +343,35 @@ def fmt(x, d=1):
     return "—" if x is None else f"{x:.{d}f}"
 
 
-def write_report(manifest, systems, refs, M, agree, anchor, ex):
+def write_silver(w, names, SV):
+    """Accuracy against automatic (silver) references; see eval/silver.py."""
+    if not SV:
+        return
+    w("## Accuracy against silver references (automatic, no human)")
+    w("")
+    w("Each speech clip's reference is built without a human, by `eval/silver.py`:")
+    w("- **Vote:** a word-level majority vote across one plain system per model family.")
+    w("- **Glossary:** known misheard spellings are corrected.")
+    w("- **Book:** for the 12 *book* clips, disputed words are settled against Daido Roshi's edited talks.")
+    w("")
+    w("**No system grades itself.** Each system is scored against a reference rebuilt *without its own family*.")
+    w("The *voters* column shows how many families that reference used, and with fewer than about 4 the reference")
+    w("is weak.")
+    w("")
+    w("**Errors every system makes go unseen** unless the glossary or the book catches them. Treat these numbers")
+    w("as a ranking aid until corrected references exist. Browse the flagged spots with `uv run python eval/viewer.py`.")
+    w("")
+    w("| System | Silver WER (all) | substitutions / deletions / insertions | Stratified set | Book set | Voters |")
+    w("|---|---|---|---|---|---|")
+    for s in sorted((n for n in names if n in SV), key=lambda n: SV[n]["all"]["wer"] if SV[n]["all"]["wer"] is not None else 9):
+        r = SV[s]
+        f = lambda k: pct(r[k]["wer"]) if k in r and r[k]["wer"] is not None else "—"
+        a = r["all"]
+        w(f"| `{s}` | {f('all')} | {pct(a['sub'])} / {pct(a['del'])} / {pct(a['ins'])} | {f('stratified')} | {f('book')} | {a['voters']} |")
+    w("")
+
+
+def write_report(manifest, systems, refs, M, agree, anchor, ex, SV=None):
     names = order(systems)
     speech = [c for c in manifest if c["kind"] == "speech"]
     nonspeech = [c for c in manifest if c["kind"] == "nonspeech"]
@@ -453,6 +481,8 @@ def write_report(manifest, systems, refs, M, agree, anchor, ex):
                 w(f"- `{s}`: {100 * d:+.1f} points (CI {100 * ci[0]:+.1f} to {100 * ci[1]:+.1f})")
         w("")
 
+    write_silver(w, names, SV)
+
     w("## Effect of per-talk context")
     w("")
     # pair each "+variant" with the longest other system name it extends
@@ -559,11 +589,18 @@ def main():
     gloss = Glossary(REPO / "glossary" / "glossary.csv", load_dictionary())
     M, agree = compute(manifest, systems, refs, gloss)
     anchor, ex = examples(manifest, systems, gloss)
-    write_report(manifest, systems, refs, M, agree, anchor, ex)
+    try:
+        sys.path.insert(0, str(REPO / "eval"))
+        import silver
+        SV = silver.score(manifest, systems, normalize=norm)
+    except Exception as e:  # silver refs are optional
+        print(f"silver references skipped: {e}", file=sys.stderr)
+        SV = None
+    write_report(manifest, systems, refs, M, agree, anchor, ex, SV)
     METRICS.parent.mkdir(parents=True, exist_ok=True)
     slim = {s: {k: v for k, v in m.items() if k != "ref"} | (
         {"ref": {k: v for k, v in m["ref"].items() if k != "rows"}} if "ref" in m else {}) for s, m in M.items()}
-    METRICS.write_text(json.dumps({"systems": slim, "refs": len(refs),
+    METRICS.write_text(json.dumps({"systems": slim, "refs": len(refs), "silver": SV,
                                    "agreement": {f"{a} vs {b}": v for (a, b), v in agree.items()}},
                                   indent=1, default=str))
     print(f"wrote {REPORT} ({len(systems)} systems, {len(refs)} references)", file=sys.stderr)
