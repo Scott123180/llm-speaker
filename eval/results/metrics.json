@@ -61,6 +61,77 @@
     "has_word_timestamps": false
    }
   },
+  "parakeet-ft-v1+vad90": {
+   "run": {
+    "system": "parakeet-ft-v1+vad90",
+    "model": "freetranscribe/parakeet-ft-v1",
+    "params": {
+     "decoding": "greedy_batch (TDT label-looping)",
+     "attention": "rel_pos_local_attn [256,256]",
+     "cut": "VAD spans <= 90s",
+     "context": null
+    },
+    "device": "cuda",
+    "started": "2026-11-10 19:59:46",
+    "clips": 116,
+    "audio_sec": 16600.54999999997,
+    "wall_sec": 78.62747144699097,
+    "load_sec": 14.6,
+    "rtfx": 211.1,
+    "gpu_peak_mb": 4181,
+    "ram_peak_mb": 6063,
+    "finished": "2026-11-10 20:01:20"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 4,
+    "rate": 0.05263157894736842,
+    "words_total": 6,
+    "phrases": [
+     [
+      "Yeah",
+      2
+     ],
+     [
+      "Thank you.",
+      1
+     ],
+     [
+      "Sent be",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 38,
+    "minutes": 227.15449999999998,
+    "words_per_min": 115.8858838367719,
+    "gloss_valid": 260,
+    "gloss_misheard": 49,
+    "gloss_misheard_share": 0.15857605177993528,
+    "top_misheard": [
+     "gasho",
+     "dogan",
+     "Yakujo",
+     "Mizumi",
+     "Mayakaya Shapa",
+     "Shapa",
+     "kohan",
+     "Orioki",
+     "Zhao",
+     "Secho",
+     "Ingo",
+     "Huiko"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 12.55128399939219,
+    "has_word_timestamps": true
+   }
+  },
   "parakeet-v3": {
    "run": {
     "system": "parakeet-v3",
@@ -999,6 +1070,7 @@
  },
  "refs": 0,
  "agreement": {
+  "legacy-whisper-cli vs parakeet-ft-v1+vad90": 0.061737523105360445,
   "legacy-whisper-cli vs parakeet-v3": 0.08662631123810956,
   "legacy-whisper-cli vs parakeet-v3+boost0.3f": 0.08643136664659844,
   "legacy-whisper-cli vs parakeet-v3+boost0.5": 0.08535118062866597,
@@ -1011,7 +1083,21 @@
   "legacy-whisper-cli vs whisper-large-v3+ctx": 0.15485553608541505,
   "legacy-whisper-cli vs whisper-turbo": 0.0727947364394461,
   "legacy-whisper-cli vs whisper-turbo+ctx": 0.0860348162475822,
+  "parakeet-ft-v1+vad90 vs legacy-whisper-cli": 0.07462740953977334,
+  "parakeet-ft-v1+vad90 vs parakeet-v3": 0.043501146745873596,
+  "parakeet-ft-v1+vad90 vs parakeet-v3+boost0.3f": 0.04504063816977724,
+  "parakeet-ft-v1+vad90 vs parakeet-v3+boost0.5": 0.04496916829598436,
+  "parakeet-ft-v1+vad90 vs parakeet-v3+boost1": 0.04349295774647887,
+  "parakeet-ft-v1+vad90 vs qwen3-asr-1.7b": 0.06457991344575437,
+  "parakeet-ft-v1+vad90 vs qwen3-asr-1.7b+ctx": 0.07361440426793124,
+  "parakeet-ft-v1+vad90 vs qwen3-asr-1.7b+vad": 0.05783168725825228,
+  "parakeet-ft-v1+vad90 vs qwen3-asr-1.7b+vad+terms": 0.07537335501996155,
+  "parakeet-ft-v1+vad90 vs whisper-large-v3": 0.06422476746867553,
+  "parakeet-ft-v1+vad90 vs whisper-large-v3+ctx": 0.13729165817677982,
+  "parakeet-ft-v1+vad90 vs whisper-turbo": 0.06063040318261801,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx": 0.07261121856866538,
   "parakeet-v3 vs legacy-whisper-cli": 0.08395583573224502,
+  "parakeet-v3 vs parakeet-ft-v1+vad90": 0.03944547134935305,
   "parakeet-v3 vs parakeet-v3+boost0.3f": 0.009933774834437087,
   "parakeet-v3 vs parakeet-v3+boost0.5": 0.01116709279590916,
   "parakeet-v3 vs parakeet-v3+boost1": 0.011455399061032864,
@@ -1024,6 +1110,7 @@
   "parakeet-v3 vs whisper-turbo": 0.07183842093183383,
   "parakeet-v3 vs whisper-turbo+ctx": 0.08197292069632495,
   "parakeet-v3+boost0.3f vs legacy-whisper-cli": 0.08370076157854461,
+  "parakeet-v3+boost0.3f vs parakeet-ft-v1+vad90": 0.04088724584103512,
   "parakeet-v3+boost0.3f vs parakeet-v3": 0.009925931496033387,
   "parakeet-v3+boost0.3f vs parakeet-v3+boost0.5": 0.012295081967213115,
   "parakeet-v3+boost0.3f vs parakeet-v3+boost1": 0.012507042253521127,
@@ -1036,6 +1123,7 @@
   "parakeet-v3+boost0.3f vs whisper-turbo": 0.0719531787927473,
   "parakeet-v3+boost0.3f vs whisper-turbo+ctx": 0.08177949709864603,
   "parakeet-v3+boost0.5 vs legacy-whisper-cli": 0.08271690412855737,
+  "parakeet-v3+boost0.5 vs parakeet-ft-v1+vad90": 0.04077634011090573,
   "parakeet-v3+boost0.5 vs parakeet-v3": 0.011166672933037561,
   "parakeet-v3+boost0.5 vs parakeet-v3+boost0.3f": 0.012304334738109572,
   "parakeet-v3+boost0.5 vs parakeet-v3+boost1": 0.011643192488262911,
@@ -1048,6 +1136,7 @@
   "parakeet-v3+boost0.5 vs whisper-turbo": 0.07095861066483054,
   "parakeet-v3+boost0.5 vs whisper-turbo+ctx": 0.08015473887814313,
   "parakeet-v3+boost1 vs legacy-whisper-cli": 0.0821338774915279,
+  "parakeet-v3+boost1 vs parakeet-ft-v1+vad90": 0.039482439926062846,
   "parakeet-v3+boost1 vs parakeet-v3": 0.011467458735947664,
   "parakeet-v3+boost1 vs parakeet-v3+boost0.3f": 0.012530102347983142,
   "parakeet-v3+boost1 vs parakeet-v3+boost0.5": 0.011655888103474206,
@@ -1060,6 +1149,7 @@
   "parakeet-v3+boost1 vs whisper-turbo": 0.07004054777752276,
   "parakeet-v3+boost1 vs whisper-turbo+ctx": 0.08019342359767892,
   "qwen3-asr-1.7b vs legacy-whisper-cli": 0.08621506395073425,
+  "qwen3-asr-1.7b vs parakeet-ft-v1+vad90": 0.05707948243992606,
   "qwen3-asr-1.7b vs parakeet-v3": 0.07658758506598488,
   "qwen3-asr-1.7b vs parakeet-v3+boost0.3f": 0.0769491270319085,
   "qwen3-asr-1.7b vs parakeet-v3+boost0.5": 0.07651526545345165,
@@ -1072,6 +1162,7 @@
   "qwen3-asr-1.7b vs whisper-turbo": 0.0757019355825874,
   "qwen3-asr-1.7b vs whisper-turbo+ctx": 0.08553191489361703,
   "qwen3-asr-1.7b+ctx vs legacy-whisper-cli": 0.09277411361731588,
+  "qwen3-asr-1.7b+ctx vs parakeet-ft-v1+vad90": 0.06524953789279113,
   "qwen3-asr-1.7b+ctx vs parakeet-v3": 0.08602473963228936,
   "qwen3-asr-1.7b+ctx vs parakeet-v3+boost0.3f": 0.08601745936183022,
   "qwen3-asr-1.7b+ctx vs parakeet-v3+boost0.5": 0.08568957738005716,
@@ -1084,6 +1175,7 @@
   "qwen3-asr-1.7b+ctx vs whisper-turbo": 0.08511208017749215,
   "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx": 0.09307543520309478,
   "qwen3-asr-1.7b+vad vs legacy-whisper-cli": 0.0873811172247932,
+  "qwen3-asr-1.7b+vad vs parakeet-ft-v1+vad90": 0.05534195933456562,
   "qwen3-asr-1.7b+vad vs parakeet-v3": 0.0724141820506072,
   "qwen3-asr-1.7b+vad vs parakeet-v3+boost0.3f": 0.07254665863937387,
   "qwen3-asr-1.7b+vad vs parakeet-v3+boost0.5": 0.07211610768536622,
@@ -1096,6 +1188,7 @@
   "qwen3-asr-1.7b+vad vs whisper-turbo": 0.06858694820595211,
   "qwen3-asr-1.7b+vad vs whisper-turbo+ctx": 0.07798839458413927,
   "qwen3-asr-1.7b+vad+terms vs legacy-whisper-cli": 0.10632948292825128,
+  "qwen3-asr-1.7b+vad+terms vs parakeet-ft-v1+vad90": 0.07378927911275415,
   "qwen3-asr-1.7b+vad+terms vs parakeet-v3": 0.09147648231003497,
   "qwen3-asr-1.7b+vad+terms vs parakeet-v3+boost0.3f": 0.09177453341360627,
   "qwen3-asr-1.7b+vad+terms vs parakeet-v3+boost0.5": 0.09136712287562039,
@@ -1108,6 +1201,7 @@
   "qwen3-asr-1.7b+vad+terms vs whisper-turbo": 0.08859306862520083,
   "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx": 0.09640232108317215,
   "whisper-large-v3 vs legacy-whisper-cli": 0.07714171191196298,
+  "whisper-large-v3 vs parakeet-ft-v1+vad90": 0.06177449168207024,
   "whisper-large-v3 vs parakeet-v3": 0.07429409331879536,
   "whisper-large-v3 vs parakeet-v3+boost0.3f": 0.07371312462372065,
   "whisper-large-v3 vs parakeet-v3+boost0.5": 0.07091291923597534,
@@ -1120,6 +1214,7 @@
   "whisper-large-v3 vs whisper-turbo": 0.023295845765434933,
   "whisper-large-v3 vs whisper-turbo+ctx": 0.033655705996131526,
   "whisper-large-v3+ctx vs legacy-whisper-cli": 0.13846882629450133,
+  "whisper-large-v3+ctx vs parakeet-ft-v1+vad90": 0.1244731977818854,
   "whisper-large-v3+ctx vs parakeet-v3": 0.1365567545211866,
   "whisper-large-v3+ctx vs parakeet-v3+boost0.3f": 0.1361378687537628,
   "whisper-large-v3+ctx vs parakeet-v3+boost0.5": 0.1352083020003008,
@@ -1132,6 +1227,7 @@
   "whisper-large-v3+ctx vs whisper-turbo": 0.09058220488103436,
   "whisper-large-v3+ctx vs whisper-turbo+ctx": 0.09005802707930367,
   "whisper-turbo vs legacy-whisper-cli": 0.06934373064169369,
+  "whisper-turbo vs parakeet-ft-v1+vad90": 0.05855822550831793,
   "whisper-turbo vs parakeet-v3": 0.0706094672331466,
   "whisper-turbo vs parakeet-v3+boost0.3f": 0.07077814569536424,
   "whisper-turbo vs parakeet-v3+boost0.5": 0.06974733042562792,
@@ -1144,6 +1240,7 @@
   "whisper-turbo vs whisper-large-v3+ctx": 0.09649944985533233,
   "whisper-turbo vs whisper-turbo+ctx": 0.02251450676982592,
   "whisper-turbo+ctx vs legacy-whisper-cli": 0.08104070254709762,
+  "whisper-turbo+ctx vs parakeet-ft-v1+vad90": 0.06931608133086876,
   "whisper-turbo+ctx vs parakeet-v3": 0.07967063954581344,
   "whisper-turbo+ctx vs parakeet-v3+boost0.3f": 0.07954545454545454,
   "whisper-turbo+ctx vs parakeet-v3+boost0.5": 0.07790645209805985,

@@ -98,6 +98,26 @@ def vad_chunks(clip, max_sec, pad=0.2):
     return [(max(0.0, s - pad), e + pad) for s, e in spans]
 
 
+def write_pieces(clip, max_sec, out_dir):
+    """Write the clip's VAD speech spans (merged up to max_sec) as 16 kHz PCM wavs.
+    Returns [(path, offset_s)]; for runners whose API takes file paths."""
+    import wave
+    audio = load_clip(clip)
+    out = []
+    for i, (s, e) in enumerate(vad_chunks(clip, max_sec)):
+        seg = audio[int(s * SR):int(e * SR)]
+        if len(seg) < SR // 10:
+            continue
+        p = Path(out_dir) / f"{clip['clip_id']}_{i:03d}.wav"
+        with wave.open(str(p), "wb") as w:
+            w.setnchannels(1)
+            w.setsampwidth(2)
+            w.setframerate(SR)
+            w.writeframes((np.clip(seg, -1, 1) * 32767).astype("<i2").tobytes())
+        out.append((str(p), s))
+    return out
+
+
 def hard_terms(ctx, max_terms=20, min_difficulty=0.15):
     """Terms Whisper tends to get wrong that have evidence in this talk (same filter as the prompt)."""
     if not ctx:

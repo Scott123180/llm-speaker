@@ -1,0 +1,17 @@
+[project]
+name = "llm-speaker-asr-hf"
+version = "0.1.0"
+description = "Isolated env for transformers 5.x speech models (VibeVoice-ASR, Granite Speech 4.1-Plus)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "transformers>=5.8",
+    "torch>=2.6",
+    "torchaudio>=2.6",
+    "accelerate>=1.0",
+    "numpy",
+    "librosa>=0.10",
+    "soundfile",
+]
+
+[tool.uv]
+package = false

@@ -20,10 +20,15 @@ Related repo: `~/git/asr-llm-pipeline` holds the newer multi-stage LLM structuri
 ## Directory Structure
 
 ```
-asr/                # ASR runners writing a common JSON format (faster-whisper, Parakeet, Qwen3-ASR)
+asr/                # ASR runners writing a common JSON format (faster-whisper, Parakeet, Qwen3-ASR,
+                    #   Granite, VibeVoice, Nemotron via NeMo-Speech.cpp)
   common.py         # ffmpeg decoding, CUDA lib preload, output schema, GPU memory monitor
+  fetch_model.py    # resumable curl download of HF repos (repo:glob selects files)
   envs/nemo/        # isolated uv project for NeMo (Python 3.12)
-  envs/qwen/        # isolated uv project for Qwen3-ASR (Python 3.12, pins transformers)
+  envs/qwen/        # isolated uv project for Qwen3-ASR (Python 3.12, pins transformers 4.57)
+  envs/hf/          # isolated uv project for transformers 5.x models (Granite Speech, VibeVoice)
+cloud/              # provider-agnostic harness: launch GPU instance, sync, run plan, pull, terminate
+  providers/        # provider adapters (lambda); plans/ = TOML job plans; remote/ = instance scripts
 eval/               # gold set, scoring and the bake-off report
   goldset.py        # select / download / cut gold-set clips
   goldset/          # manifest.json, drafts/ (from legacy transcripts), refs/ (hand-corrected)
@@ -70,6 +75,14 @@ uv run python eval/goldset.py select && uv run python eval/goldset.py download &
 bash eval/run_bakeoff.sh                     # all systems, resumable; then writes reports/ASR bake-off.md
 uv run python eval/report.py                 # regenerate the report (e.g. after correcting references)
 ```
+
+### Cloud runs (see cloud/README.md)
+```bash
+uv run python -m cloud types                                  # capacity and prices (needs LAMBDA_CLOUD_API_KEY)
+uv run python -m cloud run cloud/plans/a10-bakeoff.toml       # launch, run, pull results, terminate
+uv run python -m cloud ls                                     # running instances + spend; `down --all` to stop
+```
+Every launch has a hard deadline enforced by a detached watchdog; billing runs until termination.
 
 ### Legacy transcription (Whisper CLI loop)
 `transcriber/transcribe.sh`: OpenAI Whisper CLI `turbo`, no prompt, no VAD. Superseded by `asr/`.

@@ -11,12 +11,13 @@ import argparse
 import copy
 import logging
 import sys
+import tempfile
 import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (GpuMemoryMonitor, Run, clip_audio_path, hard_terms, load_manifest,  # noqa: E402
-                    local_model, log, talk_context)
+                    local_model, log, talk_context, write_pieces)
 
 
 def main():
@@ -26,6 +27,8 @@ def main():
     ap.add_argument("--max-terms", type=int, default=40)
     ap.add_argument("--hard-only", action="store_true",
                     help="boost only terms Whisper often gets wrong (skips common words like 'koan')")
+    ap.add_argument("--cut-sec", type=float, default=0,
+                    help="decode VAD speech spans merged up to this length (parakeet-ft-v1 recipe: 90); 0 = whole clip")
     ap.add_argument("--device", default="cuda", choices=["cuda", "cpu"])
     ap.add_argument("--kinds", nargs="*", default=["speech", "nonspeech"])
     ap.add_argument("--limit", type=int)
@@ -41,9 +44,11 @@ def main():
     from omegaconf import open_dict
 
     short = "parakeet-v3" if "v3" in args.model else args.model.split("/")[-1]
-    system = args.system or short + (f"+boost{args.boost:g}" if args.boost else "") + ("f" if args.hard_only else "")
+    system = args.system or (short + (f"+vad{args.cut_sec:g}" if args.cut_sec else "")
+                             + (f"+boost{args.boost:g}" if args.boost else "") + ("f" if args.hard_only else ""))
     which = "hard terms (difficulty>=0.15, with evidence)" if args.hard_only else f"top {args.max_terms} talk terms"
     params = {"decoding": "greedy_batch (TDT label-looping)", "attention": "rel_pos_local_attn [256,256]",
+              "cut": f"VAD spans <= {args.cut_sec:g}s" if args.cut_sec else "whole clip",
               "context": f"phrase boosting alpha={args.boost}, {which}" if args.boost else None}
     run = Run(system, args.model, params, args.device)
     clips = [c for c in load_manifest(kinds=args.kinds, limit=args.limit) if not run.done(c)]
@@ -55,10 +60,13 @@ def main():
         t = time.time()
         local = Path(local_model(args.model))
         nemo_files = sorted(local.glob("*.nemo")) if local.is_dir() else []
+        # load the state dict on the CPU, then move: loading straight to the GPU briefly holds
+        # two copies of the weights (~4.8 GB), which no longer fits beside the desktop's VRAM use
         if nemo_files:
-            model = nemo_asr.models.ASRModel.restore_from(str(nemo_files[0]), map_location=args.device)
+            model = nemo_asr.models.ASRModel.restore_from(str(nemo_files[0]), map_location="cpu")
         else:
-            model = nemo_asr.models.ASRModel.from_pretrained(args.model, map_location=args.device)
+            model = nemo_asr.models.ASRModel.from_pretrained(args.model, map_location="cpu")
+        model = model.to(args.device)
         model.change_attention_model("rel_pos_local_attn", [256, 256])
         model.change_subsampling_conv_chunking_factor(1)
         model.eval()
@@ -72,6 +80,7 @@ def main():
         run.meta["load_sec"] = round(time.time() - t, 1)
 
         current = None
+        tmp = tempfile.mkdtemp(prefix="parakeet-")
         for n, clip in enumerate(clips, 1):
             terms = None
             if args.boost:
@@ -93,15 +102,23 @@ def main():
             path = clip_audio_path(clip)
             dur = clip["end"] - clip["start"]
             t = time.time()
-            with torch.inference_mode():
-                hyp = model.transcribe([str(path)], timestamps=True, batch_size=1, verbose=False)[0]
+            if args.cut_sec:
+                pieces = write_pieces(clip, args.cut_sec, tmp)
+            else:
+                pieces = [(str(path), 0.0)]
+            texts, segments, words = [], [], []
+            for p, off in pieces:
+                with torch.inference_mode():
+                    hyp = model.transcribe([p], timestamps=True, batch_size=1, verbose=False)[0]
+                ts = hyp.timestamp or {}
+                if hyp.text.strip():
+                    texts.append(hyp.text.strip())
+                segments += [{"start": round(s["start"] + off, 2), "end": round(s["end"] + off, 2),
+                              "text": s["segment"].strip()} for s in ts.get("segment", [])]
+                words += [{"start": round(w["start"] + off, 2), "end": round(w["end"] + off, 2), "word": w["word"]}
+                          for w in ts.get("word", [])]
             dt = time.time() - t
-            ts = hyp.timestamp or {}
-            segments = [{"start": round(s["start"], 2), "end": round(s["end"], 2), "text": s["segment"].strip()}
-                        for s in ts.get("segment", [])]
-            words = [{"start": round(w["start"], 2), "end": round(w["end"], 2), "word": w["word"]}
-                     for w in ts.get("word", [])]
-            run.save(clip, hyp.text, segments, words, dur, dt, context=terms)
+            run.save(clip, " ".join(texts), segments, words, dur, dt, context=terms)
             log(f"  {n}/{len(clips)} {clip['clip_id']} {dur:.0f}s in {dt:.1f}s")
     run.finish(mon.peak_mb if args.device == "cuda" else None)
 

@@ -1,0 +1,24 @@
+# End-to-end check of the harness for well under a dollar: launch the cheapest
+# suitable GPU, sync, bootstrap, transcribe 4 clips with Whisper turbo, pull, terminate.
+#   uv run python -m cloud run cloud/plans/smoke.toml --dry-run
+#   uv run python -m cloud run cloud/plans/smoke.toml
+name = "smoke"
+
+[instance]
+provider = "lambda"
+types = ["gpu_1x_a10", "gpu_1x_a6000", "gpu_1x_a100_sxm4", "gpu_1x_a100"]
+max_price_per_hour = 2.0
+max_hours = 1.0
+min_gpu_mem_gb = 16
+
+[sync]
+dirs = ["data/goldset/clips", "data/goldset/vad", "transcriber/context"]
+results = ["data/outputs"]
+
+[setup]
+commands = ["bash cloud/remote/bootstrap.sh"]
+
+[[job]]
+name = "whisper-turbo-smoke"
+models = ["mobiuslabsgmbh/faster-whisper-large-v3-turbo"]
+commands = ["uv run python asr/run_whisper.py --model large-v3-turbo --limit 4 --system cloud-smoke-whisper-turbo"]

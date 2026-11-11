@@ -1,6 +1,6 @@
 # ASR bake-off
 
-_Generated 2026-11-10 06:19 by `eval/report.py`. Re-run after adding systems or references._
+_Generated 2026-11-10 20:05 by `eval/report.py`. Re-run after adding systems or references._
 
 **Gold set:** 38 speech excerpts (3.8 h, one per talk, stratified by era / speaker / content / audio difficulty) and 76 non-speech clips (38 min of bells, silence and room noise where VAD finds <10% speech). **Corrected references: 0/38.**
 
@@ -60,6 +60,7 @@ These notes are based on 13 systems, 38 speech excerpts (3.8 h) and 76 non-speec
 | System | Model | Context | Device | Speed (× real time) | GPU peak | Archive time on this PC* |
 |---|---|---|---|---|---|---|
 | `legacy-whisper-cli` | openai-whisper CLI turbo (existing transcripts) | — | unknown | — | — | — |
+| `parakeet-ft-v1+vad90` | freetranscribe/parakeet-ft-v1 | — | cuda | 211 | 4181 MB | 1.3 days |
 | `parakeet-v3` | nvidia/parakeet-tdt-0.6b-v3 | — | cuda | 224 | 5045 MB | 1.2 days |
 | `parakeet-v3+boost0.3f` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=0.3, hard terms (difficulty>=0.15, with evidence) | cuda | 192 | 5024 MB | 1.4 days |
 | `parakeet-v3+boost0.5` | nvidia/parakeet-tdt-0.6b-v3 | phrase boosting alpha=0.5, top 40 talk terms | cuda | 193 | 5023 MB | 1.4 days |
@@ -80,6 +81,7 @@ These notes are based on 13 systems, 38 speech excerpts (3.8 h) and 76 non-speec
 | System | Non-speech clips with invented text | Glossary terms misheard | Prompt echo | Loops | Words/min | Punct./100 words |
 |---|---|---|---|---|---|---|
 | `legacy-whisper-cli` | 76/76 (100%) | 11.2% (41 of 367) | — | 3 | 117 | 15.1 |
+| `parakeet-ft-v1+vad90` | 4/76 (5%) | 15.9% (49 of 309) | — | 1 | 116 | 12.6 |
 | `parakeet-v3` | 4/76 (5%) | 13.7% (42 of 306) | — | 1 | 114 | 15.5 |
 | `parakeet-v3+boost0.3f` | 7/76 (9%) | 13.0% (40 of 307) | 0 clips | 1 | 114 | 15.5 |
 | `parakeet-v3+boost0.5` | 5/76 (7%) | 11.0% (35 of 318) | 0 clips | 1 | 114 | 15.6 |
@@ -120,6 +122,7 @@ Disagreement is the word error rate between the two outputs: how much of the tex
 | System | Top known misspellings in its output |
 |---|---|
 | `legacy-whisper-cli` | Zhao, Yakujo, Maizumi, doksan, Shapa, Daito, Ingo, Huiko, Ongan, Setsho, Zazengi, Wutsu |
+| `parakeet-ft-v1+vad90` | gasho, dogan, Yakujo, Mizumi, Mayakaya Shapa, Shapa, kohan, Orioki, Zhao, Secho, Ingo, Huiko |
 | `parakeet-v3` | gasho, Yakujo, Mizumi, dogan, Ingo, Mayakaya Shapa, Shapa, kohan, doksan, Orioki, Secho, seshin |
 | `parakeet-v3+boost0.3f` | gasho, Mizumi, Yakujo, dogan, Ingo, Mayakaya Shapa, Shapa, kohan, doksan, Orioki, Secho, seshin |
 | `parakeet-v3+boost0.5` | gasho, Yakujo, Mizumi, Mayakaya Shapa, Shapa, doksan, Orioki, Secho, Ingo, seshin, Ongo, Zazengi |
@@ -136,6 +139,7 @@ Disagreement is the word error rate between the two outputs: how much of the tex
 ## What systems output on non-speech
 
 - `legacy-whisper-cli`: "Thank you."×73; "thank you"×3
+- `parakeet-ft-v1+vad90`: "Yeah"×2; "Thank you."×1; "Sent be"×1
 - `parakeet-v3`: "So that"×1; "Okay."×1; "Just working on the"×1; "Sension be number two."×1
 - `parakeet-v3+boost0.3f`: "So that"×1; "But then you know we do want to write a lot of"×1; "Thank you."×1; "Okay."×1; "Just a little bit."×1; "Sension be number two."×1
 - `parakeet-v3+boost0.5`: "So that"×1; "Okay."×1; "Just working on the"×1; "Sension be number two."×1; "No, no, baby."×1
@@ -158,6 +162,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | of the teachings now of Zen, of Tantra, of Mahayana, of Tibet, that's where it opens up. You know, this is your oyster. |
+| `parakeet-ft-v1+vad90` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
 | `parakeet-v3` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
 | `parakeet-v3+boost0.3f` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
 | `parakeet-v3+boost0.5` | specific containers. If you understand what's going on, every aspect of your life is going to be useful. You're going to be able to use your relationships, your obstructions. |
@@ -176,6 +181,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | these things are meant to eliminate the point of the koan, the point that's being made in the koan. And in this pointer, |
+| `parakeet-ft-v1+vad90` | these things are meant to illuminate the point of the con, the point that's being made in the coan. And in this pointer, |
 | `parakeet-v3` | these things are meant to illuminate the point of the Koan, the point that's being made in the Koan. And in this pointer |
 | `parakeet-v3+boost0.3f` | these things are meant to illuminate the point of the Koan, the point that's being made in the Koan. And in this pointer |
 | `parakeet-v3+boost0.5` | these things are meant to illuminate the point of the Koan, the point that's being made in the koan. And in this pointer |
@@ -194,6 +200,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | well. Attention. Shuso, you and I had a meal shift together. You were sweeping under the pizza oven and you swept down a little critter and it was caught in flypaper and you ran over in a panic. I don't know if it's dead or alive. There's something in the flypaper. What's the constant principle of that? May your life go well. Attention. First, I want to let you know I've never done this before so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attached to the sense of matter. If you do not agree, |
+| `parakeet-ft-v1+vad90` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was hot in fly paper and you ran over in a panic. Uh I don't know if it's dead or live. There's there's something in the fly paper. What's the constant principle for that? May your life go well. Attention. First, I want to let you know I've never done this before, so I'm actually being kind of nervous about this. As far as the last line of the call on it, if you agree, then you're still attached to sense of matter. If you do not agree, |
 | `parakeet-v3` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper and you ran |
 | `parakeet-v3+boost0.3f` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper and you ran it over in a panic. I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. As far as the last line of the call on it, if you agree, |
 | `parakeet-v3+boost0.5` | well. Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in fly paper, and you ran it over in a panic. I don't know if it's dead or alive. There's something in the fly paper. What's the constant principle for that? May your life go well. Attention. As far as the last line of the call on it, if you agree, |
@@ -212,6 +219,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | mind? That Vasa was pointing to. A monk asked Master Obaku, From earliest times, all the masters say mind is Buddha. I wonder |
+| `parakeet-ft-v1+vad90` | mind that Basa was pointing to? A monk asked Master Obaku, from earliest times all the masters say mind is Buddha. I wonder |
 | `parakeet-v3` | mind that Basava is pointing to? Monk asks Master Obaku, from earliest times all the masters say mind is Buddha. I wonder |
 | `parakeet-v3+boost0.3f` | mind that Basava is pointing to? Monk asks Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
 | `parakeet-v3+boost0.5` | mind? Monk asks Master Obaku, from earliest times, all the masters say mind is Buddha. I wonder |
@@ -230,6 +238,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | they don't even come to doksan because they don't do doksan in soto school the way we do it in the inside school and |
+| `parakeet-ft-v1+vad90` | there don't even come to Dokesan because they don't do Dokson in uh soto school the way we do it in Rinse School. And |
 | `parakeet-v3` | there don't even come to Dokesan because they don't do Doksan in uh Soto school the way we do it in Rinsei School. And |
 | `parakeet-v3+boost0.3f` | there don't even come to Dokesan because they don't do Doksan in uh soto school the way we do it in the Rinsei School. And |
 | `parakeet-v3+boost0.5` | there don't even come to Dokesan because they don't do Doksan in uh Soto school the way we do it in the Rinzai School. And |
@@ -248,6 +257,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
+| `parakeet-ft-v1+vad90` | taken refuge in the Dharma I have taken refuge in the sangha take refuge in the Buddha I have taken refuge |
 | `parakeet-v3` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
 | `parakeet-v3+boost0.3f` | taken refuge in the Dharma. I have taken refuge in the Sangha. I take refuge in the Buddha. I have taken refuge |
 | `parakeet-v3+boost0.5` | taken refuge in the Dharma. I |
@@ -266,6 +276,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | predicated and harking to that, this moment. And so Mahakaya Shapa sees the form of the flower and smiles. seeing the form he |
+| `parakeet-ft-v1+vad90` | predicated and harking to that this moment and so Mahakayashapa sees the form of the flower and smiles seeing the form he |
 | `parakeet-v3` | predicated. And harking to that, this moment. And so Mahakayashapa sees the form of the flower and smiles. Seeing the form, he |
 | `parakeet-v3+boost0.3f` | predicated and harking to that, this moment. And so Mahakayashapa sees the form of the flower and smiles. Seeing the form, he |
 | `parakeet-v3+boost0.5` | predicated. And harking to that, this moment. And so Mahakayashapa sees the form of the flower and smiles. Seeing the form, he |
@@ -284,6 +295,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | raised fist in the hut, this raised blind in the zendo? Akin says, Ultimately, Feiyan is not saying merely that gain is gain, |
+| `parakeet-ft-v1+vad90` | raised fist in the hut, this raised blind in the Zendo? Aiken says ultimately Fayein is not saying merely that gain is gain, |
 | `parakeet-v3` | raised fist in the hut, this raised blind in the Zendo? Aiken says, ultimately Fayin is not saying merely that gain is gain, |
 | `parakeet-v3+boost0.3f` | raised fist in the hut, this raised blind in the Zendo? Aiken says, ultimately Fayin is not saying merely that gain is gain, |
 | `parakeet-v3+boost0.5` | raised fist in the hut, this raised blind in the Zendo? Aiken says ultimately Fayin is not saying merely that gain is gain, |
@@ -302,6 +314,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | of gatha not. And how is that not requesting, not gatha? Because it presents that, first of all, the person who's trying to be happy doesn't have the ability to be at themselves, and they don't need to meet you. But there's a, there's a point at which you haven't requested entry into the reality |
+| `parakeet-ft-v1+vad90` | of gosho not. And how is that not requesting? Not Gasho Because it suggests that, first of all, the person who trying to make happy doesn't have the ability to do it where you need it. And also I think imposes the real under the live of that. Okay. But there's a there's a point at which you haven't requested entry into the reality |
 | `parakeet-v3` | of gosho not. And how is that not requesting? Not gosha. Okay. But there's a there's a point at which you haven't requested entry into the reality |
 | `parakeet-v3+boost0.3f` | of gosh o not. And how is that not requesting? Not Gosho. Okay. But there's a there's a point at which you haven't requested entry into the reality |
 | `parakeet-v3+boost0.5` | of gosh o not. And how is that not requesting? Not Gosho. Okay. But there's a there's a point at which you haven't requested entry into the reality |
@@ -320,6 +333,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | with Nansen, deepening his understanding. Taifu was a student of this Dharma Master Joe, a scholar in the 5th century in China. And |
+| `parakeet-ft-v1+vad90` | with Nansen deepening his understanding. Taifu was a student of this Dharma Master Zhou, a scholar of the fifth century in China. And |
 | `parakeet-v3` | with Nansen, deepening his understanding. Taifu was a student of this Dhamma Master Zhou, a scholar of the fifth century in China. During the walk with his deep. |
 | `parakeet-v3+boost0.3f` | with Nansen, deepening his understanding. Typho was a student of this Dhamma Master Zhou, a scholar of the fifth century in China. |
 | `parakeet-v3+boost0.5` | with Nansen, deepening his understanding. Typhoo was a student of this Dhamma Master Zhou, a scholar of the fifth century in China. |
@@ -338,6 +352,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, you know, I'm really thinking of taking the train because every time I go into the city my car gets broken into. And she said, oh, don't be ridiculous. Just take the car. It'll be easier. So he did. He took his car. They go to |
+| `parakeet-ft-v1+vad90` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, you know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the take the car, it'll be easier. So he did. He took his car. They go to |
 | `parakeet-v3` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the car, it'll be easier. So he did. He took his car. They go to |
 | `parakeet-v3+boost0.3f` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the car, it'll be easier. So he did. He took his car. They go to |
 | `parakeet-v3+boost0.5` | teach. So I think she was here one time. And he was telling her he was going to a wedding in New York City. I'm not sure where he was, somewhere outside of it. And he said to her, You know, I'm really thinking of taking the train because every time I go into the city, my car gets broken into. And she said, Oh, don't be ridiculous. Just take the car, it'll be easier. So he did. He took his car. They go to |
@@ -356,6 +371,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | words completely devoid of any violent or spiteful language and Dogen says as you take the light in affectionate words they will gradually flourish |
+| `parakeet-ft-v1+vad90` | words, completely devoid of any violent or spiteful language. And Dogan says, as you take delight in affectionate words, they will gradually flourish, |
 | `parakeet-v3` | words, completely devoid of any violent or spiteful language. And Dogan says, as you take delight in affectionate words, they will gradually flourish, |
 | `parakeet-v3+boost0.3f` | words, completely devoid of any violent or spiteful language. And Dogan says, as you take delight in affectionate words, they will gradually flourish, |
 | `parakeet-v3+boost0.5` | words, completely devoid of any violent or spiteful language. And Dogen says, as you take delight in affectionate words, they will gradually flourish, |
@@ -374,6 +390,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | least we know, and then we can proceed. At least, as Ryushin Sensei said, we have our position, it's fixed, and we can |
+| `parakeet-ft-v1+vad90` | least we know. And then we can proceed. At least, as Rishan Sensei said, we're we have our position, it's fixed, and we can |
 | `parakeet-v3` | least we know. And then we can proceed. At least, as Rishan Sensei said, we have our position, it's fixed, and we can |
 | `parakeet-v3+boost0.3f` | least we know. And then we can proceed. At least, as Rishan Sensei said, we're we have our position, it's fixed, and we can |
 | `parakeet-v3+boost0.5` | least we know. And then we can proceed. At least, as Rishan Sensei said, we're we have our position, it's fixed, and we can |
@@ -392,6 +409,7 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | System | Text |
 |---|---|
 | `legacy-whisper-cli` | her power? She's a tea woman offering refreshment to travelers. Zhao Zhao, you could, from one perspective, say, is a great master. He's an |
+| `parakeet-ft-v1+vad90` | her power? She's a T woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, he's an |
 | `parakeet-v3` | her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master. He's an |
 | `parakeet-v3+boost0.3f` | her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, he's an |
 | `parakeet-v3+boost0.5` | her power? She's a tea woman offering refreshment to travelers. Zha Zhou, you could from one perspective say, is a great master, he's an |
@@ -409,25 +427,27 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 
 Word error rate of each row's output measured against each column's output, on speech clips. Systems that agree closely are making the same choices, not necessarily the right ones.
 
-| | `legacy-whisper-cli` | `parakeet-v3` | `parakeet-v3+boost0.3f` | `parakeet-v3+boost0.5` | `parakeet-v3+boost1` | `qwen3-asr-1.7b` | `qwen3-asr-1.7b+ctx` | `qwen3-asr-1.7b+vad` | `qwen3-asr-1.7b+vad+terms` | `whisper-large-v3` | `whisper-large-v3+ctx` | `whisper-turbo` | `whisper-turbo+ctx` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `legacy-whisper-cli` | · | 9% | 9% | 9% | 8% | 9% | 9% | 9% | 11% | 7% | 15% | 7% | 9% |
-| `parakeet-v3` | 8% | · | 1% | 1% | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `parakeet-v3+boost0.3f` | 8% | 1% | · | 1% | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `parakeet-v3+boost0.5` | 8% | 1% | 1% | · | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `parakeet-v3+boost1` | 8% | 1% | 1% | 1% | · | 7% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
-| `qwen3-asr-1.7b` | 9% | 8% | 8% | 8% | 8% | · | 3% | 4% | 6% | 7% | 15% | 8% | 9% |
-| `qwen3-asr-1.7b+ctx` | 9% | 9% | 9% | 9% | 8% | 3% | · | 5% | 6% | 8% | 16% | 9% | 9% |
-| `qwen3-asr-1.7b+vad` | 9% | 7% | 7% | 7% | 7% | 4% | 5% | · | 3% | 7% | 14% | 7% | 8% |
-| `qwen3-asr-1.7b+vad+terms` | 11% | 9% | 9% | 9% | 9% | 6% | 6% | 3% | · | 9% | 16% | 9% | 10% |
-| `whisper-large-v3` | 8% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 9% | · | 9% | 2% | 3% |
-| `whisper-large-v3+ctx` | 14% | 14% | 14% | 14% | 14% | 14% | 14% | 13% | 14% | 9% | · | 9% | 9% |
-| `whisper-turbo` | 7% | 7% | 7% | 7% | 7% | 7% | 8% | 7% | 9% | 2% | 10% | · | 2% |
-| `whisper-turbo+ctx` | 8% | 8% | 8% | 8% | 8% | 8% | 9% | 8% | 9% | 3% | 9% | 2% | · |
+| | `legacy-whisper-cli` | `parakeet-ft-v1+vad90` | `parakeet-v3` | `parakeet-v3+boost0.3f` | `parakeet-v3+boost0.5` | `parakeet-v3+boost1` | `qwen3-asr-1.7b` | `qwen3-asr-1.7b+ctx` | `qwen3-asr-1.7b+vad` | `qwen3-asr-1.7b+vad+terms` | `whisper-large-v3` | `whisper-large-v3+ctx` | `whisper-turbo` | `whisper-turbo+ctx` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `legacy-whisper-cli` | · | 6% | 9% | 9% | 9% | 8% | 9% | 9% | 9% | 11% | 7% | 15% | 7% | 9% |
+| `parakeet-ft-v1+vad90` | 7% | · | 4% | 5% | 4% | 4% | 6% | 7% | 6% | 8% | 6% | 14% | 6% | 7% |
+| `parakeet-v3` | 8% | 4% | · | 1% | 1% | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
+| `parakeet-v3+boost0.3f` | 8% | 4% | 1% | · | 1% | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
+| `parakeet-v3+boost0.5` | 8% | 4% | 1% | 1% | · | 1% | 8% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
+| `parakeet-v3+boost1` | 8% | 4% | 1% | 1% | 1% | · | 7% | 8% | 7% | 9% | 7% | 15% | 7% | 8% |
+| `qwen3-asr-1.7b` | 9% | 6% | 8% | 8% | 8% | 8% | · | 3% | 4% | 6% | 7% | 15% | 8% | 9% |
+| `qwen3-asr-1.7b+ctx` | 9% | 7% | 9% | 9% | 9% | 8% | 3% | · | 5% | 6% | 8% | 16% | 9% | 9% |
+| `qwen3-asr-1.7b+vad` | 9% | 6% | 7% | 7% | 7% | 7% | 4% | 5% | · | 3% | 7% | 14% | 7% | 8% |
+| `qwen3-asr-1.7b+vad+terms` | 11% | 7% | 9% | 9% | 9% | 9% | 6% | 6% | 3% | · | 9% | 16% | 9% | 10% |
+| `whisper-large-v3` | 8% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 9% | · | 9% | 2% | 3% |
+| `whisper-large-v3+ctx` | 14% | 12% | 14% | 14% | 14% | 14% | 14% | 14% | 13% | 14% | 9% | · | 9% | 9% |
+| `whisper-turbo` | 7% | 6% | 7% | 7% | 7% | 7% | 7% | 8% | 7% | 9% | 2% | 10% | · | 2% |
+| `whisper-turbo+ctx` | 8% | 7% | 8% | 8% | 8% | 8% | 8% | 9% | 8% | 9% | 3% | 9% | 2% | · |
 
 ## Clips with repetition loops
 
 - `legacy-whisper-cli`: `30643_s01710`, `31043_s04042`, `36192_s02610`
+- `parakeet-ft-v1+vad90`: `36192_s02610`
 - `parakeet-v3`: `36192_s02610`
 - `parakeet-v3+boost0.3f`: `36192_s02610`
 - `parakeet-v3+boost0.5`: `36192_s02610`

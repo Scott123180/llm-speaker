@@ -1,0 +1,55 @@
+# Gold-set bake-off of the models that don't fit the home 3070 Ti (8 GB), on one
+# 24 GB A10 (~$1.29/h). Accuracy doesn't depend on the GPU, so outputs merge with the
+# local ones in data/outputs and are scored together by eval/report.py.
+#   uv run python -m cloud run cloud/plans/a10-bakeoff.toml --dry-run
+#
+# Order: cheap/robust jobs first, so a later failure still leaves results.
+# Nemotron runs as the 4-bit IQ4_NL GGUF fully on the GPU (NeMo-Speech.cpp's 24 GB recipe).
+name = "a10-bakeoff"
+
+[instance]
+provider = "lambda"
+types = ["gpu_1x_a10", "gpu_1x_a6000"]
+max_price_per_hour = 1.50
+max_hours = 8.0
+min_gpu_mem_gb = 24
+
+[sync]
+dirs = ["data/goldset/clips", "data/goldset/vad", "transcriber/context"]
+results = ["data/outputs", "data/logs"]
+
+[setup]
+commands = ["bash cloud/remote/bootstrap.sh"]
+
+[[job]]
+name = "parakeet-ft-v1"
+models = ["freetranscribe/parakeet-ft-v1"]
+setup = ["uv sync --project asr/envs/nemo --frozen"]
+commands = ["uv run --project asr/envs/nemo python asr/run_parakeet.py --model freetranscribe/parakeet-ft-v1"]
+
+[[job]]
+name = "granite-5.0-2b"
+models = ["ibm-granite/granite-speech-5.0-2b"]
+setup = ["uv sync --project asr/envs/hf --frozen"]
+commands = [
+  "uv run --project asr/envs/hf python asr/run_granite.py",
+  "uv run --project asr/envs/hf python asr/run_granite.py --terms",
+]
+
+[[job]]
+name = "vibevoice-asr"
+models = ["microsoft/VibeVoice-ASR-HF"]
+setup = ["uv sync --project asr/envs/hf --frozen"]
+commands = [
+  "uv run --project asr/envs/hf python asr/run_vibevoice.py",
+  "uv run --project asr/envs/hf python asr/run_vibevoice.py --terms",
+]
+
+[[job]]
+name = "nemotron-3.5-iq4"
+models = ["AtomicChat/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF:*Encoder-F16.gguf,*AD-IQ4_NL.gguf"]
+setup = ["bash cloud/remote/setup_nemo_speech_cpp.sh cuda"]
+commands = [
+  "uv run python asr/run_nemotron_cpp.py --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
+  "uv run python asr/run_nemotron_cpp.py --terms --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
+]
