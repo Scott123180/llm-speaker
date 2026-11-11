@@ -73,14 +73,29 @@ def launch(provider, type_name, region, name, hours, image, key, plan_name):
     price = next((t.price_per_hour for t in provider.instance_types() if t.name == type_name), None)
     deadline = time.time() + hours * 3600
     ledger.record_launch(provider.name, iid, type_name, region, price, plan_name, deadline)
-    LOGS.mkdir(parents=True, exist_ok=True)
-    wlog = open(LOGS / f"watchdog-{iid}.log", "a")
-    subprocess.Popen([sys.executable, "-m", "cloud", "watchdog", "--provider", provider.name, "--id", iid,
-                      "--deadline", str(int(deadline))], cwd=REPO, stdout=wlog, stderr=subprocess.STDOUT,
-                     stdin=subprocess.DEVNULL, start_new_session=True)
+    try:
+        start_watchdog(provider.name, iid, deadline)
+    except Exception:
+        terminate(provider, iid)
+        raise
     log(f"launched {iid} ({type_name}, {region}, ${price}/h); watchdog terminates it at "
         f"{time.strftime('%H:%M', time.localtime(deadline))}")
     return iid
+
+
+def start_watchdog(provider_name, iid, deadline):
+    """Detached process that terminates the instance at the deadline even if this one dies.
+    Verified alive before returning: a launch without a working watchdog is not allowed."""
+    LOGS.mkdir(parents=True, exist_ok=True)
+    wlog = open(LOGS / f"watchdog-{iid}.log", "a")
+    w = subprocess.Popen([sys.executable, "-m", "cloud", "--provider", provider_name, "watchdog", "--id", iid,
+                          "--deadline", str(int(deadline))], cwd=REPO, stdout=wlog, stderr=subprocess.STDOUT,
+                         stdin=subprocess.DEVNULL, start_new_session=True)
+    time.sleep(3)
+    if w.poll() not in (None, 0):  # 0 = instance already gone (fine); anything else = broken watchdog
+        raise RuntimeError(f"watchdog exited immediately (code {w.returncode}); "
+                           f"see {LOGS / f'watchdog-{iid}.log'}")
+    return w
 
 
 def wait_running(provider, iid, timeout=1800):
@@ -221,8 +236,8 @@ def cmd_types(a):
 
 def cmd_ls(a):
     p = get_provider(a.provider)
-    live = p.list()
-    print("running on provider:" if live else "no instances on provider")
+    live = [i for i in p.list() if i.status != TERMINATED]
+    print("instances on provider:" if live else "no live instances on provider")
     for i in live:
         e = next((e for e in ledger.entries() if e["id"] == i.id), None)
         extra = (f" ${ledger.cost(e):.2f} so far, deadline {time.strftime('%H:%M', time.localtime(e['deadline']))}"
@@ -305,7 +320,5 @@ def main():
     s.add_argument("--deadline", type=float, required=True)
     s.set_defaults(fn=cmd_watchdog)
     a = ap.parse_args()
-    if a.cmd == "watchdog" and a.provider is None:
-        a.provider = "lambda"
     STATE.mkdir(parents=True, exist_ok=True)
     a.fn(a)
