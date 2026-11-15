@@ -3,6 +3,8 @@
 # eval/findings.md item 21). Capacity is scarce: launch with --wait-capacity to keep trying.
 # Every speech clip is sent 6 times (--repeat), so the GPU stays full with many requests in flight.
 # Settings follow NeMo-Speech.cpp's docs/salm/configuration.md (80 GB+: many sequences, n_ctx 2048).
+# A second job scores the production mode on the gold set: context terms, voice-detected pieces only,
+# word timestamps and filler stripping (findings 19: Nemotron invents text on silent clips without VAD).
 #   uv run python -m cloud run cloud/plans/gh200-nemotron-speed.toml --dry-run
 name = "gh200-nemotron-speed"
 
@@ -14,8 +16,8 @@ max_hours = 1.5
 min_gpu_mem_gb = 90
 
 [sync]
-dirs = ["data/goldset/clips", "transcriber/context"]
-results = ["data/logs"]
+dirs = ["data/goldset/clips", "data/goldset/vad", "transcriber/context"]
+results = ["data/outputs", "data/logs"]
 
 [setup]
 commands = ["bash cloud/remote/bootstrap.sh"]
@@ -28,4 +30,11 @@ commands = [
   "uv run python asr/throughput.py --label nemotron-gh200 --variant '32 requests, speculative' -- uv run python asr/run_nemotron_cpp.py --kinds speech --repeat 6 --concurrency 32 --salm max_sequences=32 --salm n_ctx_per_sequence=4096 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=4096 --salm encoder_max_batch=32",
   "uv run python asr/throughput.py --label nemotron-gh200 --variant '64 requests, speculative' -- uv run python asr/run_nemotron_cpp.py --kinds speech --repeat 6 --concurrency 64 --salm max_sequences=64 --salm n_ctx_per_sequence=2048 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=8192 --salm encoder_max_batch=64",
   "uv run python asr/throughput.py --label nemotron-gh200 --variant '128 requests, speculative' -- uv run python asr/run_nemotron_cpp.py --kinds speech --repeat 6 --concurrency 128 --salm max_sequences=128 --salm n_ctx_per_sequence=2048 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=16384 --salm encoder_max_batch=128",
+]
+
+# Production mode on the whole gold set (128 clips): writes data/outputs/nemotron-3.5-iq4_nl+terms+vad120.
+[[job]]
+name = "nemotron-gh200-production-mode"
+commands = [
+  "uv run python asr/run_nemotron_cpp.py --terms --vad --word-times --strip-fillers --concurrency 64 --salm max_sequences=64 --salm n_ctx_per_sequence=2048 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=8192 --salm encoder_max_batch=64",
 ]

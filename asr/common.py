@@ -91,28 +91,29 @@ def load_clip(clip):
     return load_audio(p)
 
 
-def vad_chunks(clip, max_sec, pad=0.2):
-    """Speech regions from eval/goldset.py vad, merged into spans of at most max_sec.
+def vad_chunks(clip, max_sec, pad=0.2, max_gap=None):
+    """Speech regions from eval/goldset.py vad, merged into spans of at most max_sec; with max_gap, a
+    pause longer than max_gap seconds also starts a new span (so long silences aren't sent).
     Returns [(start_s, end_s)]; empty for clips with no detected speech."""
     p = DATA / "goldset" / "vad" / f"{clip['clip_id']}.json"
     if not p.exists():
         sys.exit(f"missing {p}; run: uv run python eval/goldset.py vad")
     spans = []
     for s, e in json.loads(p.read_text()):
-        if spans and e - spans[-1][0] <= max_sec:
+        if spans and e - spans[-1][0] <= max_sec and (max_gap is None or s - spans[-1][1] <= max_gap):
             spans[-1][1] = e
         else:
             spans.append([s, e])
     return [(max(0.0, s - pad), e + pad) for s, e in spans]
 
 
-def write_pieces(clip, max_sec, out_dir):
-    """Write the clip's VAD speech spans (merged up to max_sec) as 16 kHz PCM wavs.
-    Returns [(path, offset_s)]; for runners whose API takes file paths."""
+def write_pieces(clip, max_sec, out_dir, max_gap=None):
+    """Write the clip's VAD speech spans (merged up to max_sec, split at pauses over max_gap) as 16 kHz
+    PCM wavs. Returns [(path, offset_s)]; for runners whose API takes file paths."""
     import wave
     audio = load_clip(clip)
     out = []
-    for i, (s, e) in enumerate(vad_chunks(clip, max_sec)):
+    for i, (s, e) in enumerate(vad_chunks(clip, max_sec, max_gap=max_gap)):
         seg = audio[int(s * SR):int(e * SR)]
         if len(seg) < SR // 10:
             continue
@@ -193,10 +194,10 @@ class Run:
     def done(self, clip):
         return (self.dir / f"{clip['clip_id']}.json").exists()
 
-    def save(self, clip, text, segments, words, audio_sec, wall_sec, context=None):
+    def save(self, clip, text, segments, words, audio_sec, wall_sec, context=None, extra=None):
         rec = {"clip_id": clip["clip_id"], "system": self.system, "text": text.strip(),
                "segments": segments, "words": words, "audio_sec": round(audio_sec, 2),
-               "wall_sec": round(wall_sec, 3), "context": context}
+               "wall_sec": round(wall_sec, 3), "context": context, **(extra or {})}
         (self.dir / f"{clip['clip_id']}.json").write_text(json.dumps(rec, ensure_ascii=False, indent=1))
         self.meta["clips"] += 1
         self.meta["audio_sec"] += audio_sec
