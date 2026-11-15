@@ -153,11 +153,14 @@ def align(a, b):
 
 
 def medoid(clip, voters):
+    """The voter closest to all others. Only voters with word timestamps can be the pivot when any
+    has them: the reference inherits the pivot's timing (viewer seeking, decision anchoring)."""
+    timed = [s for s in voters if clip.outs[s].get("words")] or voters
     if len(voters) <= 2:
-        return voters[0]
+        return timed[0]
     cost = {s: sum(Levenshtein.distance([x["n"] for x in clip.toks[s]], [x["n"] for x in clip.toks[t]])
-                   for t in voters if t != s) for s in voters}
-    return min(voters, key=cost.get)
+                   for t in voters if t != s) for s in timed}
+    return min(timed, key=cost.get)
 
 
 def vote(clip, voters):
@@ -198,8 +201,20 @@ def vote(clip, voters):
         (best, c), *rest = cnt.most_common()
         cands = {s: (v["d"] if v else "") for s, v in col.items()}
         tie = bool(rest) and rest[0][1] == c
+        wshare = None
+        if tie:  # equal counts: weigh each voter by how often its family is right on this kind of word
+            tied = [n for n, k2 in cnt.items() if k2 == c]
+            cls = "function" if any(n in STOP for n in tied if n) else "content"
+            wt = {s: clip.rel.get((family(s), cls), 0.5) for s in col}
+            W = lambda n: sum(wt[s] for s, v in col.items() if (v["n"] if v else None) == n)  # noqa: E731
+            if None in tied and len(tied) > 1:  # a word some heard against nothing
+                word = max((n for n in tied if n), key=W)
+                best = None if W(None) > W(word) else word
+            wshare = W(best) / sum(wt.values())
         if best is None:
             heard = [v for v in col.values() if v]
+            if tie and wshare >= 0.55 and not any(is_term(clip, v["d"]) for v in heard):
+                continue  # the more reliable voters heard nothing here
             # remember a dropped word for review only if many voters heard it or it is a known term
             if heard and (len(heard) / nv >= 0.4 or any(is_term(clip, v["d"]) for v in heard)):
                 out.append({"w": "", "n": "", "t": P[k]["t"], "agree": round(c / nv, 2), "how": "drop",
@@ -213,10 +228,11 @@ def vote(clip, voters):
                 continue
         if tie:
             best, why = tie_break(clip, col, [n for n, k in cnt.items() if k == c and n is not None])
+            wshare = W(best) / sum(wt.values())
         tok = next(v for v in col.values() if v and v["n"] == best)
         emit(tok, c / nv, cands, "tie" if tie else "vote")
         if tie:
-            out[-1]["pick"] = why
+            out[-1]["pick"], out[-1]["wshare"] = why, round(wshare, 2)
     return pivot, out
 
 
@@ -424,11 +440,33 @@ def confidence(t):
     if t.get("book") == "unresolved":
         return "low" if t["agree"] < MEDIUM or t["how"] == "tie" else "medium"
     # "differs" (all voters agree, the book has another term) is information only: usually editing
+    if t["how"] == "tie":  # settled by a glossary term, a real word, or clearly more reliable voters
+        return "medium" if t.get("pick") in ("glossary", "word") or (t.get("wshare") or 0) >= 0.55 else "low"
     if t["how"] in ("glossary", "glossary-tiebreak"):
         return "medium"
     if t["how"] == "tie" or t["agree"] < MEDIUM:
         return "low"
     return "high" if t["agree"] >= HIGH else "medium"
+
+
+def fuzzy_anchor(toks, W, n, bef, frm, aft, t, window=10):
+    """Span [p, q) whose surroundings best match the decision's context words, within `window` s of
+    its time: at least 4 of the (up to 6) context words must line up, and one on each side."""
+    best = None
+    for p in range(len(W) + 1):
+        tp = toks[W[min(p, len(W) - 1)]]["t"]
+        if abs(tp - t) > window:
+            continue
+        left = sum(1 for k in range(1, len(bef) + 1) if p - k >= 0 and n[p - k] == bef[-k])
+        for q in range(p, min(len(W), p + len(frm) + 4) + 1):
+            right = sum(1 for k in range(len(aft)) if q + k < len(W) and n[q + k] == aft[k])
+            if (bef and not left) or (aft and not right) or left + right < min(4, len(bef) + len(aft)):
+                continue
+            same = sum(1 for x in n[p:q] if x in frm)
+            key = (left + right, same - abs(len(n[p:q]) - len(frm)), -abs(tp - t))
+            if best is None or key > best[0]:
+                best = (key, p, q)
+    return best
 
 
 def judge_pass(clip, toks):
@@ -459,6 +497,8 @@ def judge_pass(clip, toks):
                 key = (n[p:q] == frm, -abs(t0 - d["t"]))
                 if best is None or key > best[0]:
                     best = (key, p, q)
+        if best is None:  # the vote changed nearby words: best partial match at the same moment
+            best = fuzzy_anchor(toks, W, n, bef, frm, aft, d["t"])
         if best is None:
             continue
         _, p, q = best

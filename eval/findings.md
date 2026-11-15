@@ -133,6 +133,23 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
     - **The prompt-echo filter** removes segments that only repeat the prompt, e.g. "This is a dharma talk" read into the noise at the start of 30643.
     - **The longer prompt scores 0.15 points better overall, within noise.** It spells terms worse and recited a term list on a silent clip ("Doshinji, shikantaza, nirvana, nirvana…"), so it's not recommended.
 
+18. **First A10 cloud run (2026-11-15, $2.32).**
+    - **Run status:**
+      - Parakeet-ft on whole clips and Granite (± term list) finished.
+      - VibeVoice crashed at clip 27 on malformed output; the runner now salvages it and caps output length.
+      - Nemotron didn't start: the server binary was built without HTTP; the build script is fixed.
+    - **Granite as a fourth voter:**
+      - It is the most reliable family on content words against the book (70%; Whisper 67%, Parakeet 63%, Qwen 51%).
+      - Ties are now decided by these reliability weights and become medium confidence when the weights clearly favour one side.
+      - The reference's timing always comes from a system with word timestamps (Whisper or Parakeet). Before, Granite or Qwen could be the pivot, and seeking was off in those clips.
+      - Decisions survive a changed vote: a nearby partial match of their context words is accepted. Applied now: 162 of 172 LLM decisions, and all 36 current listener decisions.
+    - **Silver WER with four families:**
+      - Production Whisper setup: 5.16%, and 3.84% on the book clips, best of all.
+      - parakeet-ft + VAD: 5.18%, but misheard terms are 16.6% against 3.8%.
+      - Plain turbo: 5.35%. Qwen + VAD: 5.71%.
+      - Granite: 7.7%. It skips stretches mid-chunk, losing 3.0% of words in runs, and runs at about 20× real time. Its book-clip WER is good (4.4%). Its term list helps spelling a little (13.0% → 10.3% misheard). Not a production candidate.
+    - **VibeVoice (18 speech clips so far):** no lost stretches at all and very few deletions (0.4%). It keeps disfluencies (120 words/min), so its insertions are higher. Worth finishing.
+
 ### Recommendation (provisional)
 
 - **Production default:** faster-whisper **turbo + per-talk prompt, sequential decoding, VAD 0.35 with 800 ms padding, prompt-echo filter, hallucination_silence 2 s** (item 17). It has the best silver WER of any system tested (5.6%), the best term spelling of the Whisper setups and the most precise context (about 95%). It's about 80× real time, about 3.4 days for the archive on this PC.
