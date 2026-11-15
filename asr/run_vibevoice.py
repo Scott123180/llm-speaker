@@ -12,6 +12,8 @@ context"); per Huber & Waibel 2026 it helps with correct lists and collapses wit
 distractors, so keep lists short.
 """
 import argparse
+import json
+import re
 import sys
 import tempfile
 import time
@@ -20,6 +22,24 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (GpuMemoryMonitor, Run, clip_audio_path, hard_terms, load_manifest, local_model,  # noqa: E402
                     log, talk_context, write_pieces)
+
+
+def salvage(raw):
+    """Segments from VibeVoice output whose JSON doesn't parse: every complete {...} object that
+    does, then the text of a final cut-off "Content" string."""
+    out = []
+    for m in re.finditer(r"\{[^{}]*\}", raw):
+        try:
+            obj = json.loads(m.group(0))
+        except ValueError:
+            continue
+        if isinstance(obj, dict) and obj.get("Content"):
+            out.append(obj)
+    tail = raw[raw.rfind("}") + 1:] if "}" in raw else raw
+    m = re.search(r'"Start"\s*:\s*([\d.]+).*?"Content"\s*:\s*"(.*)$', tail, re.S)
+    if m and m.group(2).strip():
+        out.append({"Start": float(m.group(1)), "End": float(m.group(1)), "Content": m.group(2).strip()})
+    return out
 
 
 def main():
@@ -35,6 +55,8 @@ def main():
     ap.add_argument("--kinds", nargs="*", default=["speech", "nonspeech"])
     ap.add_argument("--limit", type=int)
     ap.add_argument("--system")
+    ap.add_argument("--tokens-per-sec", type=float, default=15.0,
+                    help="output token budget per second of audio (speech plus JSON is about 6-8)")
     args = ap.parse_args()
 
     import os
@@ -76,9 +98,15 @@ def main():
             for path, off in pieces:
                 inputs = processor.apply_transcription_request(audio=path, prompt=prompt).to(model.device, model.dtype)
                 with torch.inference_mode():
-                    out = model.generate(**inputs, **gen_kw)
+                    # cap the output by audio length: a runaway loop otherwise runs to 32k tokens
+                    sec = args.chunk_sec if args.vad else clip["end"] - clip["start"]
+                    out = model.generate(**inputs, **gen_kw, max_new_tokens=int(200 + args.tokens_per_sec * sec))
                 gen = out[:, inputs["input_ids"].shape[1]:]
-                parsed = processor.decode(gen, return_format="parsed")[0]
+                try:
+                    parsed = processor.decode(gen, return_format="parsed")[0]
+                except ValueError:  # malformed JSON (runaway or truncated generation): keep what's readable
+                    parsed = salvage(processor.batch_decode(gen, skip_special_tokens=True)[0])
+                    run.meta["salvaged"] = run.meta.get("salvaged", 0) + 1
                 if isinstance(parsed, list):
                     for s in parsed:
                         txt = str(s.get("Content", "")).strip()

@@ -1,0 +1,28 @@
+# Finish VibeVoice-ASR on an A10 after the a10-bakeoff run crashed on malformed output (fixed:
+# the runner now salvages bad JSON and caps output length). Already-finished clips are synced
+# up so the runner resumes instead of redoing them.
+#   uv run python -m cloud run cloud/plans/a10-vibevoice.toml --dry-run
+name = "a10-vibevoice"
+
+[instance]
+provider = "lambda"
+types = ["gpu_1x_a10", "gpu_1x_a6000"]
+max_price_per_hour = 1.50
+max_hours = 4.0
+min_gpu_mem_gb = 24
+
+[sync]
+dirs = ["data/goldset/clips", "data/goldset/vad", "transcriber/context", "data/outputs/vibevoice-asr"]
+results = ["data/outputs", "data/logs"]
+
+[setup]
+commands = ["bash cloud/remote/bootstrap.sh"]
+
+[[job]]
+name = "vibevoice-asr"
+models = ["microsoft/VibeVoice-ASR-HF"]
+setup = ["uv sync --project asr/envs/hf --frozen"]
+commands = [
+  "uv run --project asr/envs/hf python asr/run_vibevoice.py",
+  "uv run --project asr/envs/hf python asr/run_vibevoice.py --terms",
+]
