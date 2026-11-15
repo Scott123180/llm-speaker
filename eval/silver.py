@@ -73,6 +73,11 @@ def family(system):
     return system.split("-")[0]
 
 
+def anorm(word):
+    """Like wnorm, but keeps fillers (what a listener typed is kept; scoring drops fillers anyway)."""
+    return "".join(gtokens(word))
+
+
 def wnorm(word):
     n = "".join(gtokens(word))
     return "" if n in FILLERS else n
@@ -438,7 +443,8 @@ def judge_pass(clip, toks):
             continue
         W = [k for k, t in enumerate(toks) if t["n"]]
         n = [toks[k]["n"] for k in W]
-        bef, frm, aft = ([x for x in map(wnorm, d[f].split()) if x] for f in ("before", "from", "after"))
+        # anchors keep fillers: a listener's "Um," stays in the reference and may border a later decision
+        bef, frm, aft = ([x for x in map(anorm, d[f].split()) if x] for f in ("before", "from", "after"))
         best = None
         for p in range(len(bef), len(W) + 1):
             if n[p - len(bef):p] != bef:
@@ -460,11 +466,12 @@ def judge_pass(clip, toks):
         b = W[q] if q < len(W) else len(toks)
         first = toks[a] if a < len(toks) else toks[-1]
         was = " ".join(t["w"] for t in toks[a:b] if t["n"])
-        toks[a:b] = [{"w": w, "n": wnorm(w), "t": first["t"], "agree": first["agree"], "how": "judge",
+        keep = [w for w in d["to"].split() if (anorm(w) if listener else wnorm(w))]
+        toks[a:b] = [{"w": w, "n": anorm(w), "filler": not wnorm(w), "t": first["t"], "agree": first["agree"], "how": "judge",
                       "judge_conf": ("low" if d["verdict"] == "unclear" else "high") if listener else "medium",
                       "verdict": d["verdict"], "by": d.get("by", "llm"), "jid": d.get("id"),
                       "was": was, "why": d.get("why", ""),
-                      "cands": first.get("cands")} for w in d["to"].split() if wnorm(w)]
+                      "cands": first.get("cands")} for w in keep]
     return toks
 
 
@@ -483,7 +490,7 @@ def build(clip, exclude_family=None, judge=True):
         toks = judge_pass(clip, toks)
     for t in toks:
         t["conf"] = confidence(t)
-    words = [t for t in toks if t["n"]]
+    words = [t for t in toks if t["n"] and not t.get("filler")]  # the scored text has no fillers
     return {"clip_id": clip.id, "voters": voters, "pivot": pivot, "excluded_family": exclude_family,
             "text": " ".join(t["w"] for t in words), "tokens": toks, "book": book,
             "stats": {"words": len(words), **{k: sum(1 for t in words if t["conf"] == k)

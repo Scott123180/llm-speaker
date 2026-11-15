@@ -57,6 +57,7 @@ audio { width: min(520px, 100%); }
 .tok.gloss { text-decoration: underline dotted var(--gl) 2px; text-underline-offset: 3px; }
 .tok.bookset { text-decoration: underline solid var(--ok) 2px; text-underline-offset: 3px; }
 .tok.judged { text-decoration: underline dashed var(--accent) 2px; text-underline-offset: 3px; }
+.tok.filler { color: var(--muted); font-style: italic; }
 .tok.drop { color: var(--low); font-family: var(--sans); font-size: 12px; }
 .tok.now { background-color: var(--now); }
 .tok.sel, .sp.sel { background-color: var(--sel); box-shadow: inset 0 -2px 0 var(--accent), inset 0 2px 0 var(--accent); border-radius: 0; }
@@ -205,6 +206,7 @@ function tokClass(t) {
   if (t.how === "glossary" || t.how === "glossary-tiebreak") k += " gloss";
   if (t.book === "settles" || t.book === "adopted") k += " bookset";
   if (t.how === "judge" && t.verdict === "fix") k += " judged";
+  if (t.filler) k += " filler";
   return k;
 }
 
