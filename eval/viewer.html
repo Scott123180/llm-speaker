@@ -89,6 +89,14 @@ aside h3 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-s
 .settle button.primary { background: var(--accent); color: var(--panel); border-color: var(--accent); }
 .settle button.link { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; justify-self: start; }
 .small { font-size: 12px; }
+#opts { display: grid; gap: 4px; margin-top: 4px; }
+.opt { text-align: left; display: grid; grid-template-columns: 18px 1fr; gap: 0 6px; padding: 5px 8px; border-radius: 6px; }
+.opt:hover { background: var(--hi-bg); }
+.opt.picked { box-shadow: inset 0 0 0 2px var(--accent); }
+.opt .num { font-family: var(--mono); font-size: 11px; color: var(--muted); grid-row: span 2; padding-top: 2px; }
+.opt .txt { font: 15px/1.35 var(--serif); }
+.opt .who { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.opt.cur .txt::after { content: ""; }
 .kbd { font-family: var(--mono); font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
 @media (max-width: 1100px) { body { grid-template-columns: 220px minmax(0, 1fr); } aside { grid-column: 2; border-left: 0; } }
 @media (max-width: 760px) { body { display: block; } #list { max-height: 30vh; } }
@@ -100,7 +108,7 @@ aside h3 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-s
   <label>Set <select id="setf"><option value="">all</option><option value="stratified">stratified</option><option value="book">book</option></select></label>
   <label>Sort <select id="sortf"><option value="flags">most flags</option><option value="id">clip id</option></select></label>
   <label><input type="checkbox" id="follow" checked> follow audio</label>
-  <span class="muted">Keys: <span class="kbd">space</span> play/pause · <span class="kbd">n</span>/<span class="kbd">p</span> next/prev flag · <span class="kbd">←</span>/<span class="kbd">→</span> 5 s · <span class="kbd">k</span> correct · <span class="kbd">e</span> edit · <span class="kbd">u</span> can't tell</span>
+  <span class="muted">Keys: <span class="kbd">space</span> play/pause · <span class="kbd">n</span>/<span class="kbd">p</span> next/prev flag · <span class="kbd">←</span>/<span class="kbd">→</span> 5 s · <span class="kbd">k</span> correct · <span class="kbd">e</span> edit · <span class="kbd">u</span> can't tell · <span class="kbd">1</span>–<span class="kbd">9</span> pick a version</span>
 </header>
 <nav id="list" aria-label="Clips"></nav>
 <main>
@@ -233,7 +241,7 @@ function selectTok(i, seek, range) {
   document.querySelectorAll(".flag").forEach(b => b.classList.toggle("sel", r != null && regs[+b.dataset.k] === r));
   const t0 = s.tokens[st.range[0]].t;
   if (seek) { audio.currentTime = Math.max(0, t0 - 1.5); }
-  const cands = t.cands ? Object.entries(t.cands) : [];
+  st.opts = spanOptions(st.range);
   const pick = { glossary: "a glossary term won", word: "the only real word won", family: "the family most often right on such words won",
     pivot: "medoid system's word kept", only: "the only word candidate won" }[t.pick] || "medoid system's word kept";
   const byYou = t.by === "listener";
@@ -248,7 +256,11 @@ function selectTok(i, seek, range) {
   $("#detail").innerHTML = `<div style="font:18px var(--serif)">${t.n ? esc(t.w) : "⟂ (dropped)"}</div>
     <div class="muted">${mmss(t.t)} · ${t.conf} confidence · ${Math.round(100 * t.agree)}% of voters · ${how}${bookTxt ? " · " + bookTxt : ""}</div>
     ${t.how === "judge" && t.why ? `<div style="margin:4px 0">${byYou ? "Your note" : "LLM review"}: ${esc(t.why)}</div>` : ""}
-    ${cands.length ? `<table>${cands.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v) || '<span class="muted">(nothing)</span>'}</td></tr>`).join("")}</table>` : '<div class="muted">All voters agree.</div>'}
+    <h3 style="margin-top:10px">What each system wrote here</h3>
+    <div class="muted small">Click a version to put it in the box below. Double-click it, or press its number, to save it straight away.</div>
+    <div id="opts">${st.opts.map((o, k) => `<button class="opt ${o.current ? "cur" : ""}" data-k="${k}">
+      <span class="num">${k + 1}</span><span class="txt">${o.text ? esc(o.text) : '<span class="muted">(nothing said)</span>'}</span>
+      <span class="who">${o.who.map(esc).join(", ")}${o.current ? " · current" : ""}</span></button>`).join("")}</div>
     <button id="playhere" style="margin-top:6px">▶ play from here</button>
     <div class="settle">
       <h3>Settle this ${st.range[1] > st.range[0] ? `(${st.range[1] - st.range[0] + 1} words)` : ""}</h3>
@@ -269,6 +281,10 @@ function selectTok(i, seek, range) {
   $("#b-unclear").onclick = () => settle("unclear");
   $("#b-fix").onclick = () => settle("fix");
   $("#fixtext").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); settle("fix"); } if (e.key === "Escape") e.target.blur(); };
+  document.querySelectorAll("#opts .opt").forEach(b => {
+    b.onclick = () => useOpt(+b.dataset.k, false);
+    b.ondblclick = () => useOpt(+b.dataset.k, true);
+  });
   if ($("#b-undo")) $("#b-undo").onclick = () => api("/api/undo", { id: t.jid }, t0);
   renderBook(t);
   renderSbs(t.t);
@@ -289,6 +305,47 @@ async function api(path, body, t0) {
   } catch (err) {
     if (msg) msg.textContent = `Not saved: ${err.message}. Is the viewer server running (uv run python eval/viewer.py)?`;
   }
+}
+
+// Distinct versions of the selected span: each voter's aligned words (exact), plus the other
+// shown systems' words in the same stretch of time (approximate, marked ≈).
+function spanOptions(range) {
+  const s = st.data.silver, toks = s.tokens.slice(range[0], range[1] + 1);
+  const per = {}; s.voters.forEach(v => per[v] = []);
+  let last = null;
+  for (const t of toks) {
+    const key = t.cands ? JSON.stringify(t.cands) : null;
+    if (key && key === last && (t.how === "insert" || t.how === "judge")) continue;  // same slot repeated per word
+    last = key;
+    for (const v of s.voters) per[v].push(t.cands ? (t.cands[v] || "") : (t.n ? t.w : ""));
+  }
+  const cur = toks.filter(t => t.n).map(t => t.w).join(" ");
+  const groups = new Map();
+  const add = (text, who) => {
+    text = text.replace(/\s+/g, " ").trim();
+    const k = nrm(text) || "∅";
+    if (!groups.has(k)) groups.set(k, { text, who: [], current: false });
+    groups.get(k).who.push(who);
+  };
+  for (const v of s.voters) add(per[v].filter(Boolean).join(" "), v);
+  const t0 = toks[0].t - 0.4, t1 = toks[toks.length - 1].t + 0.8;
+  for (const n of Object.keys(st.data.systems)) {
+    if (s.voters.includes(n) || !st.shown.has(n)) continue;
+    const ws = sysWords(n).filter(([t]) => t >= t0 && t <= t1).map(([, w]) => w);
+    if (ws.length) add(ws.join(" "), "≈ " + n);
+  }
+  const k = nrm(cur) || "∅";
+  if (!groups.has(k)) groups.set(k, { text: cur, who: ["reference"], current: true });
+  groups.get(k).current = true;
+  return [...groups.values()].sort((a, b) => b.current - a.current || b.who.length - a.who.length);
+}
+
+function useOpt(k, save) {
+  const o = st.opts[k]; if (!o) return;
+  $("#fixtext").value = o.text;
+  document.querySelectorAll("#opts .opt").forEach(b => b.classList.toggle("picked", +b.dataset.k === k));
+  if (save) settle(o.current ? "keep" : "fix");
+  else { $("#fixtext").focus(); }
 }
 
 function settle(verdict) {
@@ -370,6 +427,7 @@ document.addEventListener("keydown", e => {
   else if (e.key === "ArrowLeft") audio.currentTime = Math.max(0, audio.currentTime - 5);
   else if (e.key === "Escape") { st.sel = null; st.range = null; document.querySelectorAll(".tok.sel").forEach(x => x.classList.remove("sel")); }
   else if (e.key === "k" && st.range) settle("keep");
+  else if (/^[1-9]$/.test(e.key) && st.range && st.opts && st.opts[+e.key - 1]) useOpt(+e.key - 1, true);
   else if (e.key === "u" && st.range) settle("unclear");
   else if (e.key === "e" && st.range) { e.preventDefault(); $("#fixtext").focus(); $("#fixtext").select(); }
 });
