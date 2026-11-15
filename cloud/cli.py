@@ -30,10 +30,18 @@ def confirm(msg, yes):
 
 # ---------------------------------------------------------------- selection
 
-def choose_type(provider, plan, wait_min=0):
+def choose_type(provider, plan, wait_min=0, poll_sec=120):
     t_end = time.time() + wait_min * 60
+    last_log = 0.0
     while True:
-        types = {t.name: t for t in provider.instance_types()}
+        try:
+            types = {t.name: t for t in provider.instance_types()}
+        except Exception as e:  # a transient API or network error shouldn't end a long wait
+            if not wait_min or time.time() >= t_end:
+                raise
+            log(f"  capacity check failed ({e}); retrying in {poll_sec:g} s")
+            time.sleep(poll_sec)
+            continue
         for name in plan.types:
             t = types.get(name)
             if not t:
@@ -48,8 +56,10 @@ def choose_type(provider, plan, wait_min=0):
             avail = [f"{t.name} (${t.price_per_hour:.2f})" for t in types.values() if t.regions]
             raise SystemExit(f"no capacity for {plan.types} within ${plan.max_price_per_hour}/h. "
                              f"Available now: {', '.join(avail) or 'none'}. Use --wait-capacity MIN to keep trying.")
-        log(f"  no capacity yet for {plan.types}; retrying in 2 min")
-        time.sleep(120)
+        if time.time() - last_log >= 600:  # log every 10 min, however often it checks
+            log(f"  no capacity yet for {plan.types}; checking every {poll_sec:g} s")
+            last_log = time.time()
+        time.sleep(poll_sec)
 
 
 def choose_key(provider, wanted):
@@ -166,7 +176,7 @@ def cmd_run(a):
         e = next((e for e in ledger.entries() if e["id"] == iid), None)
         deadline = e["deadline"] if e else time.time() + plan.max_hours * 3600
     else:
-        t, region = choose_type(provider, plan, a.wait_capacity)
+        t, region = choose_type(provider, plan, a.wait_capacity, a.poll_sec)
         key = choose_key(provider, plan.ssh_key)
         log(f"plan {plan.name}: {t.name} ({t.description}, {t.vcpus} vCPU, {t.ram_gb:g} GiB RAM, "
             f"{t.disk_gb:g} GiB disk, {t.arch}) in {region} at ${t.price_per_hour:.2f}/h; ssh key {key}")
@@ -305,7 +315,9 @@ def main():
     s.add_argument("--yes", action="store_true", help="launch without asking")
     s.add_argument("--keep", action="store_true", help="leave the instance running afterwards")
     s.add_argument("--instance", help="use this running instance instead of launching one")
-    s.add_argument("--wait-capacity", type=float, default=0, metavar="MIN")
+    s.add_argument("--wait-capacity", type=float, default=0, metavar="MIN",
+                   help="keep checking for capacity for up to MIN minutes")
+    s.add_argument("--poll-sec", type=float, default=120, help="seconds between capacity checks (default 120)")
     s.set_defaults(fn=cmd_run)
     s = sub.add_parser("down", help="terminate instances")
     s.add_argument("ids", nargs="*")
