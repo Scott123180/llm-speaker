@@ -1,8 +1,10 @@
-# Finish the a10-bakeoff run (2026-11-15), which completed Parakeet-ft and Granite but not:
+# Second A10 run (2026-11-15): parallel-throughput tests, plus finishing what the first run
+# (a10-bakeoff) didn't:
+# - Nemotron: NeMo-Speech.cpp was built without HTTP serving (fixed in setup_nemo_speech_cpp.sh).
 # - VibeVoice-ASR: crashed on malformed JSON output at clip 27 (fixed: the runner salvages bad
 #   output and caps output length). Finished clips are synced up, so it resumes.
-# - Nemotron: NeMo-Speech.cpp was built without HTTP serving (fixed in setup_nemo_speech_cpp.sh).
-# Nemotron first: it is the most interesting result and the fastest.
+# Throughput (asr/throughput.py -> data/logs/speed/<label>.json): how much faster each model runs
+# when the GPU works on several clips at once (parallel processes, concurrent requests, batches).
 #   uv run python -m cloud run cloud/plans/a10-finish.toml --dry-run
 name = "a10-finish"
 
@@ -10,7 +12,7 @@ name = "a10-finish"
 provider = "lambda"
 types = ["gpu_1x_a10", "gpu_1x_a6000"]
 max_price_per_hour = 1.50
-max_hours = 4.0
+max_hours = 3.5
 min_gpu_mem_gb = 24
 
 [sync]
@@ -20,20 +22,39 @@ results = ["data/outputs", "data/logs"]
 [setup]
 commands = ["bash cloud/remote/bootstrap.sh"]
 
+# Production Whisper setup on the 50 speech clips (5 h of audio): 1 to 8 processes sharing the GPU,
+# and batched decoding for comparison (faster, but it drops speech; see eval/findings.md item 17).
+[[job]]
+name = "whisper-throughput"
+models = ["mobiuslabsgmbh/faster-whisper-large-v3-turbo"]
+commands = [
+  "uv run python asr/throughput.py --label whisper-prod --procs 1 2 4 6 8 -- uv run python asr/run_whisper.py --model large-v3-turbo --context --batch-size 0 --vad-threshold 0.35 --vad-pad-ms 800 --drop-prompt-echo --hallucination-silence 2 --kinds speech",
+  "uv run python asr/throughput.py --label whisper-prod --variant 'batched 8' --procs 1 2 -- uv run python asr/run_whisper.py --model large-v3-turbo --context --batch-size 8 --kinds speech",
+]
+
+# Nemotron 3.5 (4-bit GGUF): the server decodes up to 4 requests together (max_sequences=4).
+# Speed: 1 vs 4 requests in flight on 12 speech clips; then the full gold set with 4 in flight.
 [[job]]
 name = "nemotron-3.5-iq4"
 models = ["AtomicChat/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF:*Encoder-F16.gguf,*AD-IQ4_NL.gguf"]
 setup = ["bash cloud/remote/setup_nemo_speech_cpp.sh cuda"]
 commands = [
-  "uv run python asr/run_nemotron_cpp.py --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
-  "uv run python asr/run_nemotron_cpp.py --terms --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
+  "uv run python asr/throughput.py --label nemotron --variant '1 request' -- uv run python asr/run_nemotron_cpp.py --kinds speech --limit 12 --concurrency 1 --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
+  "uv run python asr/throughput.py --label nemotron --variant '4 requests' -- uv run python asr/run_nemotron_cpp.py --kinds speech --limit 12 --concurrency 4 --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
+  "uv run python asr/run_nemotron_cpp.py --concurrency 4 --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
+  "uv run python asr/run_nemotron_cpp.py --terms --concurrency 4 --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
 ]
 
+# VibeVoice-ASR (bf16, fills most of the 24 GB): batch 1 vs 2 vs 4 on 8 speech clips, then the gold set
+# in batches of 4 (the runner halves the batch on out-of-memory and falls back to 1 on other errors).
 [[job]]
 name = "vibevoice-asr"
 models = ["microsoft/VibeVoice-ASR-HF"]
 setup = ["uv sync --project asr/envs/hf --frozen"]
 commands = [
-  "uv run --project asr/envs/hf python asr/run_vibevoice.py",
-  "uv run --project asr/envs/hf python asr/run_vibevoice.py --terms",
+  "uv run python asr/throughput.py --label vibevoice --variant 'batch 1' -- uv run --project asr/envs/hf python asr/run_vibevoice.py --kinds speech --limit 8 --batch-size 1",
+  "uv run python asr/throughput.py --label vibevoice --variant 'batch 2' -- uv run --project asr/envs/hf python asr/run_vibevoice.py --kinds speech --limit 8 --batch-size 2",
+  "uv run python asr/throughput.py --label vibevoice --variant 'batch 4' -- uv run --project asr/envs/hf python asr/run_vibevoice.py --kinds speech --limit 8 --batch-size 4",
+  "uv run --project asr/envs/hf python asr/run_vibevoice.py --batch-size 4",
+  "uv run --project asr/envs/hf python asr/run_vibevoice.py --terms --batch-size 4",
 ]

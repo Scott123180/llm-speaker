@@ -66,10 +66,18 @@ def load_audio(path, start=None, end=None):
 
 
 def load_manifest(path=MANIFEST, kinds=None, limit=None):
+    """Gold-set clips, optionally filtered by kind and cut to the first `limit`.
+
+    ASR_SHARD=k/n (set by asr/throughput.py) keeps every n-th clip starting at k, so n processes
+    split one clip list between them."""
     clips = json.loads(Path(path).read_text())["clips"]
     if kinds:
         clips = [c for c in clips if c["kind"] in kinds]
-    return clips[:limit] if limit else clips
+    clips = clips[:limit] if limit else clips
+    if os.environ.get("ASR_SHARD"):
+        k, n = map(int, os.environ["ASR_SHARD"].split("/"))
+        clips = clips[k::n]
+    return clips
 
 
 def clip_audio_path(clip):
@@ -175,7 +183,8 @@ class Run:
 
     def __init__(self, system, model, params, device):
         self.system = system
-        self.dir = DATA / "outputs" / system
+        # ASR_OUT (set by asr/throughput.py) keeps speed-test transcripts out of data/outputs
+        self.dir = Path(os.environ.get("ASR_OUT") or DATA / "outputs") / system
         self.dir.mkdir(parents=True, exist_ok=True)
         self.meta = {"system": system, "model": model, "params": params, "device": device,
                      "started": time.strftime("%Y-%m-%d %H:%M:%S"), "clips": 0,

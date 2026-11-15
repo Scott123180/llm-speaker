@@ -55,9 +55,13 @@ def main():
     ap.add_argument("--kinds", nargs="*", default=["speech", "nonspeech"])
     ap.add_argument("--limit", type=int)
     ap.add_argument("--system")
+    ap.add_argument("--batch-size", type=int, default=1,
+                    help="whole clips per generate call, grouped by length; halves on CUDA out-of-memory")
     ap.add_argument("--tokens-per-sec", type=float, default=15.0,
                     help="output token budget per second of audio (speech plus JSON is about 6-8)")
     args = ap.parse_args()
+    if args.vad and args.batch_size > 1:
+        ap.error("--batch-size applies to whole clips; use it without --vad")
 
     import os
     os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
@@ -89,43 +93,94 @@ def main():
         model.eval()
         run.meta["load_sec"] = round(time.time() - t, 1)
         tmp = tempfile.mkdtemp(prefix="vibevoice-")
-        for n, clip in enumerate(clips, 1):
-            terms = hard_terms(talk_context(clip["talk_id"]), max_terms=args.max_terms) if args.terms else []
-            prompt = ", ".join(terms) or None
-            pieces = write_pieces(clip, args.chunk_sec, tmp) if args.vad else [(str(clip_audio_path(clip)), 0.0)]
-            t = time.time()
-            texts, segments = [], []
-            for path, off in pieces:
-                inputs = processor.apply_transcription_request(audio=path, prompt=prompt).to(model.device, model.dtype)
-                with torch.inference_mode():
-                    # cap the output by audio length: a runaway loop otherwise runs to 32k tokens
-                    sec = args.chunk_sec if args.vad else clip["end"] - clip["start"]
-                    out = model.generate(**inputs, **gen_kw, max_new_tokens=int(200 + args.tokens_per_sec * sec))
-                gen = out[:, inputs["input_ids"].shape[1]:]
-                try:
-                    parsed = processor.decode(gen, return_format="parsed")[0]
-                except ValueError:  # malformed JSON (runaway or truncated generation): keep what's readable
-                    parsed = salvage(processor.batch_decode(gen, skip_special_tokens=True)[0])
-                    run.meta["salvaged"] = run.meta.get("salvaged", 0) + 1
-                if isinstance(parsed, list):
-                    for s in parsed:
-                        txt = str(s.get("Content", "")).strip()
-                        if txt:
-                            texts.append(txt)
-                            segments.append({"start": round(float(s.get("Start", 0)) + off, 2),
-                                             "end": round(float(s.get("End", 0)) + off, 2), "text": txt,
-                                             "speaker": s.get("Speaker")})
-                else:  # unparseable: keep the raw text
-                    txt = processor.decode(gen, return_format="transcription_only")[0].strip()
+
+        def parse(gen_row, off):
+            """Segments from one generated row (shape 1 x tokens)."""
+            try:
+                parsed = processor.decode(gen_row, return_format="parsed")[0]
+            except ValueError:  # malformed JSON (runaway or truncated generation): keep what's readable
+                parsed = salvage(processor.batch_decode(gen_row, skip_special_tokens=True)[0])
+                run.meta["salvaged"] = run.meta.get("salvaged", 0) + 1
+            segs = []
+            if isinstance(parsed, list):
+                for s in parsed:
+                    txt = str(s.get("Content", "")).strip()
                     if txt:
-                        texts.append(txt)
-                        segments.append({"start": off, "end": off, "text": txt})
+                        segs.append({"start": round(float(s.get("Start", 0)) + off, 2),
+                                     "end": round(float(s.get("End", 0)) + off, 2), "text": txt,
+                                     "speaker": s.get("Speaker")})
+            else:  # unparseable: keep the raw text
+                txt = processor.decode(gen_row, return_format="transcription_only")[0].strip()
+                if txt:
+                    segs.append({"start": off, "end": off, "text": txt})
+            return segs
+
+        def generate(audio, prompt, sec):
+            """Generated tokens for one audio path or a list of them (left-padded batch)."""
+            inputs = processor.apply_transcription_request(audio=audio, prompt=prompt).to(model.device, model.dtype)
+            with torch.inference_mode():
+                # cap the output by audio length: a runaway loop otherwise runs to 32k tokens
+                out = model.generate(**inputs, **gen_kw, max_new_tokens=int(200 + args.tokens_per_sec * sec))
+            return out[:, inputs["input_ids"].shape[1]:]
+
+        def terms_for(clip):
+            return hard_terms(talk_context(clip["talk_id"]), max_terms=args.max_terms) if args.terms else []
+
+        if args.vad:
+            for n, clip in enumerate(clips, 1):
+                terms = terms_for(clip)
+                t = time.time()
+                segments = []
+                for path, off in write_pieces(clip, args.chunk_sec, tmp):
+                    segments += parse(generate(path, ", ".join(terms) or None, args.chunk_sec), off)
+                    if args.device == "cuda":
+                        torch.cuda.empty_cache()
+                dt, dur = time.time() - t, clip["end"] - clip["start"]
+                run.save(clip, " ".join(s["text"] for s in segments), segments, None, dur, dt, context=terms or None)
+                log(f"  {n}/{len(clips)} {clip['clip_id']} {dur:.0f}s in {dt:.1f}s")
+        else:
+            # similar lengths batch together (silent clips are ~30 s, speech clips ~6 min)
+            order = sorted(clips, key=lambda c: c["end"] - c["start"])
+            bs, i = max(1, args.batch_size), 0
+            run.meta["params"]["batch_size"] = bs
+            while i < len(order):
+                batch = order[i:i + bs]
+                terms = [terms_for(c) for c in batch]
+                prompts = [", ".join(t) or None for t in terms]
+                sec = max(c["end"] - c["start"] for c in batch)
+                t = time.time()
+                try:
+                    if len(batch) == 1:
+                        gen = generate(str(clip_audio_path(batch[0])), prompts[0], sec)
+                    else:
+                        gen = generate([str(clip_audio_path(c)) for c in batch], prompts, sec)
+                except torch.cuda.OutOfMemoryError:
+                    if bs == 1:
+                        raise
+                    bs //= 2
+                    run.meta["params"]["batch_size"] = bs
+                    log(f"  out of GPU memory: batch size now {bs}")
+                    torch.cuda.empty_cache()
+                    continue
+                except Exception as e:  # batching itself failed: carry on one clip at a time
+                    if bs == 1:
+                        raise
+                    bs = 1
+                    run.meta["params"]["batch_size"] = bs
+                    run.meta["batch_error"] = repr(e)[:300]
+                    log(f"  batched generation failed ({e!r}); batch size now 1")
+                    continue
+                dt = time.time() - t
+                for j, (clip, tms) in enumerate(zip(batch, terms)):
+                    segments = parse(gen[j:j + 1], 0.0)
+                    dur = clip["end"] - clip["start"]
+                    # the batch's time is shared evenly, so summed wall_sec stays the elapsed time
+                    run.save(clip, " ".join(s["text"] for s in segments), segments, None, dur, dt / len(batch),
+                             context=tms or None)
+                i += len(batch)
+                log(f"  {i}/{len(order)} batch of {len(batch)} ({sec:.0f}s max) in {dt:.1f}s")
                 if args.device == "cuda":
                     torch.cuda.empty_cache()
-            dt = time.time() - t
-            dur = clip["end"] - clip["start"]
-            run.save(clip, " ".join(texts), segments, None, dur, dt, context=terms or None)
-            log(f"  {n}/{len(clips)} {clip['clip_id']} {dur:.0f}s in {dt:.1f}s")
     run.finish(mon.peak_mb if args.device == "cuda" else None)
 
 

@@ -26,6 +26,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -76,6 +77,8 @@ def main():
                     help="asr.salm.* setting, e.g. max_sequences=1 (repeatable)")
     ap.add_argument("--threads", type=int, help="asr.backend.threads (CPU builds)")
     ap.add_argument("--port", type=int, default=8089)
+    ap.add_argument("--concurrency", type=int, default=1,
+                    help="requests in flight at once (the server batches up to salm max_sequences)")
     ap.add_argument("--timeout", type=float, default=3600, help="per-request timeout (s)")
     ap.add_argument("--kinds", nargs="*", default=["speech", "nonspeech"])
     ap.add_argument("--limit", type=int)
@@ -119,7 +122,7 @@ def main():
                 time.sleep(3)
             run.meta["load_sec"] = round(time.time() - t, 1)
             log(f"  server ready in {run.meta['load_sec']}s")
-            for n, clip in enumerate(clips, 1):
+            def transcribe(clip):
                 terms = hard_terms(talk_context(clip["talk_id"]), max_terms=args.max_terms) if args.terms else []
                 instruction = TEMPLATES[args.template].format(terms=", ".join(terms)) if terms else PLAIN
                 audio_b64 = base64.b64encode(clip_audio_path(clip).read_bytes()).decode()
@@ -128,12 +131,22 @@ def main():
                     {"type": "input_audio", "input_audio": {"data": audio_b64, "format": "wav"}}]}]}
                 t = time.time()
                 res = post(base + "/v1/chat/completions", payload, args.timeout)
-                dt = time.time() - t
-                text = (res["choices"][0]["message"].get("content") or "").strip()
-                dur = clip["end"] - clip["start"]
-                run.save(clip, text, [{"start": 0.0, "end": round(dur, 2), "text": text}] if text else [], None,
-                         dur, dt, context=terms or None)
-                log(f"  {n}/{len(clips)} {clip['clip_id']} {dur:.0f}s in {dt:.1f}s")
+                return clip, terms, (res["choices"][0]["message"].get("content") or "").strip(), time.time() - t
+
+            # results are saved on this thread; with several requests in flight, each clip's
+            # wall_sec is its own latency and the run's wall_sec is the elapsed time
+            t0 = time.time()
+            with ThreadPoolExecutor(max_workers=max(1, args.concurrency)) as pool:
+                futs = [pool.submit(transcribe, c) for c in clips]
+                for n, fut in enumerate(as_completed(futs), 1):
+                    clip, terms, text, dt = fut.result()
+                    dur = clip["end"] - clip["start"]
+                    run.save(clip, text, [{"start": 0.0, "end": round(dur, 2), "text": text}] if text else [], None,
+                             dur, dt, context=terms or None)
+                    log(f"  {n}/{len(clips)} {clip['clip_id']} {dur:.0f}s in {dt:.1f}s")
+            if args.concurrency > 1:
+                run.meta["wall_sec"] = time.time() - t0
+                run.meta["concurrency"] = args.concurrency
         run.finish(mon.peak_mb if backend == "cuda" else None)
     finally:
         try:
