@@ -1,6 +1,6 @@
 # ASR bake-off
 
-_Generated 2026-11-14 20:23 by `eval/report.py`. Re-run after adding systems or references._
+_Generated 2026-11-14 22:01 by `eval/report.py`. Re-run after adding systems or references._
 
 **Gold set:** 50 speech excerpts (5.0 h, one per talk, stratified by era / speaker / content / audio difficulty) and 76 non-speech clips (38 min of bells, silence and room noise where VAD finds <10% speech). **Corrected references: 0/50.**
 
@@ -117,6 +117,12 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
       - An LLM judge prefers fluent text, which could favour systems that paraphrase. That's why it may only choose among existing words.
       - Use `eval/silver.py score --no-judge` for the voting-only numbers.
 
+16. **Listener pass (2026-11-15).**
+    - **What was settled:** in the viewer, a listener settled 40 spots in 20 clips: 35 corrections or confirmations, and 5 they couldn't make out. Two flagged regions remain, including the 30 s of noise that opens 30643.
+    - **Overlap with the LLM review:** most of the listener's decisions resolved spots the LLM review had marked unclear. Example: "up and must a down" became "up unless there's a down", matching the book.
+    - **What it doesn't measure:** the LLM's 71 fixes weren't flagged, so they haven't been checked by ear yet.
+    - **Scores:** silver WER moves by 0.01–0.07 points and the ranking is unchanged.
+
 ### Recommendation (provisional)
 
 - **Production default:** faster-whisper **turbo + per-talk prompt + VAD**. It has the most precise context (about 95%), the best term spelling and the best speed.
@@ -198,20 +204,20 @@ as a ranking aid until corrected references exist. Browse the flagged spots with
 
 | System | Silver WER (all) | substitutions / deletions / insertions | Stratified set | Book set | Voters |
 |---|---|---|---|---|---|
-| `whisper-turbo` | 5.8% | 1.4% / 4.0% / 0.5% | 5.9% | 5.4% | 2.0 |
-| `whisper-large-v3` | 5.9% | 1.3% / 4.2% / 0.4% | 6.1% | 5.0% | 2.0 |
-| `parakeet-ft-v1+vad90` | 6.3% | 1.7% / 0.6% / 4.0% | 6.5% | 5.4% | 2.0 |
-| `whisper-turbo+ctx` | 6.5% | 1.2% / 4.8% / 0.5% | 6.8% | 5.5% | 2.0 |
-| `legacy-whisper-cli` | 6.8% | 1.8% / 1.9% / 3.1% | 7.1% | 5.6% | 2.0 |
-| `parakeet-v3+boost0.5` | 7.1% | 2.0% / 1.8% / 3.3% | 7.3% | 6.5% | 2.0 |
+| `whisper-turbo` | 5.8% | 1.4% / 3.9% / 0.5% | 5.9% | 5.4% | 2.0 |
+| `whisper-large-v3` | 5.8% | 1.3% / 4.1% / 0.4% | 6.1% | 4.9% | 2.0 |
+| `parakeet-ft-v1+vad90` | 6.2% | 1.7% / 0.6% / 3.9% | 6.4% | 5.4% | 2.0 |
+| `whisper-turbo+ctx` | 6.5% | 1.2% / 4.8% / 0.5% | 6.7% | 5.5% | 2.0 |
+| `legacy-whisper-cli` | 6.8% | 1.8% / 1.9% / 3.1% | 7.1% | 5.5% | 2.0 |
+| `parakeet-v3+boost0.5` | 7.1% | 2.0% / 1.9% / 3.3% | 7.3% | 6.5% | 2.0 |
 | `qwen3-asr-1.7b+vad` | 7.2% | 2.6% / 1.3% / 3.3% | 7.2% | 7.3% | 2.0 |
-| `parakeet-v3+boost1` | 7.2% | 2.0% / 1.9% / 3.4% | 7.4% | 6.8% | 2.0 |
-| `parakeet-v3` | 7.5% | 2.0% / 2.0% / 3.4% | 7.7% | 7.0% | 2.0 |
+| `parakeet-v3+boost1` | 7.2% | 2.0% / 1.9% / 3.4% | 7.4% | 6.7% | 2.0 |
+| `parakeet-v3` | 7.5% | 2.1% / 2.1% / 3.4% | 7.7% | 6.9% | 2.0 |
 | `parakeet-v3+boost0.3f` | 7.5% | 2.0% / 2.1% / 3.4% | 7.6% | 7.4% | 2.0 |
-| `qwen3-asr-1.7b` | 7.8% | 2.8% / 1.2% / 3.8% | 7.8% | 7.7% | 2.0 |
+| `qwen3-asr-1.7b` | 7.8% | 2.8% / 1.2% / 3.7% | 7.8% | 7.7% | 2.0 |
 | `qwen3-asr-1.7b+ctx` | 8.4% | 2.7% / 1.3% / 4.4% | 8.5% | 7.9% | 2.0 |
-| `qwen3-asr-1.7b+vad+terms` | 8.6% | 2.6% / 1.4% / 4.6% | 9.0% | 7.1% | 2.0 |
-| `whisper-large-v3+ctx` | 11.7% | 1.7% / 9.6% / 0.5% | 12.2% | 9.9% | 2.0 |
+| `qwen3-asr-1.7b+vad+terms` | 8.6% | 2.7% / 1.4% / 4.6% | 9.0% | 7.1% | 2.0 |
+| `whisper-large-v3+ctx` | 11.7% | 1.7% / 9.5% / 0.5% | 12.2% | 9.8% | 2.0 |
 
 ## Effect of per-talk context
 

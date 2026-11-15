@@ -107,6 +107,12 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
       - An LLM judge prefers fluent text, which could favour systems that paraphrase. That's why it may only choose among existing words.
       - Use `eval/silver.py score --no-judge` for the voting-only numbers.
 
+16. **Listener pass (2026-11-15).**
+    - **What was settled:** in the viewer, a listener settled 40 spots in 20 clips: 35 corrections or confirmations, and 5 they couldn't make out. Two flagged regions remain, including the 30 s of noise that opens 30643.
+    - **Overlap with the LLM review:** most of the listener's decisions resolved spots the LLM review had marked unclear. Example: "up and must a down" became "up unless there's a down", matching the book.
+    - **What it doesn't measure:** the LLM's 71 fixes weren't flagged, so they haven't been checked by ear yet.
+    - **Scores:** silver WER moves by 0.01–0.07 points and the ranking is unchanged.
+
 ### Recommendation (provisional)
 
 - **Production default:** faster-whisper **turbo + per-talk prompt + VAD**. It has the most precise context (about 95%), the best term spelling and the best speed.

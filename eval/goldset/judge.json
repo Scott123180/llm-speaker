@@ -46,6 +46,19 @@
    "by": "llm"
   },
   {
+   "id": "L663da77de9",
+   "clip": "30643_s01710",
+   "t": 1.12,
+   "before": "",
+   "from": "is true. I think we call three minutes and then all that one. Information and half and that is not quite right translation. More like the sense of inquiry. Christian. So this I believe the last one is out a script. I have no idea. Well, thank you. I'm going on great thing. Then there are faith within the variation. So for the heart of the way, faith. You, you are so managed. You are so line. Strengthening yourself. Strengthening your mind. Strengthening the mind. We are happening through.",
+   "after": "",
+   "verdict": "unclear",
+   "to": "is true. I think we call three minutes and then all that one. Information and half and that is not quite right translation. More like the sense of inquiry. Christian. So this I believe the last one is out a script. I have no idea. Well, thank you. I'm going on great thing. Then there are faith within the variation. So for the heart of the way, faith. You, you are so managed. You are so line. Strengthening yourself. Strengthening your mind. Strengthening the mind. We are happening through.",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:56:14+00:00"
+  },
+  {
    "clip": "30660_b00309",
    "t": 36.61,
    "before": "of these ten",
@@ -110,6 +123,19 @@
    "to": "Gautama's",
    "why": "book and Whisper: \"plum blossoms are not Gautama's eyeballs\"",
    "by": "llm"
+  },
+  {
+   "id": "L468a320009",
+   "clip": "30714_b01540",
+   "t": 68.16,
+   "before": "first year of",
+   "from": "Kanjin",
+   "after": "at Yoshimi Monastery,",
+   "verdict": "fix",
+   "to": "Kanjin",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:45:22+00:00"
   },
   {
    "clip": "30754_b00012",
@@ -187,6 +213,32 @@
    "to": "",
    "why": "as W058: likely \"avaricious\"",
    "by": "llm"
+  },
+  {
+   "id": "L3f77d3b59f",
+   "clip": "30766_s00180",
+   "t": 171.35,
+   "before": "refraining from being",
+   "from": "vicious",
+   "after": "in the bestowal",
+   "verdict": "fix",
+   "to": "arvicious",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:03:08+00:00"
+  },
+  {
+   "id": "L305843ab91",
+   "clip": "30766_s00180",
+   "t": 188.37,
+   "before": "refraining from being",
+   "from": "vicious",
+   "after": "in the bestowal",
+   "verdict": "fix",
+   "to": "arvicious",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:03:13+00:00"
   },
   {
    "clip": "31039_b04388",
@@ -310,6 +362,19 @@
    "by": "llm"
   },
   {
+   "id": "L307c2300ed",
+   "clip": "31039_b04388",
+   "t": 26.16,
+   "before": "you I am",
+   "from": "sheep on strong longing funny",
+   "after": "did you explore",
+   "verdict": "fix",
+   "to": "sheep on strong longing funny",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:44:35+00:00"
+  },
+  {
    "clip": "31043_s04042",
    "t": 11.84,
    "before": "third world countries.",
@@ -418,6 +483,19 @@
    "to": "we",
    "why": "",
    "by": "llm"
+  },
+  {
+   "id": "Lb2b6988e5d",
+   "clip": "31043_s04042",
+   "t": 62.4,
+   "before": "of it, but",
+   "from": "then the states",
+   "after": "don't have food,",
+   "verdict": "fix",
+   "to": "then the states",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:50:03+00:00"
   },
   {
    "clip": "31268_s00240",
@@ -541,6 +619,19 @@
    "by": "llm"
   },
   {
+   "id": "Ld885f590d7",
+   "clip": "31268_s00240",
+   "t": 36.48,
+   "before": "He was born",
+   "from": "1748 and",
+   "after": "died at the",
+   "verdict": "fix",
+   "to": "1748 and",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:53:37+00:00"
+  },
+  {
    "clip": "31298_b01702",
    "t": 241.1,
    "before": "hurry to go.",
@@ -594,6 +685,19 @@
    "to": "for",
    "why": "\"It's got something to do with quality. For some students...\"",
    "by": "llm"
+  },
+  {
+   "id": "Le41b53f073",
+   "clip": "31311_s00180",
+   "t": 1.16,
+   "before": "as well as",
+   "from": "Kayan,",
+   "after": "who is not",
+   "verdict": "fix",
+   "to": "Kayan,",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:52:55+00:00"
   },
   {
    "clip": "31587_s01620",
@@ -827,6 +931,71 @@
    "by": "llm"
   },
   {
+   "id": "La1c6358e0f",
+   "clip": "33528_s01214",
+   "t": 201.45,
+   "before": "of the things",
+   "from": "you answer's",
+   "after": "phrases like beings",
+   "verdict": "unclear",
+   "to": "you answer's",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:14:54+00:00"
+  },
+  {
+   "id": "Lc5a9976e74",
+   "clip": "33528_s01214",
+   "t": 265.21,
+   "before": "I really appreciate",
+   "from": "-san,",
+   "after": "who's sitting here",
+   "verdict": "fix",
+   "to": "Taikan-san",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:15:56+00:00"
+  },
+  {
+   "id": "Lf064d0d25f",
+   "clip": "33528_s01214",
+   "t": 201.45,
+   "before": "of the things",
+   "from": "you answer's",
+   "after": "phrases like beings",
+   "verdict": "unclear",
+   "to": "you answer's",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:16:01+00:00"
+  },
+  {
+   "id": "L9e9e5c8bb1",
+   "clip": "33528_s01214",
+   "t": 201.45,
+   "before": "of the things",
+   "from": "you answer's",
+   "after": "phrases like beings",
+   "verdict": "fix",
+   "to": "you address",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:54:06+00:00"
+  },
+  {
+   "id": "L324ed1a4f8",
+   "clip": "33528_s01214",
+   "t": 307.37,
+   "before": "is with open",
+   "from": "sozan,",
+   "after": "everybody just lays",
+   "verdict": "fix",
+   "to": "sozan,",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:54:22+00:00"
+  },
+  {
    "clip": "33728_s03570",
    "t": 1.53,
    "before": "to have tsunami",
@@ -935,6 +1104,45 @@
    "to": "",
    "why": "Manjushri mantra syllables; spelling needs a listener",
    "by": "llm"
+  },
+  {
+   "id": "La34170984a",
+   "clip": "33728_s03570",
+   "t": 29.84,
+   "before": "it just might",
+   "from": "smell",
+   "after": "Lama. yeah it",
+   "verdict": "fix",
+   "to": "",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:42:25+00:00"
+  },
+  {
+   "id": "Ld685e098d2",
+   "clip": "33728_s03570",
+   "t": 358.36,
+   "before": "and speech. So",
+   "from": "Mantra",
+   "after": "Nati. So",
+   "verdict": "fix",
+   "to": "Omarabadza",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:42:56+00:00"
+  },
+  {
+   "id": "L697ec457d7",
+   "clip": "33728_s03570",
+   "t": 357.03,
+   "before": "speech. So Omarabadza",
+   "from": "Nati.",
+   "after": "So",
+   "verdict": "fix",
+   "to": "Nati.",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:43:01+00:00"
   },
   {
    "clip": "33782_s02428",
@@ -1133,6 +1341,71 @@
    "to": "three",
    "why": "as W086",
    "by": "llm"
+  },
+  {
+   "id": "L8a8b8928f0",
+   "clip": "33871_s02464",
+   "t": 254.95,
+   "before": "80-year-old? Well, that's",
+   "from": "what",
+   "after": "that's the question,",
+   "verdict": "fix",
+   "to": "what",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:03:57+00:00"
+  },
+  {
+   "id": "L792653bd06",
+   "clip": "33871_s02464",
+   "t": 298.87,
+   "before": "I approach it?",
+   "from": "Whatever",
+   "after": "you got. I",
+   "verdict": "fix",
+   "to": "Whatever",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:04:16+00:00"
+  },
+  {
+   "id": "L0fe0ca3f66",
+   "clip": "33871_s02464",
+   "t": 309.19,
+   "before": "your practice no",
+   "from": "no forget",
+   "after": "Well, think on",
+   "verdict": "fix",
+   "to": "no forget",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:04:46+00:00"
+  },
+  {
+   "id": "L3c0105c2e7",
+   "clip": "33871_s02464",
+   "t": 314.63,
+   "before": "your life go",
+   "from": "up.",
+   "after": "Thanks very -year",
+   "verdict": "fix",
+   "to": "well.",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:05:09+00:00"
+  },
+  {
+   "id": "L98563579f7",
+   "clip": "33871_s02464",
+   "t": 315.35,
+   "before": "life go well.",
+   "from": "Thanks very -year Is",
+   "after": "Yep. A three-year-old",
+   "verdict": "fix",
+   "to": "Thanks for your teaching. Shoshangi. Is that ok?",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:10:05+00:00"
   },
   {
    "clip": "34004_s01972",
@@ -1355,6 +1628,84 @@
    "by": "llm"
   },
   {
+   "id": "Lf61b3af448",
+   "clip": "34004_s01972",
+   "t": 79.58,
+   "before": "go well. Attention.",
+   "from": "First,",
+   "after": "I want to",
+   "verdict": "fix",
+   "to": "First,",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:16:32+00:00"
+  },
+  {
+   "id": "L8cece367aa",
+   "clip": "34004_s01972",
+   "t": 124.59,
+   "before": "something about its",
+   "from": "auxiliary.",
+   "after": "How do you",
+   "verdict": "fix",
+   "to": "Exhilarating.",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:17:39+00:00"
+  },
+  {
+   "id": "Lfe458e527d",
+   "clip": "34004_s01972",
+   "t": 175.26,
+   "before": "right away. I",
+   "from": "was",
+   "after": "thinking of when",
+   "verdict": "unclear",
+   "to": "was",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:20:17+00:00"
+  },
+  {
+   "id": "L0a3ba98360",
+   "clip": "34004_s01972",
+   "t": 175.26,
+   "before": "right away. I",
+   "from": "was",
+   "after": "thinking of when",
+   "verdict": "fix",
+   "to": "and I was",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:21:04+00:00"
+  },
+  {
+   "id": "Lf975677a45",
+   "clip": "34004_s01972",
+   "t": 174.82,
+   "before": "mind right away.",
+   "from": "I",
+   "after": "and I was",
+   "verdict": "fix",
+   "to": "Um,",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:21:12+00:00"
+  },
+  {
+   "id": "Lbc8cab78c6",
+   "clip": "34004_s01972",
+   "t": 178.3,
+   "before": "was thinking of",
+   "from": "when I had a grasp room",
+   "after": "to the incense",
+   "verdict": "fix",
+   "to": "when I had a grasp room",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:45:57+00:00"
+  },
+  {
    "clip": "34444_s01440",
    "t": 18.79,
    "before": "dictionary in the",
@@ -1575,6 +1926,58 @@
    "by": "llm"
   },
   {
+   "id": "L6821bc6947",
+   "clip": "34577_b01262",
+   "t": 333.66,
+   "before": "into the years",
+   "from": "of come cold.",
+   "after": "Dogen says, I",
+   "verdict": "fix",
+   "to": "of come cold.",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:54:36+00:00"
+  },
+  {
+   "id": "Lf41722d5fa",
+   "clip": "34577_b01262",
+   "t": 169.37,
+   "before": "talk about up",
+   "from": "and",
+   "after": "must a down?",
+   "verdict": "fix",
+   "to": "unless",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:55:34+00:00"
+  },
+  {
+   "id": "L5c778dc611",
+   "clip": "34577_b01262",
+   "t": 169.53,
+   "before": "about up unless",
+   "from": "must",
+   "after": "a down? They're",
+   "verdict": "fix",
+   "to": "there's",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:55:40+00:00"
+  },
+  {
+   "id": "Lba08abcee2",
+   "clip": "34577_b01262",
+   "t": 70.54,
+   "before": "spoken of in",
+   "from": "human",
+   "after": "things. People unwittingly",
+   "verdict": "unclear",
+   "to": "human",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:56:05+00:00"
+  },
+  {
    "clip": "34582_b00912",
    "t": 37.52,
    "before": "of awareness. The",
@@ -1641,6 +2044,19 @@
    "by": "llm"
   },
   {
+   "id": "L1cf125bb5b",
+   "clip": "34724_s01050",
+   "t": 69.77,
+   "before": "had a chip",
+   "from": "you're gonna",
+   "after": "the monastery was",
+   "verdict": "fix",
+   "to": "you're gonna",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:46:19+00:00"
+  },
+  {
    "clip": "34725_s00990",
    "t": 30.46,
    "before": "hard to be",
@@ -1661,6 +2077,19 @@
    "to": "Hallisey,",
    "why": "",
    "by": "llm"
+  },
+  {
+   "id": "L90b523a811",
+   "clip": "34725_s00990",
+   "t": 30.46,
+   "before": "hard to be",
+   "from": "or",
+   "after": "you know. There",
+   "verdict": "fix",
+   "to": "or",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:53:20+00:00"
   },
   {
    "clip": "34736_s02010",
@@ -1718,6 +2147,19 @@
    "by": "llm"
   },
   {
+   "id": "Lccc9a2bb00",
+   "clip": "34775_s01976",
+   "t": 90.63,
+   "before": "just, I'm done.\"",
+   "from": "Shosanji.",
+   "after": "I came here",
+   "verdict": "fix",
+   "to": "Shoshangi,",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:44:02+00:00"
+  },
+  {
    "clip": "34788_s00990",
    "t": 54.29,
    "before": "poems of the",
@@ -1749,6 +2191,32 @@
    "to": "Daido Roshi",
    "why": "\"Dr. Roshi\"/\"Dharoshi\" = Daido Roshi",
    "by": "llm"
+  },
+  {
+   "id": "L60921281e3",
+   "clip": "34788_s00990",
+   "t": 54.01,
+   "before": "collection of poems",
+   "from": "of",
+   "after": "the Theragatha, the",
+   "verdict": "fix",
+   "to": "of",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:49:48+00:00"
+  },
+  {
+   "id": "L3d72c36004",
+   "clip": "34788_s00990",
+   "t": 54.29,
+   "before": "poems of the",
+   "from": "Theragatha,",
+   "after": "the poems of",
+   "verdict": "fix",
+   "to": "Theragatha,",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:49:50+00:00"
   },
   {
    "clip": "34803_s00570",
@@ -1806,6 +2274,19 @@
    "by": "llm"
   },
   {
+   "id": "La2ecbceb34",
+   "clip": "34803_s00570",
+   "t": 306.24,
+   "before": "the world. When",
+   "from": "Jimon",
+   "after": "and I were",
+   "verdict": "fix",
+   "to": "Jimon",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:45:45+00:00"
+  },
+  {
    "clip": "34906_s02400",
    "t": 48.17,
    "before": "within each other.",
@@ -1826,6 +2307,19 @@
    "to": "the",
    "why": "false start \"the, this mountaintop\"",
    "by": "llm"
+  },
+  {
+   "id": "Ldbe5bd6617",
+   "clip": "34906_s02400",
+   "t": 48.17,
+   "before": "within each other.",
+   "from": "Has",
+   "after": "He pointed to",
+   "verdict": "fix",
+   "to": "Has",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:53:50+00:00"
   },
   {
    "clip": "35351_s00900",
@@ -1881,6 +2375,19 @@
    "to": "sometimes.",
    "why": "",
    "by": "llm"
+  },
+  {
+   "id": "L1f8f01f4c6",
+   "clip": "35549_s00390",
+   "t": 208.36,
+   "before": "feel realize when",
+   "from": "and",
+   "after": "not is happening",
+   "verdict": "fix",
+   "to": "ghasho is",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:49:36+00:00"
   },
   {
    "clip": "35687_s00990",
@@ -2222,6 +2729,19 @@
    "to": "ava loki",
    "why": "slang use of \"Avaloki(teshvara)\"; spelling as heard",
    "by": "llm"
+  },
+  {
+   "id": "Ld31c91e5b5",
+   "clip": "37645_s00780",
+   "t": 310.46,
+   "before": "a Tibetan teacher,",
+   "from": "Sukhne",
+   "after": "Rinpoche, and he",
+   "verdict": "fix",
+   "to": "Sukhne",
+   "why": "",
+   "by": "listener",
+   "at": "2026-11-15T02:53:09+00:00"
   }
  ]
 }
