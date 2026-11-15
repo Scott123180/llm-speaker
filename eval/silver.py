@@ -55,6 +55,13 @@ VOTERS = {
 HIGH, MEDIUM = 0.75, 0.5
 # dropped before voting: some systems write fillers and others don't, and WER ignores them
 FILLERS = {"uh", "um", "umm", "uhm", "hmm", "hm", "mm", "mhm", "er", "erm", "ah", "eh"}
+# function words: family reliability is measured separately for these and for content words
+STOP = set("""a an the and or but if so as of at by for from in into on onto to up with about
+than then that this these those there here it its it's i me my we us our you your he him his she her
+they them their what which who whom whose when where why how is am are was were be been being do does
+did have has had will would shall should can could may might must not no yes all any some just very
+too also only even well oh now one""".split())
+JUDGE = REPO / "eval" / "goldset" / "judge.json"
 
 
 def family(system):
@@ -91,6 +98,8 @@ class Clip:
         # token tuples present anywhere: evidence that a correct spelling is plausible here
         ev = " ".join([o.get("text", "") for o in self.outs.values()] + self.context_terms + [self.chapter or ""])
         self.evidence = gtokens(ev)
+        self.rel = {}  # (family, "content"|"function") -> share of book-settled disputes it got right
+        self.judge = []  # reviewed decisions for flagged spans (eval/goldset/judge.json)
 
     def voters(self, exclude_family=None):
         out = []
@@ -197,9 +206,33 @@ def vote(clip, voters):
                 tok = next(iter(terms.values()))
                 emit(tok, sum(1 for v in col.values() if v and v["n"] == tok["n"]) / nv, cands, "glossary-tiebreak")
                 continue
+        if tie:
+            best, why = tie_break(clip, col, [n for n, k in cnt.items() if k == c and n is not None])
         tok = next(v for v in col.values() if v and v["n"] == best)
         emit(tok, c / nv, cands, "tie" if tie else "vote")
+        if tie:
+            out[-1]["pick"] = why
     return pivot, out
+
+
+def tie_break(clip, col, tied):
+    """Pick among equally voted words: a glossary term (or a known mishearing of one) first,
+    then a real word over a non-word ("oxherding" over "oxerting"), then the voters whose
+    family is most often right on this kind of word (measured against the book)."""
+    if len(tied) == 1:
+        return tied[0], "only"
+    disp = {n: next(v["d"] for v in col.values() if v and v["n"] == n) for n in tied}
+    cls = "function" if any(n in STOP for n in tied) else "content"
+    backers = {n: [s for s, v in col.items() if v and v["n"] == n] for n in tied}
+
+    def key(n):
+        return (is_term(clip, disp[n]) or is_misheard(clip, disp[n]), known_word(clip, disp[n]),
+                sum(clip.rel.get((family(s), cls), 0.5) for s in backers[n]))
+
+    ranked = sorted(tied, key=key, reverse=True)  # stable: the pivot's word stays first on equal keys
+    a, b = key(ranked[0]), key(ranked[1])
+    why = "glossary" if a[0] != b[0] else "word" if a[1] != b[1] else "family" if a[2] != b[2] else "pivot"
+    return ranked[0], why
 
 
 # ------------------------------------------------------------------ glossary and book passes
@@ -210,6 +243,28 @@ def is_term(clip, word):
     return bool(key) and any(kind == "valid" and not plain for _, kind, _, plain in clip.gloss.index.get(key, []))
 
 
+def is_misheard(clip, word):
+    key = gtokens(re.sub(r"['’]s\b", "", word))
+    return bool(key) and any(kind == "misheard" and not plain for _, kind, _, plain in clip.gloss.index.get(key, []))
+
+
+@lru_cache(maxsize=None)
+def _dictionary():
+    return frozenset(load_dictionary())
+
+
+def known_word(clip, word):
+    """A dictionary word, a glossary term, a number, or a compound of two dictionary words."""
+    w = re.sub(r"['’]s$", "", re.sub(r"^\W+|\W+$", "", word.lower()))
+    D = _dictionary()
+
+    def ok(p):
+        return (p.isdigit() or p in D or is_term(clip, p)
+                or any(p[:k] in D and p[k:] in D for k in range(2, len(p) - 1)))
+    parts = [p for p in re.split(r"[-–]", w) if p]
+    return bool(parts) and all(ok(p) for p in parts)
+
+
 def glossary_pass(clip, toks):
     g, i = clip.gloss, 0
     while i < len(toks):
@@ -218,24 +273,37 @@ def glossary_pass(clip, toks):
             words = [t for t in toks[i:i + n] if t["n"]]
             if not words:
                 continue
-            for e, kind, form, plain in g.index.get(gtokens(" ".join(t["w"] for t in words)), []):
-                if kind == "misheard" and not plain:
-                    hit = (n, g.entries[e], form)
+            text = " ".join(t["w"] for t in words)
+            keys = [(gtokens(text), False)]
+            if re.search(r"['’]s\W*$", text):  # "Yunmin's" -> look up "Yunmin", keep the 's
+                keys.append((gtokens(re.sub(r"['’]s(\W*)$", r"\1", text)), True))
+            for key, poss in keys:
+                for e, kind, form, plain in g.index.get(key, []):
+                    if kind == "misheard" and not plain:
+                        hit = (n, g.entries[e], form, poss)
+                        break
+                if hit:
                     break
             if hit:
                 break
         if hit:
-            n, entry, form = hit
+            n, entry, form, poss = hit
             right = resolve(entry, "misheard", form)
             rt = gtokens(right)
             if rt and any(clip.evidence[k:k + len(rt)] == rt for k in range(len(clip.evidence))):
                 first = toks[i]
-                tail = re.search(r"[^\w']+$", toks[i + n - 1]["w"])  # keep "Yakujo." -> "Hyakujo."
+                # keep trailing punctuation ("Yakujo." -> "Hyakujo.") and possessives ("Yunmen's")
+                tail = re.search(r"['’]s\W*$" if poss else r"[^\w']+$", toks[i + n - 1]["w"])
                 fixed = [{"w": w, "n": wnorm(w), "t": first["t"], "agree": first["agree"], "how": "glossary",
                           "was": " ".join(t["w"] for t in toks[i:i + n]), "cands": first.get("cands")}
                          for w in right.split()]
                 if tail:
                     fixed[-1]["w"] += tail.group(0)
+                # a split voter can leave the end of the term behind ("Tikkadhan Han" -> "... Hanh Han")
+                nxt = toks[i + n] if i + n < len(toks) else None
+                if (nxt and nxt["n"] and len(nxt["n"]) >= 3 and nxt["agree"] < 1
+                        and Levenshtein.normalized_similarity(nxt["n"], fixed[-1]["n"]) >= 0.7):
+                    n += 1
                 toks[i:i + n] = fixed
                 i += len(fixed)
                 continue
@@ -243,23 +311,63 @@ def glossary_pass(clip, toks):
     return toks
 
 
-def book_pass(clip, toks):
-    """Align to the chapter; settle disputed words the book confirms; flag the rest."""
-    words = [t for t in toks if t["n"]]
+def book_align(clip, words):
+    """Align reference words to the matching stretch of the chapter -> (pairs, region) or None."""
     if not clip.book or not words:
-        return toks, None
+        return None
     bn = [b["n"] for b in clip.book]
     pos = defaultdict(list)
     for j in range(len(bn) - 4):
         pos[tuple(bn[j:j + 5])].append(j)
     hits = sorted(j for i in range(len(words) - 4) for j in pos.get(tuple(t["n"] for t in words[i:i + 5]), []))
     if len(hits) < 3:
-        return toks, {"coverage": 0.0}
+        return None
     lo, hi = hits[len(hits) // 10], hits[-1 - len(hits) // 10]
     region = clip.book[max(0, lo - 150): hi + 150]
-    pairs = align(words, region)
+    return align(words, region), region
+
+
+def family_reliability(clips):
+    """Per family and word class, how often its word is the book's in disputes the book settles."""
+    tally = defaultdict(lambda: [1, 2])  # Laplace prior: 1 of 2
+    for clip in clips:
+        voters = clip.voters()
+        if not clip.book or len(voters) < 2:
+            continue
+        _, toks = vote(clip, voters)
+        words = [t for t in toks if t["n"] and t["how"] != "insert"]
+        ba = book_align(clip, words)
+        if not ba:
+            continue
+        pairs, region = ba
+        for i, j in pairs:
+            if i is None or j is None or words[i]["agree"] >= 1:
+                continue
+            b = region[j]["n"]
+            cands = words[i]["cands"] or {}
+            if b not in {wnorm(v) for v in cands.values() if v}:
+                continue  # the book doesn't settle this one (editing, or everyone is wrong)
+            cls = "function" if b in STOP else "content"
+            for s, v in cands.items():
+                tally[(family(s), cls)][0] += wnorm(v) == b if v else 0
+                tally[(family(s), cls)][1] += 1
+    return {k: round(r / n, 3) for k, (r, n) in tally.items()}
+
+
+def close(a, b):
+    return len(a) >= 4 and len(b) >= 4 and Levenshtein.normalized_similarity(a, b) >= 0.6
+
+
+def book_pass(clip, toks):
+    """Align to the chapter; settle disputed words the book confirms; flag the rest."""
+    words = [t for t in toks if t["n"]]
+    ba = book_align(clip, words)
+    if not ba:
+        return toks, ({"coverage": 0.0} if clip.book and words else None)
+    pairs, region = ba
     equal = sum(1 for i, j in pairs if i is not None and j is not None and words[i]["n"] == region[j]["n"])
     terms = {gtokens(f) for e in clip.gloss.entries for f in e["valid"]}
+    at = {i: j for i, j in pairs if i is not None}
     for i, j in pairs:
         if i is None:
             continue
@@ -274,6 +382,13 @@ def book_pass(clip, toks):
             elif b and b["n"] in cand_n:
                 alt = next(v for v in cands.values() if v and wnorm(v) == b["n"])
                 t.update({"was": t["w"], "w": alt, "n": b["n"], "book": "settles", "how": "book"})
+            elif (b and any(close(b["n"], c) for c in cand_n | {t["n"]})
+                  and anchored(words, region, at, i)
+                  and not (any(is_term(clip, v) for v in cands.values() if v) and not is_term(clip, b["d"]))):
+                # every voter garbled a word the book has ("sequent"/"sequined" -> "sequential")
+                tail = re.search(r"[^\w']+$", t["w"])
+                w = re.sub(r"^\W+|\W+$", "", b["d"]) + (tail.group(0) if tail else "")
+                t.update({"was": t["w"], "w": w, "n": b["n"], "book": "adopted", "how": "book"})
             else:
                 t["book"] = "unresolved"
         elif b and b["n"] != t["n"] and ((b["n"],) in terms or (t["n"],) in terms):
@@ -285,13 +400,25 @@ def book_pass(clip, toks):
                   "region": [b["d"] for b in region]}
 
 
+def anchored(words, region, at, i):
+    """Both neighbours match the book exactly, so the alignment at i is trustworthy."""
+    def same(k):
+        return 0 <= k < len(words) and at.get(k) is not None and words[k]["n"] == region[at[k]]["n"]
+    return same(i - 1) and same(i + 1)
+
+
 def confidence(t):
+    if t["how"] == "judge":
+        return t["judge_conf"]
     if t["how"] == "single":  # one voter: nothing to corroborate it
         return "medium" if t.get("book") != "unresolved" else "low"
     if t.get("book") in ("confirms", "settles"):
         return "high"
-    if t.get("book") in ("unresolved", "differs"):
-        return "low" if t["agree"] < HIGH or t.get("book") == "differs" else "medium"
+    if t.get("book") == "adopted":
+        return "medium"  # the book is edited, but every voter's word was a near miss of it
+    if t.get("book") == "unresolved":
+        return "low" if t["agree"] < MEDIUM or t["how"] == "tie" else "medium"
+    # "differs" (all voters agree, the book has another term) is information only: usually editing
     if t["how"] in ("glossary", "glossary-tiebreak"):
         return "medium"
     if t["how"] == "tie" or t["agree"] < MEDIUM:
@@ -299,7 +426,44 @@ def confidence(t):
     return "high" if t["agree"] >= HIGH else "medium"
 
 
-def build(clip, exclude_family=None):
+def judge_pass(clip, toks):
+    """Apply reviewed decisions (eval/goldset/judge.json) for flagged spans. A decision names the
+    span by the words around it, so it still applies when a leave-one-family-out rebuild changes
+    the words inside. "unclear" decisions change nothing (the span stays flagged for a listener)."""
+    for d in clip.judge:
+        if d["verdict"] == "unclear":
+            continue
+        W = [k for k, t in enumerate(toks) if t["n"]]
+        n = [toks[k]["n"] for k in W]
+        bef, frm, aft = ([x for x in map(wnorm, d[f].split()) if x] for f in ("before", "from", "after"))
+        best = None
+        for p in range(len(bef), len(W) + 1):
+            if n[p - len(bef):p] != bef:
+                continue
+            qs = range(p, min(len(W), p + len(frm) + 4) + 1) if aft else [p + len(frm)]
+            for q in qs:
+                if q > len(W) or n[q:q + len(aft)] != aft:
+                    continue
+                t0 = toks[W[p]]["t"] if p < len(W) else toks[W[-1]]["t"]
+                if abs(t0 - d["t"]) > 15:
+                    continue
+                key = (n[p:q] == frm, -abs(t0 - d["t"]))
+                if best is None or key > best[0]:
+                    best = (key, p, q)
+        if best is None:
+            continue
+        _, p, q = best
+        a = W[p - 1] + 1 if p else 0
+        b = W[q] if q < len(W) else len(toks)
+        first = toks[a] if a < len(toks) else toks[-1]
+        was = " ".join(t["w"] for t in toks[a:b] if t["n"])
+        toks[a:b] = [{"w": w, "n": wnorm(w), "t": first["t"], "agree": first["agree"], "how": "judge",
+                      "judge_conf": "medium", "verdict": d["verdict"], "was": was, "why": d.get("why", ""),
+                      "cands": first.get("cands")} for w in d["to"].split() if wnorm(w)]
+    return toks
+
+
+def build(clip, exclude_family=None, judge=True):
     voters = clip.voters(exclude_family)
     if not voters:
         return None
@@ -310,6 +474,8 @@ def build(clip, exclude_family=None):
         pivot, toks = vote(clip, voters)
     toks = glossary_pass(clip, toks)
     toks, book = book_pass(clip, toks)
+    if judge:
+        toks = judge_pass(clip, toks)
     for t in toks:
         t["conf"] = confidence(t)
     words = [t for t in toks if t["n"]]
@@ -324,7 +490,7 @@ def regions(ref, gap=2):
     """Group low-confidence / book-flagged words into regions for review."""
     out, cur = [], None
     for i, t in enumerate(ref["tokens"]):
-        flagged = t["conf"] == "low" or t.get("book") in ("unresolved", "differs") or not t["n"]
+        flagged = t["conf"] == "low" or not t["n"]
         if flagged:
             if cur and i - cur["end"] <= gap:
                 cur["end"] = i
@@ -334,7 +500,7 @@ def regions(ref, gap=2):
     for r in out:
         span = ref["tokens"][r["start"]:r["end"] + 1]
         r["t"] = span[0]["t"]
-        r["kinds"] = sorted({("book-" + t["book"]) if t.get("book") in ("unresolved", "differs") else
+        r["kinds"] = sorted({("book-" + t["book"]) if t.get("book") == "unresolved" else
                              ("dropped" if not t["n"] else t["how"]) for t in span})
         r["text"] = " ".join(t["w"] for t in span if t["n"])
     return out
@@ -360,7 +526,21 @@ def load_clips(manifest=None, systems=None):
             continue
         outs = {s: o.get(c["clip_id"]) for s, o in systems.items()}
         clips.append(Clip(c, outs, gloss, chapters))
+    rel = family_reliability(clips)
+    judged = load_judge()
+    for c in clips:
+        c.rel, c.judge = rel, judged.get(c.id, [])
     return clips
+
+
+def load_judge():
+    """Decisions by clip; each "to" may only use words some system, the glossary or the book has."""
+    if not JUDGE.exists():
+        return {}
+    by = defaultdict(list)
+    for d in json.loads(JUDGE.read_text())["decisions"]:
+        by[d["clip"]].append(d)
+    return by
 
 
 def cmd_build(a):
@@ -381,7 +561,7 @@ def cmd_build(a):
           f"{tot['regions']} flagged regions")
 
 
-def score(manifest=None, systems=None, normalize=None):
+def score(manifest=None, systems=None, normalize=None, judge=True):
     """Leave-one-family-out silver WER per system. Returns {system: {...}}."""
     import jiwer
     if normalize is None:
@@ -394,7 +574,7 @@ def score(manifest=None, systems=None, normalize=None):
 
     @lru_cache(maxsize=None)
     def ref_for(i, fam):
-        r = build(clips[i], fam)
+        r = build(clips[i], fam, judge)
         return (normalize(r["text"]), len(r["voters"]), r["clip_id"]) if r else None
 
     res = defaultdict(lambda: defaultdict(lambda: {"S": 0, "D": 0, "I": 0, "N": 0, "clips": 0, "voters": []}))
@@ -427,7 +607,7 @@ def score(manifest=None, systems=None, normalize=None):
 
 
 def cmd_score(a):
-    res = score()
+    res = score(judge=not a.no_judge)
     p = REPO / "eval" / "results" / "silver.json"
     p.write_text(json.dumps(res, indent=1))
     print(f"{'system':32s} {'silver WER':>10s} {'stratified':>11s} {'book':>7s} {'voters':>7s}")
@@ -437,11 +617,95 @@ def cmd_score(a):
     print(f"-> {p}")
 
 
+def cmd_worklist(a):
+    """Every flagged span with its context and each voter's words, for a reviewer (human or LLM)
+    who can't hear the audio: they pick among the candidates, the book's word or "unclear"."""
+    items, lines = [], []
+    for clip in load_clips():
+        ref = build(clip, judge=False)
+        if not ref:
+            continue
+        toks = ref["tokens"]
+        for t in toks:
+            t["conf"] = confidence(t)
+        for r in regions(ref):
+            i0, i1 = r["start"], r["end"]
+            words_before = [t["w"] for t in toks[:i0] if t["n"]]
+            words_after = [t["w"] for t in toks[i1 + 1:] if t["n"]]
+            span = toks[i0:i1 + 1]
+            item = {"id": f"W{len(items) + 1:03d}", "clip": clip.id, "t": r["t"],
+                    "before": " ".join(words_before[-3:]), "from": r["text"], "after": " ".join(words_after[:3])}
+            items.append(item)
+            per, seen = defaultdict(list), set()
+            for t in span:
+                c = t.get("cands")
+                if c is None:
+                    for s in ref["voters"]:
+                        per[s].append(t["w"] if t["n"] else "")
+                elif id(c) not in seen:
+                    seen.add(id(c))
+                    for s in ref["voters"]:
+                        per[s].append(c.get(s) or "")
+            t0, t1 = span[0]["t"] - 1, span[-1]["t"] + 2
+            ctx = [w["d"] for w in clip.toks.get("whisper-turbo+ctx", []) if t0 <= w["t"] <= t1]
+            m, sec = divmod(int(r["t"]), 60)
+            lines.append(f"{item['id']} {clip.id} @{m}:{sec:02d} {','.join(r['kinds'])}")
+            lines.append(f"  ... {' '.join(words_before[-14:])} [{r['text']}] {' '.join(words_after[:14])} ...")
+            lines.append("  " + " | ".join(f"{s.split('-')[0]}: {' '.join(x for x in per[s] if x) or '-'}"
+                                           for s in ref["voters"]) + f" | turbo+ctx: {' '.join(ctx) or '-'}")
+            bj = [t["bj"] for t in span if "bj" in t]
+            if bj and ref["book"] and ref["book"].get("region"):
+                reg = ref["book"]["region"]
+                lines.append(f"  book: {' '.join(reg[max(0, min(bj) - 8):max(bj) + 9])}")
+    out = OUT_DIR / "worklist"
+    out.with_suffix(".json").write_text(json.dumps(items, ensure_ascii=False, indent=0))
+    out.with_suffix(".txt").write_text("\n".join(lines) + "\n")
+    print(f"{len(items)} flagged spans -> {out}.txt / .json")
+
+
+def cmd_judge_import(a):
+    """id<TAB>verdict(fix|keep|unclear)<TAB>to<TAB>why -> merge into eval/goldset/judge.json."""
+    items = {x["id"]: x for x in json.loads((OUT_DIR / "worklist.json").read_text())}
+    clips = {c.id: c for c in load_clips()}
+    terms = {t for e in next(iter(clips.values())).gloss.entries for f in e["valid"] for t in gtokens(f)}
+    doc = json.loads(JUDGE.read_text()) if JUDGE.exists() else {"decisions": []}
+    keep = {(d["clip"], d["t"], d["from"]): d for d in doc["decisions"]}
+    bad = 0
+    for line in Path(a.tsv).read_text().splitlines():
+        if not line.strip() or line.startswith("#"):
+            continue
+        wid, verdict, to, why = (line.split("\t") + ["", "", ""])[:4]
+        x = items[wid.strip()]
+        verdict = verdict.strip()
+        assert verdict in ("fix", "keep", "unclear"), line
+        to = x["from"] if verdict == "keep" and not to.strip() else to.strip()
+        allowed = set(clips[x["clip"]].evidence) | terms
+        new = [t for t in gtokens(to) if t not in allowed]
+        if verdict == "fix" and new:
+            print(f"rejected {wid}: {new} not in any system output, the glossary or the book")
+            bad += 1
+            continue
+        keep[(x["clip"], x["t"], x["from"])] = {**{k: x[k] for k in ("clip", "t", "before", "from", "after")},
+                                                "verdict": verdict, "to": to, "why": why.strip()}
+    doc["about"] = ("Decisions on flagged silver-reference spans by a text-only reviewer (no audio). "
+                    "They choose among system outputs, the glossary and the book; 'unclear' needs a listener.")
+    doc["decisions"] = sorted(keep.values(), key=lambda d: (d["clip"], d["t"]))
+    JUDGE.write_text(json.dumps(doc, ensure_ascii=False, indent=1))
+    print(f"{len(doc['decisions'])} decisions in {JUDGE} ({bad} rejected)")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("build").set_defaults(fn=cmd_build)
-    sub.add_parser("score").set_defaults(fn=cmd_score)
+    sc = sub.add_parser("score")
+    sc.add_argument("--no-judge", action="store_true", help="ignore eval/goldset/judge.json")
+    sc.set_defaults(fn=cmd_score)
+    sub.add_parser("worklist", help="flagged spans for review -> data/silver/worklist.{json,txt}").set_defaults(
+        fn=cmd_worklist)
+    im = sub.add_parser("judge-import", help="TSV of id<TAB>verdict<TAB>to<TAB>why -> eval/goldset/judge.json")
+    im.add_argument("tsv")
+    im.set_defaults(fn=cmd_judge_import)
     a = ap.parse_args()
     a.fn(a)
 

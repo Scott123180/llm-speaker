@@ -1,12 +1,12 @@
 # ASR bake-off
 
-_Generated 2026-11-10 21:32 by `eval/report.py`. Re-run after adding systems or references._
+_Generated 2026-11-14 20:05 by `eval/report.py`. Re-run after adding systems or references._
 
 **Gold set:** 50 speech excerpts (5.0 h, one per talk, stratified by era / speaker / content / audio difficulty) and 76 non-speech clips (38 min of bells, silence and room noise where VAD finds <10% speech). **Corrected references: 0/50.**
 
 ## Findings
 
-_Hand-written interpretation (`eval/findings.md`, last edited 2026-11-10). The tables below are regenerated each run; re-check this section when they change._
+_Hand-written interpretation (`eval/findings.md`, last edited 2026-11-14). The tables below are regenerated each run; re-check this section when they change._
 
 These notes are based on 14 systems, 38 stratified speech excerpts plus 12 book excerpts, and 76 non-speech clips. **No human-corrected references exist yet;** sections 8–14 use automatic silver references and the edited book text. Everything below comes from metrics that don't need a reference, plus listening to the side-by-side examples. Treat the ranking as provisional until WER is in.
 
@@ -92,12 +92,30 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
     - It also has its own errors: "Kongen", "Yoshita" for Kangen, Yoshida.
     - It does catch some errors every system makes: "sequential steps", which the systems wrote as "sequent", "sequence" and "sequined".
 
-14. **Changes to the silver-reference pipeline suggested by this:**
-    - In ties, prefer dictionary words and glossary terms ("oxherding" over "oxerting"), and on content words prefer the family that's most often right.
-    - Strip possessives before glossary lookups, so "Yunmin's" becomes "Yunmen's".
-    - Treat "book differs" as information only.
-    - Adopt the book's spelling when it is close to the reference word ("sequential").
-    - Add new misheard forms: Unman → Ummon, Tiknad Han → Thich Nhat Hanh.
+14. **Silver-reference changes made from this (2026-11-14).**
+    - **Ties:** a glossary term, or a known mishearing of one, wins over other words. A real word wins over a non-word ("oxherding" over "oxerting"). After that, the vote goes to the family most often right on that kind of word, measured on disputes the book settles:
+
+      | Family | Content words | Function words |
+      |---|---|---|
+      | Whisper | 67% | 53% |
+      | Parakeet | 59% | 86% |
+      | Qwen | 43% | 47% |
+
+    - **Glossary:** lookups strip possessives, so "Yunmin's" becomes "Yunmen's". New misheard forms: Tiknad Han, Tikkadhan → Thich Nhat Hanh.
+    - **Book:** where every system was near the book's word, the book's spelling is used ("sequent"/"sequined" → "sequential"). "Book differs" no longer raises a flag. A book-unresolved word with a 2/3 majority counts as medium confidence.
+    - **Effect:** these changes cut the flagged spots from 338 to 202.
+
+15. **LLM review of the flagged spots** (`eval/goldset/judge.json`). I read all 202 spots as text, with each voter's words, the prompted turbo output and the book passage.
+    - **Rule:** a fix may only use words that some system, the glossary or the book wrote. Spots that need the audio are marked *unclear*.
+    - **Results:** 71 fixes, 101 kept, 30 unclear.
+    - **What the fixes catch** is what voting can't: a real word in the wrong place. Examples: "This koan is human's attempt" → Yunmen's, "Einstein didn't say yes" → Nansen, "the denture rings" → densho, "Mr. Ruben Sanza" → "As Ryushin Sensei", "just grafted that off" → scraped.
+    - **What it can't settle:** names no system spelled right, quiet audience speech, mantras, dates (Nansen's birth year, which the systems wrote as 1748 or 1948).
+    - **After review,** 31 flagged regions remain in the 50 clips. That's a short listening list.
+    - **Scores:** silver WER drops 0.1–0.2 points for every system and the ranking doesn't change, so the earlier comparisons hold.
+    - **Caveats:**
+      - A decision is located by the words around it, so it applies in only 63–78% of the leave-one-family-out rebuilds.
+      - An LLM judge prefers fluent text, which could favour systems that paraphrase. That's why it may only choose among existing words.
+      - Use `eval/silver.py score --no-judge` for the voting-only numbers.
 
 ### Recommendation (provisional)
 
@@ -138,15 +156,15 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
 | System | Non-speech clips with invented text | Glossary terms misheard | Prompt echo | Loops | Words/min | Punct./100 words |
 |---|---|---|---|---|---|---|
 | `legacy-whisper-cli` | 76/76 (100%) | 11.3% (48 of 425) | — | 3 | 112 | 13.7 |
-| `parakeet-ft-v1+vad90` | 4/76 (5%) | 16.4% (60 of 366) | — | 1 | 111 | 12.4 |
+| `parakeet-ft-v1+vad90` | 4/76 (5%) | 16.6% (61 of 367) | — | 1 | 111 | 12.4 |
 | `parakeet-v3` | 4/76 (5%) | 14.2% (51 of 360) | — | 1 | 109 | 15.5 |
 | `parakeet-v3+boost0.3f` | 7/76 (9%) | 13.6% (49 of 359) | 0 clips | 1 | 109 | 15.5 |
 | `parakeet-v3+boost0.5` | 5/76 (7%) | 10.9% (41 of 375) | 0 clips | 1 | 109 | 15.5 |
 | `parakeet-v3+boost1` | 5/76 (7%) | 10.8% (42 of 388) | 0 clips | 1 | 109 | 15.4 |
 | `qwen3-asr-1.7b` | 74/76 (97%) | 2.3% (8 of 354) | — | 0 | 110 | 16.7 |
 | `qwen3-asr-1.7b+ctx` | 74/76 (97%) | 2.1% (10 of 476) | 6 clips (1.4% of audio) | 1 | 110 | 16.6 |
-| `qwen3-asr-1.7b+vad` | 7/76 (9%) | 2.7% (10 of 373) | — | 0 | 109 | 16.6 |
-| `qwen3-asr-1.7b+vad+terms` | 7/76 (9%) | 1.7% (7 of 414) | 0 clips | 0 | 110 | 16.5 |
+| `qwen3-asr-1.7b+vad` | 7/76 (9%) | 2.9% (11 of 374) | — | 0 | 109 | 16.6 |
+| `qwen3-asr-1.7b+vad+terms` | 7/76 (9%) | 1.9% (8 of 415) | 0 clips | 0 | 110 | 16.5 |
 | `whisper-large-v3` | 7/76 (9%) | 8.0% (33 of 411) | — | 1 | 106 | 15.9 |
 | `whisper-large-v3+ctx` | 7/76 (9%) | 2.5% (12 of 475) | 13 clips (2.0% of audio) | 0 | 100 | 16.9 |
 | `whisper-turbo` | 7/76 (9%) | 13.1% (55 of 421) | — | 0 | 107 | 16.0 |
@@ -165,6 +183,10 @@ Each speech clip's reference is built without a human, by `eval/silver.py`:
 - **Vote:** a word-level majority vote across one plain system per model family.
 - **Glossary:** known misheard spellings are corrected.
 - **Book:** for the 12 *book* clips, disputed words are settled against Daido Roshi's edited talks.
+- **Ties:** a glossary term or real word wins over a misspelling, then the family most often right on that kind
+  of word (measured against the book).
+- **Review:** an LLM read every remaining flagged spot as text, without audio (`eval/goldset/judge.json`).
+  It could only choose words that some system, the glossary or the book wrote, or mark the spot *unclear*.
 
 **No system grades itself.** Each system is scored against a reference rebuilt *without its own family*.
 The *voters* column shows how many families that reference used, and with fewer than about 4 the reference
@@ -175,20 +197,20 @@ as a ranking aid until corrected references exist. Browse the flagged spots with
 
 | System | Silver WER (all) | substitutions / deletions / insertions | Stratified set | Book set | Voters |
 |---|---|---|---|---|---|
-| `whisper-turbo` | 6.0% | 1.5% / 4.0% / 0.5% | 6.1% | 5.5% | 2.0 |
-| `whisper-large-v3` | 6.1% | 1.4% / 4.2% / 0.4% | 6.4% | 5.1% | 2.0 |
-| `parakeet-ft-v1+vad90` | 6.5% | 1.7% / 0.6% / 4.1% | 6.7% | 5.5% | 2.0 |
-| `whisper-turbo+ctx` | 6.7% | 1.3% / 4.9% / 0.5% | 7.0% | 5.7% | 2.0 |
-| `legacy-whisper-cli` | 7.0% | 2.0% / 1.9% / 3.1% | 7.3% | 5.7% | 2.0 |
-| `parakeet-v3+boost0.5` | 7.2% | 2.0% / 1.8% / 3.3% | 7.4% | 6.5% | 2.0 |
-| `parakeet-v3+boost1` | 7.3% | 2.0% / 1.9% / 3.5% | 7.4% | 6.8% | 2.0 |
-| `qwen3-asr-1.7b+vad` | 7.4% | 2.7% / 1.3% / 3.4% | 7.4% | 7.4% | 2.0 |
-| `parakeet-v3` | 7.6% | 2.1% / 2.0% / 3.5% | 7.7% | 7.0% | 2.0 |
-| `parakeet-v3+boost0.3f` | 7.6% | 2.0% / 2.1% / 3.5% | 7.6% | 7.4% | 2.0 |
-| `qwen3-asr-1.7b` | 7.9% | 2.9% / 1.2% / 3.8% | 7.9% | 8.0% | 2.0 |
-| `qwen3-asr-1.7b+ctx` | 8.5% | 2.8% / 1.2% / 4.4% | 8.6% | 8.1% | 2.0 |
-| `qwen3-asr-1.7b+vad+terms` | 8.8% | 2.8% / 1.3% / 4.7% | 9.2% | 7.2% | 2.0 |
-| `whisper-large-v3+ctx` | 12.0% | 1.9% / 9.6% / 0.5% | 12.5% | 10.1% | 2.0 |
+| `whisper-turbo` | 5.8% | 1.4% / 4.0% / 0.5% | 5.9% | 5.4% | 2.0 |
+| `whisper-large-v3` | 5.9% | 1.3% / 4.2% / 0.4% | 6.1% | 5.0% | 2.0 |
+| `parakeet-ft-v1+vad90` | 6.3% | 1.7% / 0.6% / 4.0% | 6.5% | 5.4% | 2.0 |
+| `whisper-turbo+ctx` | 6.5% | 1.2% / 4.8% / 0.5% | 6.8% | 5.5% | 2.0 |
+| `legacy-whisper-cli` | 6.8% | 1.8% / 1.9% / 3.1% | 7.1% | 5.6% | 2.0 |
+| `parakeet-v3+boost0.5` | 7.1% | 2.0% / 1.8% / 3.3% | 7.3% | 6.5% | 2.0 |
+| `qwen3-asr-1.7b+vad` | 7.2% | 2.6% / 1.3% / 3.3% | 7.2% | 7.3% | 2.0 |
+| `parakeet-v3+boost1` | 7.2% | 2.0% / 1.9% / 3.4% | 7.4% | 6.8% | 2.0 |
+| `parakeet-v3` | 7.5% | 2.0% / 2.0% / 3.4% | 7.7% | 7.0% | 2.0 |
+| `parakeet-v3+boost0.3f` | 7.5% | 2.0% / 2.1% / 3.4% | 7.6% | 7.4% | 2.0 |
+| `qwen3-asr-1.7b` | 7.8% | 2.8% / 1.2% / 3.8% | 7.8% | 7.7% | 2.0 |
+| `qwen3-asr-1.7b+ctx` | 8.4% | 2.7% / 1.3% / 4.4% | 8.5% | 7.9% | 2.0 |
+| `qwen3-asr-1.7b+vad+terms` | 8.6% | 2.6% / 1.4% / 4.6% | 9.0% | 7.1% | 2.0 |
+| `whisper-large-v3+ctx` | 11.7% | 1.7% / 9.6% / 0.5% | 12.2% | 9.9% | 2.0 |
 
 ## Effect of per-talk context
 
@@ -198,8 +220,8 @@ as a ranking aid until corrected references exist. Browse the flagged spots with
 | `parakeet-v3` → `parakeet-v3+boost0.5` | 14.2% → 10.9% | 4 → 5 clips | 1.1% of words |
 | `parakeet-v3` → `parakeet-v3+boost1` | 14.2% → 10.8% | 4 → 5 clips | 1.1% of words |
 | `qwen3-asr-1.7b` → `qwen3-asr-1.7b+ctx` | 2.3% → 2.1% | 74 → 74 clips | 2.6% of words |
-| `qwen3-asr-1.7b` → `qwen3-asr-1.7b+vad` | 2.3% → 2.7% | 74 → 7 clips | 4.0% of words |
-| `qwen3-asr-1.7b+vad` → `qwen3-asr-1.7b+vad+terms` | 2.7% → 1.7% | 7 → 7 clips | 2.3% of words |
+| `qwen3-asr-1.7b` → `qwen3-asr-1.7b+vad` | 2.3% → 2.9% | 74 → 7 clips | 4.0% of words |
+| `qwen3-asr-1.7b+vad` → `qwen3-asr-1.7b+vad+terms` | 2.9% → 1.9% | 7 → 7 clips | 2.3% of words |
 | `whisper-large-v3` → `whisper-large-v3+ctx` | 8.0% → 2.5% | 7 → 7 clips | 8.1% of words |
 | `whisper-turbo` → `whisper-turbo+ctx` | 13.1% → 3.9% | 7 → 7 clips | 2.0% of words |
 
@@ -217,8 +239,8 @@ Disagreement is the word error rate between the two outputs: how much of the tex
 | `parakeet-v3+boost1` | gasho, Yakujo, Mizumi, Secho, Mayakaya Shapa, Shapa, doksan, Orioki, Ingo, seshin, Ongo, Zazengi |
 | `qwen3-asr-1.7b` | Mazumi, Ongo, seshin, doksan, Zhao, Uman |
 | `qwen3-asr-1.7b+ctx` | Shapa, Mazumi, Ongo, doksan, Genjo |
-| `qwen3-asr-1.7b+vad` | Shapa, doksan, Uman, Ongo, Doxan, Genjo |
-| `qwen3-asr-1.7b+vad+terms` | doksan, Dogon, Genjo |
+| `qwen3-asr-1.7b+vad` | Shapa, doksan, Uman, Ongo, Doxan, Tikkadhan, Genjo |
+| `qwen3-asr-1.7b+vad+terms` | doksan, Dogon, Tikkadhan, Genjo |
 | `whisper-large-v3` | Yakujo, Shapa, Maizumi, doksan, Setsho, Huiko, Daito, Ingo, Mayakaya Shapa, Mizumi, Yunmin, Ongo |
 | `whisper-large-v3+ctx` | Shapa, Mayakaya Shapa, Setsho, Zenda, Dogon |
 | `whisper-turbo` | doksan, Yakujo, Shapa, gasho, Maizumi, Gashow, Setsho, Mayakaya Shapa, Huiko, Daito, Zhao, Ingo |

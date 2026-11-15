@@ -72,6 +72,10 @@ Without a gold set, every later choice is a guess.
   - book confirmation for the book clips
   - per-word confidence and flagged regions
   - leave-one-family-out WER in the report
+  - tie-breaks by glossary term, real word, then the family most often right (measured against the book)
+- [x] **LLM review** of every flagged spot, as text only (`eval/goldset/judge.json`; `silver.py worklist` and
+      `judge-import`). It chooses only among existing words: 71 fixes, 101 kept, 30 unclear. 31 regions
+      across the 50 clips are left to check by ear.
 - [x] **Viewer:** `uv run python eval/viewer.py` shows each system side by side with the reference, its
       flags, the book passage and the audio.
 - [ ] More voter families make silver references stronger. Only 3 run locally (Whisper, Parakeet, Qwen);

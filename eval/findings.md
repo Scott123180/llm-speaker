@@ -82,12 +82,30 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
     - It also has its own errors: "Kongen", "Yoshita" for Kangen, Yoshida.
     - It does catch some errors every system makes: "sequential steps", which the systems wrote as "sequent", "sequence" and "sequined".
 
-14. **Changes to the silver-reference pipeline suggested by this:**
-    - In ties, prefer dictionary words and glossary terms ("oxherding" over "oxerting"), and on content words prefer the family that's most often right.
-    - Strip possessives before glossary lookups, so "Yunmin's" becomes "Yunmen's".
-    - Treat "book differs" as information only.
-    - Adopt the book's spelling when it is close to the reference word ("sequential").
-    - Add new misheard forms: Unman → Ummon, Tiknad Han → Thich Nhat Hanh.
+14. **Silver-reference changes made from this (2026-11-14).**
+    - **Ties:** a glossary term, or a known mishearing of one, wins over other words. A real word wins over a non-word ("oxherding" over "oxerting"). After that, the vote goes to the family most often right on that kind of word, measured on disputes the book settles:
+
+      | Family | Content words | Function words |
+      |---|---|---|
+      | Whisper | 67% | 53% |
+      | Parakeet | 59% | 86% |
+      | Qwen | 43% | 47% |
+
+    - **Glossary:** lookups strip possessives, so "Yunmin's" becomes "Yunmen's". New misheard forms: Tiknad Han, Tikkadhan → Thich Nhat Hanh.
+    - **Book:** where every system was near the book's word, the book's spelling is used ("sequent"/"sequined" → "sequential"). "Book differs" no longer raises a flag. A book-unresolved word with a 2/3 majority counts as medium confidence.
+    - **Effect:** these changes cut the flagged spots from 338 to 202.
+
+15. **LLM review of the flagged spots** (`eval/goldset/judge.json`). I read all 202 spots as text, with each voter's words, the prompted turbo output and the book passage.
+    - **Rule:** a fix may only use words that some system, the glossary or the book wrote. Spots that need the audio are marked *unclear*.
+    - **Results:** 71 fixes, 101 kept, 30 unclear.
+    - **What the fixes catch** is what voting can't: a real word in the wrong place. Examples: "This koan is human's attempt" → Yunmen's, "Einstein didn't say yes" → Nansen, "the denture rings" → densho, "Mr. Ruben Sanza" → "As Ryushin Sensei", "just grafted that off" → scraped.
+    - **What it can't settle:** names no system spelled right, quiet audience speech, mantras, dates (Nansen's birth year, which the systems wrote as 1748 or 1948).
+    - **After review,** 31 flagged regions remain in the 50 clips. That's a short listening list.
+    - **Scores:** silver WER drops 0.1–0.2 points for every system and the ranking doesn't change, so the earlier comparisons hold.
+    - **Caveats:**
+      - A decision is located by the words around it, so it applies in only 63–78% of the leave-one-family-out rebuilds.
+      - An LLM judge prefers fluent text, which could favour systems that paraphrase. That's why it may only choose among existing words.
+      - Use `eval/silver.py score --no-judge` for the voting-only numbers.
 
 ### Recommendation (provisional)
 

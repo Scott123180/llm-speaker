@@ -56,6 +56,7 @@ audio { width: min(520px, 100%); }
 .tok.low { background: var(--low-bg); color: var(--low); font-weight: 600; }
 .tok.gloss { text-decoration: underline dotted var(--gl) 2px; text-underline-offset: 3px; }
 .tok.bookset { text-decoration: underline solid var(--ok) 2px; text-underline-offset: 3px; }
+.tok.judged { text-decoration: underline dashed var(--accent) 2px; text-underline-offset: 3px; }
 .tok.drop { color: var(--low); font-family: var(--sans); font-size: 12px; }
 .tok.now { background-color: var(--now); }
 .tok.sel { background-color: var(--sel); box-shadow: inset 0 -2px 0 var(--accent); }
@@ -107,6 +108,7 @@ aside h3 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-s
       <span><i class="sw" style="background:var(--low-bg)"></i>low: tie, weak vote, or the book doesn't settle it</span>
       <span><u style="text-decoration:underline dotted var(--gl) 2px">word</u> glossary spelling</span>
       <span><u style="text-decoration:underline solid var(--ok) 2px">word</u> settled by the book</span>
+      <span><u style="text-decoration:underline dashed var(--accent) 2px">word</u> changed by review (text only, no audio)</span>
       <span style="color:var(--low)">⟂ dropped word some systems heard</span>
     </div>
     <div id="ref"></div>
@@ -181,7 +183,8 @@ function tokClass(t) {
   if (!t.n) return "tok drop";
   let k = "tok " + (t.conf === "high" ? "" : t.conf);
   if (t.how === "glossary" || t.how === "glossary-tiebreak") k += " gloss";
-  if (t.book === "settles") k += " bookset";
+  if (t.book === "settles" || t.book === "adopted") k += " bookset";
+  if (t.how === "judge" && t.verdict === "fix") k += " judged";
   return k;
 }
 
@@ -207,13 +210,17 @@ function selectTok(i, seek) {
   const el = $(`.tok[data-i="${i}"]`); if (el) { el.classList.add("sel"); el.scrollIntoView({ block: "nearest" }); }
   if (seek) { audio.currentTime = Math.max(0, t.t - 1.5); }
   const cands = t.cands ? Object.entries(t.cands) : [];
-  const how = { vote: "majority vote", tie: "tie (medoid system's word kept)", insert: "majority inserted",
+  const pick = { glossary: "a glossary term won", word: "the only real word won", family: "the family most often right on such words won",
+    pivot: "medoid system's word kept", only: "the only word candidate won" }[t.pick] || "medoid system's word kept";
+  const how = { vote: "majority vote", tie: `tie (${pick})`, insert: "majority inserted",
+    judge: t.verdict === "fix" ? `changed by review (was “${esc(t.was || "")}”)` : "kept by review",
     drop: "dropped by majority", glossary: `glossary spelling (heard “${esc(t.was || "")}”)`,
-    "glossary-tiebreak": "only candidate that is a known term", book: `settled by the book (was “${esc(t.was || "")}”)`, single: "single voter" }[t.how] || t.how;
+    "glossary-tiebreak": "only candidate that is a known term", book: `${t.book === "adopted" ? "book's spelling of a near miss" : "settled by the book"} (was “${esc(t.was || "")}”)`, single: "single voter" }[t.how] || t.how;
   const bookTxt = { confirms: "book has the same word", settles: "book settled the dispute", unresolved: "book doesn't settle it",
     differs: `book has “${esc(t.book_word || "")}” here (all systems agree)` }[t.book] || "";
   $("#detail").innerHTML = `<div style="font:18px var(--serif)">${t.n ? esc(t.w) : "⟂ (dropped)"}</div>
     <div class="muted">${mmss(t.t)} · ${t.conf} confidence · ${Math.round(100 * t.agree)}% of voters · ${how}${bookTxt ? " · " + bookTxt : ""}</div>
+    ${t.how === "judge" && t.why ? `<div style="margin:4px 0">Review: ${esc(t.why)}</div>` : ""}
     ${cands.length ? `<table>${cands.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v) || '<span class="muted">(nothing)</span>'}</td></tr>`).join("")}</table>` : '<div class="muted">All voters agree.</div>'}
     <button id="playhere" style="margin-top:6px">▶ play from here</button>`;
   $("#playhere").onclick = () => { audio.currentTime = Math.max(0, t.t - 1.5); audio.play(); };
