@@ -77,6 +77,8 @@ def main():
                     help="asr.salm.* setting, e.g. max_sequences=1 (repeatable)")
     ap.add_argument("--threads", type=int, help="asr.backend.threads (CPU builds)")
     ap.add_argument("--port", type=int, default=8089)
+    ap.add_argument("--repeat", type=int, default=1,
+                    help="speed tests only: send every clip N times, to keep more requests in flight than there are clips")
     ap.add_argument("--concurrency", type=int, default=1,
                     help="requests in flight at once (the server batches up to salm max_sequences)")
     ap.add_argument("--timeout", type=float, default=3600, help="per-request timeout (s)")
@@ -92,8 +94,8 @@ def main():
               "instruction": TEMPLATES[args.template] if args.terms else PLAIN,
               "context": f"context terms (hard terms, max {args.max_terms})" if args.terms else None}
     run = Run(system, f"nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B ({args.quant} GGUF)", params, backend)
-    clips = [c for c in load_manifest(kinds=args.kinds, limit=args.limit) if not run.done(c)]
-    log(f"[{system}] {len(clips)} clips to do")
+    clips = [c for c in load_manifest(kinds=args.kinds, limit=args.limit) if not run.done(c)] * max(1, args.repeat)
+    log(f"[{system}] {len(clips)} clips to do" + (f" ({args.repeat} times each)" if args.repeat > 1 else ""))
     if not clips:
         return
 
