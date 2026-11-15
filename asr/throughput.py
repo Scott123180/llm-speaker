@@ -34,8 +34,8 @@ SPEED = REPO / "data" / "logs" / "speed"
 def smi(field):
     try:
         out = subprocess.run(["nvidia-smi", f"--query-gpu={field}", "--format=csv,noheader,nounits"],
-                             capture_output=True, text=True, timeout=5).stdout.split()
-        return out[0] if out else None
+                             capture_output=True, text=True, timeout=5).stdout.strip().splitlines()
+        return out[0].strip() if out else None  # first GPU; names contain spaces
     except Exception:
         return None
 

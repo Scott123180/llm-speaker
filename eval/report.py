@@ -420,7 +420,12 @@ def write_silver(w, names, SV):
 
 SPEED = REPO / "data" / "logs" / "speed"
 SPEED_NAMES = {"whisper-prod": "Whisper turbo, production setup", "nemotron": "Nemotron 3.5 (4-bit GGUF, NeMo-Speech.cpp)",
-               "vibevoice": "VibeVoice-ASR"}
+               "nemotron-a100": "Nemotron 3.5 (4-bit GGUF) on an A100", "vibevoice": "VibeVoice-ASR"}
+GPU_PRICE = {"A100": 1.99, "A10": 1.29}  # Lambda on-demand $/h, 2026-11-15; the longer name matches first
+
+
+def gpu_price(name):
+    return next((p for k, p in GPU_PRICE.items() if k in (name or "")), None)
 
 
 def load_throughput():
@@ -430,7 +435,7 @@ def load_throughput():
     return {p.stem: json.loads(p.read_text()) for p in sorted(SPEED.glob("*.json"))}
 
 
-def write_throughput(w, TP, price=1.29, hours=6500):
+def write_throughput(w, TP, hours=6500):
     if not TP:
         return
     w("## Throughput: running several clips at once")
@@ -440,28 +445,32 @@ def write_throughput(w, TP, price=1.29, hours=6500):
     w("clips), concurrent requests to one server, or batches inside one model.")
     w("")
     w("- **Throughput** is steady-state (model loading excluded): total audio ÷ the slowest process's decoding time.")
-    w(f"- **Archive** is {hours:,} h of audio at that throughput on one such GPU; **cost** at ${price:.2f}/h (Lambda A10).")
+    w(f"- **Archive** is {hours:,} h of audio at that throughput on one such GPU; **cost** at Lambda's on-demand price")
+    w("  (A10 $1.29/h, A100 40 GB $1.99/h).")
     w("  Several GPUs divide the time but not the cost.")
     w("")
     for label, d in TP.items():
-        rows = sorted(d["results"], key=lambda r: (r["variant"] != "procs", r["variant"], r["procs"]))
+        lead = lambda v: int(re.match(r"\d+", v.split()[-1] if v.startswith("batch") else v).group()) \
+            if re.match(r"\d+", v.split()[-1] if v.startswith("batch") else v) else 0
+        rows = sorted(d["results"], key=lambda r: (r["variant"] != "procs", lead(r["variant"]), r["variant"], r["procs"]))
         if not rows:
             continue
         w(f"### {SPEED_NAMES.get(label, label)}")
         w("")
-        w(f"_GPU: {d.get('gpu')} ({int(d['gpu_mem_mb']) // 1024 if d.get('gpu_mem_mb') else '?'} GB)._")
+        price = gpu_price(d.get("gpu"))
+        w(f"_GPU: {d.get('gpu')}" + (f", ${price:.2f}/h" if price else "") + "._")
         w("")
-        base = next((r["rtfx_decode"] for r in rows if r["procs"] == 1 and r["rtfx_decode"] and not r["failed"]), None)
-        w("| Configuration | Processes | Clips | Throughput (× real time) | vs one stream | GPU memory peak | GPU busy | Archive | Cost |")
+        base = next((r["rtfx_decode"] for r in rows if r["rtfx_decode"] and not r["failed"]), None)  # first row
+        w("| Configuration | Processes | Clips | Throughput (× real time) | vs first row | GPU memory peak | GPU busy | Archive | Cost |")
         w("|---|---|---|---|---|---|---|---|---|")
         for r in rows:
             rt = r["rtfx_decode"]
             name = "one stream per process" if r["variant"] == "procs" else r["variant"]
             bad = f" ({r['failed']} failed)" if r["failed"] else ""
             if rt and not r["failed"]:
-                days, cost = hours / rt / 24, hours / rt * price
+                days = hours / rt / 24
                 cells = f"{rt:.0f}× | {rt / base:.1f}× | " if base else f"{rt:.0f}× | — | "
-                tail = f"{days:.1f} days | ${cost:,.0f}"
+                tail = f"{days:.1f} days | " + (f"${hours / rt * price:,.0f}" if price else "—")
             else:
                 cells, tail = "— | — | ", "— | —"
             mem = f"{r['gpu_peak_mb'] / 1024:.1f} GB" if r.get("gpu_peak_mb") else "—"

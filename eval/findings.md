@@ -201,12 +201,28 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
     - **VibeVoice keeps the GPU 95% busy even one clip at a time,** so batching helps little. A batch of 4 fits in 21 GB.
     - Several GPUs divide the time but not the cost; at these prices a full archive pass on A10s costs about $95 for Nemotron or Whisper.
 
+21. **Nemotron on an A100 40 GB: about half the A10's cost per audio hour (2026-11-15, $1.04).** Same 4-bit model, 50 speech clips (5.2 h) per setting, $1.99/h:
+
+    | A100 setting | Throughput | GPU memory | Archive on one A100 | Cost | Silver WER |
+    |---|---|---|---|---|---|
+    | 4 requests, A10 settings (no speculative decoding) | 142× | 22.0 GB | 1.9 days | $91 | 2.90% |
+    | 16 requests | 183× | 24.4 GB | 1.5 days | $71 | 2.86% |
+    | 16 requests, speculative decoding (`mtp_draft=7`) | 215× | 26.0 GB | 1.3 days | $60 | 2.91% |
+    | **32 requests, speculative decoding** | **259×** | 29.2 GB | **1.0 day** | **$50** | 3.00% |
+    | *A10, 4 requests (item 20)* | *85×* | *21.7 GB* | *3.2 days* | *$95* | *2.91%* |
+
+    - **The saving comes from memory, not raw speed:** at the A10's settings the A100 is 1.7× faster but 1.5× the price, so it costs about the same. Room for more requests in flight and for speculative decoding (the model drafts up to 7 tokens per step and checks them) is what halves the cost.
+    - **Accuracy doesn't change:** all four settings score 2.86–3.00% against the A10 run's 2.91%. The texts differ slightly (batched arithmetic), but not the error rate.
+    - **32 requests on 50 clips leaves the GPU half idle for the last wave,** so the archive, with thousands of requests queued, should do a little better than 259×. 29 GB of 40 GB was in use; 48 requests might fit.
+    - **Larger cards were not available to test.** GH200 (96 GB, $2.29/h, ARM) and H100 (80 GB, $3.29–4.29/h) could take far more requests at once; NeMo-Speech.cpp's docs suggest 240 on 80 GB+.
+    - Model download and build took 20 minutes on this instance (7 on the A10), so a run's fixed cost is about $0.70.
+
 ### Recommendation (provisional, 2026-11-15)
 
-- **Switch the archive run to Nemotron 3.5 + term list on cloud A10s,** if a pilot confirms it on full talks. It's the most accurate system tested (2.9% silver WER, 1.9 points better than the Whisper setup, of which about 1.3–1.6 is not style), it loses almost no speech and spells names best (0.4% misheard). At 4 requests in flight it costs about $95 for the archive on one A10, or about a day on three.
+- **Switch the archive run to Nemotron 3.5 + term list on a cloud A100,** if a pilot confirms it on full talks. It's the most accurate system tested (2.9% silver WER, 1.9 points better than the Whisper setup, of which about 1.3–1.6 is not style), it loses almost no speech and spells names best (0.4% misheard). With 32 requests in flight and speculative decoding it costs about $50 for the archive on one A100 40 GB (about a day), against about $95 on an A10 (item 21).
   ```
-  uv run python asr/run_nemotron_cpp.py --terms --concurrency 4 --salm max_sequences=4 \
-      --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4
+  uv run python asr/run_nemotron_cpp.py --terms --concurrency 32 --salm max_sequences=32 \
+      --salm n_ctx_per_sequence=4096 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=4096 --salm encoder_max_batch=32
   ```
   Before that it needs: voice detection (decode VAD speech spans, as Parakeet does), word timings by alignment to a timed system, filler removal, and a check on full-length talks.
 - **Fallback and free local option:** the production Whisper setup (item 17), about 3.4 days on this PC. It's the safest on silent clips and keeps timestamps, but it's clearly less accurate.

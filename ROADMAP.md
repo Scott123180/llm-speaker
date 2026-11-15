@@ -129,7 +129,7 @@ Can start as a smoke test on 5–10 talks while the gold set is being built.
 **Findings so far (silver WER; details in `eval/findings.md`):**
 - **Nemotron-3.5 + term list** is the most accurate (2.9% silver WER against 4.8% for the Whisper
   setup; about a third of that gap is Whisper tidying "you know" and repeats). It spells names best
-  (0.4% misheard) and loses almost no speech. It needs a 24 GB GPU: about $95 for the archive on an A10.
+  (0.4% misheard) and loses almost no speech. It needs a 24 GB+ GPU: about $50 for the archive on an A100, $95 on an A10.
 - **Whisper turbo + prompt, sequential decoding** is the free local option: misheard terms fall from
   13% to 4% with no prompt echo; about 3.4 days for the archive on this PC.
 - **Whisper large-v3 + prompt** spells best among the Whisper setups but **echoes the prompt instead of
@@ -156,9 +156,10 @@ hallucination rate.
 - [ ] Batch runner: manifest (SQLite/JSON), resumable, atomic writes, a params sidecar per output
       (model, version, prompt or terms used)
 - [ ] Output word-level timestamps + segments (JSON), not just text
-- [ ] Decide local vs. cloud. Measured on one A10 ($1.29/h) for about 6,500 h (findings 20): Nemotron
-      with 4 requests in flight about $95; Whisper production setup with 2 processes about $96;
-      VibeVoice about $950. Locally, Whisper takes about 3.4 days on the 3070 Ti.
+- [ ] Decide local vs. cloud. Measured for about 6,500 h (findings 20–21): Nemotron about $50 on one
+      A100 40 GB (32 requests in flight, speculative decoding; about a day) or about $95 on an A10;
+      Whisper production setup about $96 on an A10; VibeVoice about $950. Locally, Whisper takes
+      about 3.4 days on the 3070 Ti. Untested: GH200 / H100, which could take far more requests at once.
 - [ ] New lineage stage (e.g. `transcript_asr_v2`), keeping the old `transcript_raw` for comparison
 - [ ] Spot-check a random sample against the gold-set stratum results
 

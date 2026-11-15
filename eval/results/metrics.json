@@ -18074,6 +18074,70 @@
   }
  },
  "throughput": {
+  "nemotron-a100": {
+   "label": "nemotron-a100",
+   "results": [
+    {
+     "variant": "4 requests, A10 settings",
+     "procs": 1,
+     "failed": 0,
+     "clips": 52,
+     "audio_sec": 18665.0,
+     "wall_sec": 141.7,
+     "decode_sec": 131.4,
+     "rtfx_decode": 142.0,
+     "rtfx_wall": 131.7,
+     "gpu_peak_mb": 22477,
+     "gpu_util_avg": 94,
+     "at": "2026-11-15 16:43:04"
+    },
+    {
+     "variant": "16 requests",
+     "procs": 1,
+     "failed": 0,
+     "clips": 52,
+     "audio_sec": 18665.0,
+     "wall_sec": 112.1,
+     "decode_sec": 102.2,
+     "rtfx_decode": 182.6,
+     "rtfx_wall": 166.4,
+     "gpu_peak_mb": 24983,
+     "gpu_util_avg": 91,
+     "at": "2026-11-15 16:44:56"
+    },
+    {
+     "variant": "16 requests, speculative",
+     "procs": 1,
+     "failed": 0,
+     "clips": 52,
+     "audio_sec": 18665.0,
+     "wall_sec": 96.9,
+     "decode_sec": 87.0,
+     "rtfx_decode": 214.6,
+     "rtfx_wall": 192.5,
+     "gpu_peak_mb": 26591,
+     "gpu_util_avg": 90,
+     "at": "2026-11-15 16:46:34"
+    },
+    {
+     "variant": "32 requests, speculative",
+     "procs": 1,
+     "failed": 0,
+     "clips": 52,
+     "audio_sec": 18665.0,
+     "wall_sec": 82.1,
+     "decode_sec": 72.1,
+     "rtfx_decode": 258.9,
+     "rtfx_wall": 227.3,
+     "gpu_peak_mb": 29945,
+     "gpu_util_avg": 89,
+     "at": "2026-11-15 16:47:56"
+    }
+   ],
+   "gpu": "NVIDIA A100-SXM4-40GB",
+   "gpu_mem_mb": "40960",
+   "command": "uv run python asr/run_nemotron_cpp.py --kinds speech --concurrency 32 --salm max_sequences=32 --salm n_ctx_per_sequence=4096 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=4096 --salm encoder_max_batch=32"
+  },
   "nemotron": {
    "label": "nemotron",
    "results": [
@@ -18106,7 +18170,7 @@
      "at": "2026-11-15 13:19:59"
     }
    ],
-   "gpu": "NVIDIA",
+   "gpu": "NVIDIA A10",
    "gpu_mem_mb": "23028",
    "command": "uv run python asr/run_nemotron_cpp.py --kinds speech --limit 12 --concurrency 4 --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4"
   },
@@ -18156,7 +18220,7 @@
      "at": "2026-11-15 13:50:46"
     }
    ],
-   "gpu": "NVIDIA",
+   "gpu": "NVIDIA A10",
    "gpu_mem_mb": "23028",
    "command": "uv run --project asr/envs/hf python asr/run_vibevoice.py --kinds speech --limit 8 --batch-size 4"
   },
@@ -18267,7 +18331,7 @@
      "recounted": true
     }
    ],
-   "gpu": "NVIDIA",
+   "gpu": "NVIDIA A10",
    "gpu_mem_mb": "23028",
    "command": "uv run python asr/run_whisper.py --model large-v3-turbo --context --batch-size 8 --kinds speech"
   }
