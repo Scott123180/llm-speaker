@@ -16,9 +16,11 @@ cd NeMo-Speech.cpp
 git checkout --quiet "$COMMIT"
 command -v ninja >/dev/null || uv tool install ninja
 if [ "$BACKEND" = cuda ]; then nvcc --version | tail -n 1; fi
-if [ -x "build/$BACKEND-asr/bin/nemo-speech" ]; then echo "already built"; exit 0; fi
+# the runner uses `nemo-speech serve`, which only exists with NEMO_SPEECH_BUILD_HTTP=ON
+if [ -x "build/$BACKEND-asr/bin/nemo-speech" ] && [ -f "build/$BACKEND-asr/.with-http" ]; then echo "already built"; exit 0; fi
 JOBS=$(nproc) bash scripts/build_sentencepiece_static.sh
-git submodule update --init --depth 1 llama.cpp
-bash scripts/configure.sh "$BACKEND-asr" -DNEMO_SPEECH_BUILD_SPEECHLM=ON
+git submodule update --init --depth 1 llama.cpp third_party/cpp-httplib
+bash scripts/configure.sh "$BACKEND-asr" -DNEMO_SPEECH_BUILD_SPEECHLM=ON -DNEMO_SPEECH_BUILD_HTTP=ON
 cmake --build --preset "$BACKEND-asr" -j "$(nproc)"
 ls -la "build/$BACKEND-asr/bin/nemo-speech"
+touch "build/$BACKEND-asr/.with-http"

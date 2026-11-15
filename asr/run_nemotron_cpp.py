@@ -136,7 +136,10 @@ def main():
                 log(f"  {n}/{len(clips)} {clip['clip_id']} {dur:.0f}s in {dt:.1f}s")
         run.finish(mon.peak_mb if backend == "cuda" else None)
     finally:
-        os.killpg(srv.pid, signal.SIGTERM)
+        try:
+            os.killpg(srv.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass  # the server already exited (its log says why)
         try:
             srv.wait(timeout=30)
         except subprocess.TimeoutExpired:
