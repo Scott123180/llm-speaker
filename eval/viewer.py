@@ -113,7 +113,7 @@ def decide(body):
         raise ValueError("unknown clip or verdict")
     toks = json.loads((SILVER / f"{cid}.json").read_text())["tokens"]
     a, b = int(body["start"]), int(body["end"])
-    if not 0 <= a <= b < len(toks) or b - a > 80:
+    if not 0 <= a <= b < len(toks) or b - a > 2000:
         raise ValueError("bad span")
     frm = " ".join(t["w"] for t in toks[a:b + 1] if t["n"])
     to = " ".join(str(body.get("to", "")).split())[:2000] if verdict == "fix" else frm

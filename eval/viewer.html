@@ -329,7 +329,7 @@ async function api(path, body, t0) {
   try {
     const r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", "X-Viewer": "1" }, body: JSON.stringify(body) });
     const res = await r.json().catch(() => ({ ok: false, error: `HTTP ${r.status}` }));
-    if (!res.ok) throw new Error(res.error || `HTTP ${r.status}`);
+    if (!res.ok) { if (msg) msg.textContent = `Not saved: ${res.error || "HTTP " + r.status}.`; return; }
     const e = st.index.clips.find(c => c.id === st.clip); if (e) Object.assign(e, res.entry);
     for (const k of Object.keys(st.drafts)) if (k.startsWith(st.clip + ":")) delete st.drafts[k];
     st.range = null;
