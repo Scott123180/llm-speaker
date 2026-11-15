@@ -59,7 +59,12 @@ audio { width: min(520px, 100%); }
 .tok.judged { text-decoration: underline dashed var(--accent) 2px; text-underline-offset: 3px; }
 .tok.drop { color: var(--low); font-family: var(--sans); font-size: 12px; }
 .tok.now { background-color: var(--now); }
-.tok.sel { background-color: var(--sel); box-shadow: inset 0 -2px 0 var(--accent); }
+.tok.sel, .sp.sel { background-color: var(--sel); box-shadow: inset 0 -2px 0 var(--accent), inset 0 2px 0 var(--accent); border-radius: 0; }
+.tok.sel-first { border-top-left-radius: 4px; border-bottom-left-radius: 4px; box-shadow: inset 0 -2px 0 var(--accent), inset 0 2px 0 var(--accent), inset 2px 0 0 var(--accent); }
+.tok.sel-last { border-top-right-radius: 4px; border-bottom-right-radius: 4px; box-shadow: inset 0 -2px 0 var(--accent), inset 0 2px 0 var(--accent), inset -2px 0 0 var(--accent); }
+.tok.sel-first.sel-last { box-shadow: inset 0 0 0 2px var(--accent); }
+.settle .ctx { font: 14px/1.5 var(--serif); color: var(--muted); }
+.settle .ctx mark { background: var(--sel); color: var(--fg); border-radius: 3px; padding: 0 2px; box-shadow: inset 0 0 0 1px var(--accent); }
 .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .legend span { display: inline-flex; gap: 4px; align-items: center; }
 .sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; }
@@ -144,7 +149,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const nrm = w => String(w || "").toLowerCase().replace(/[^a-z0-9]/g, "");
 const mmss = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
-const st = { index: null, data: null, clip: null, sel: null, shown: new Set(), timesCache: {} };
+const st = { index: null, data: null, clip: null, sel: null, shown: new Set(), timesCache: {}, drafts: {} };
 const audio = $("#audio");
 
 function store(k, v) { try { localStorage.setItem("silverviewer." + k, JSON.stringify(v)); } catch (e) {} }
@@ -206,11 +211,13 @@ function tokClass(t) {
 function renderRef() {
   const s = st.data.silver;
   if (!s) { $("#ref").innerHTML = '<span class="muted">Run eval/silver.py build.</span>'; return; }
-  $("#ref").innerHTML = s.tokens.map((t, i) => `<span class="${tokClass(t)}" data-i="${i}">${t.n ? esc(t.w) : "⟂"}</span>`).join(" ");
+  $("#ref").innerHTML = s.tokens.map((t, i) => `<span class="${tokClass(t)}" data-i="${i}">${t.n ? esc(t.w) : "⟂"}</span>`)
+    .join("\u0000").split("\u0000").map((h, i, a) => i < a.length - 1 ? h + `<span class="sp" data-s="${i}"> </span>` : h).join("");
   $("#ref").onclick = e => {
     const el = e.target.closest(".tok"); if (!el) return;
     const i = +el.dataset.i;
     if (e.shiftKey && st.range) selectTok(i, false, [Math.min(st.range[0], i), Math.max(st.range[1], i)]);
+    else if (st.range && st.range[0] <= i && i <= st.range[1]) selectTok(i, true, st.range);  // stay on this span
     else selectTok(i, true);
   };
 }
@@ -224,6 +231,20 @@ function renderFlags() {
   $("#flags").querySelectorAll(".flag").forEach(b => b.onclick = () => { st.flag = +b.dataset.k; selectTok(regs[st.flag].start, true); });
 }
 
+function draftKey(range) { range = range || st.range; return `${st.clip}:${range[0]}-${range[1]}`; }
+
+function markRange() {
+  document.querySelectorAll("#ref .sel").forEach(e => e.classList.remove("sel", "sel-first", "sel-last"));
+  if (!st.range) return;
+  const [a, b] = st.range;
+  for (let k = a; k <= b; k++) {
+    const e = $(`#ref .tok[data-i="${k}"]`); if (e) e.classList.add("sel");
+    if (k < b) { const g = $(`#ref .sp[data-s="${k}"]`); if (g) g.classList.add("sel"); }
+  }
+  $(`#ref .tok[data-i="${a}"]`)?.classList.add("sel-first");
+  $(`#ref .tok[data-i="${b}"]`)?.classList.add("sel-last");
+}
+
 function regionOf(i) {
   const regs = st.data.silver ? st.data.silver.regions : [];
   return regs.find(r => r.start <= i && i <= r.end);
@@ -232,10 +253,13 @@ function regionOf(i) {
 function selectTok(i, seek, range) {
   const s = st.data.silver, t = s.tokens[i];
   const r = regionOf(i);
+  const prev = st.range;
   st.range = range || (r ? [r.start, r.end] : [i, i]);
   st.sel = i;
-  document.querySelectorAll(".tok.sel").forEach(e => e.classList.remove("sel"));
-  for (let k = st.range[0]; k <= st.range[1]; k++) { const e = $(`#ref .tok[data-i="${k}"]`); if (e) e.classList.add("sel"); }
+  // a draft follows the span when it is widened or narrowed, so typing is never lost
+  if (prev && !st.drafts[draftKey()] && st.drafts[draftKey(prev)] && prev[0] <= st.range[1] && st.range[0] <= prev[1])
+    st.drafts[draftKey()] = st.drafts[draftKey(prev)];
+  markRange();
   const el = $(`#ref .tok[data-i="${i}"]`); if (el) el.scrollIntoView({ block: "nearest" });
   const regs = s.regions || [];
   document.querySelectorAll(".flag").forEach(b => b.classList.toggle("sel", r != null && regs[+b.dataset.k] === r));
@@ -253,6 +277,9 @@ function selectTok(i, seek, range) {
   const bookTxt = { confirms: "book has the same word", settles: "book settled the dispute", unresolved: "book doesn't settle it",
     differs: `book has “${esc(t.book_word || "")}” here (all systems agree)` }[t.book] || "";
   const spanTxt = s.tokens.slice(st.range[0], st.range[1] + 1).filter(x => x.n).map(x => x.w).join(" ");
+  const draft = st.drafts[draftKey()];
+  const before = s.tokens.slice(0, st.range[0]).filter(x => x.n).slice(-8).map(x => x.w).join(" ");
+  const after = s.tokens.slice(st.range[1] + 1).filter(x => x.n).slice(0, 8).map(x => x.w).join(" ");
   $("#detail").innerHTML = `<div style="font:18px var(--serif)">${t.n ? esc(t.w) : "⟂ (dropped)"}</div>
     <div class="muted">${mmss(t.t)} · ${t.conf} confidence · ${Math.round(100 * t.agree)}% of voters · ${how}${bookTxt ? " · " + bookTxt : ""}</div>
     ${t.how === "judge" && t.why ? `<div style="margin:4px 0">${byYou ? "Your note" : "LLM review"}: ${esc(t.why)}</div>` : ""}
@@ -265,9 +292,11 @@ function selectTok(i, seek, range) {
     <div class="settle">
       <h3>Settle this ${st.range[1] > st.range[0] ? `(${st.range[1] - st.range[0] + 1} words)` : ""}</h3>
       <div class="muted small">Listen, then confirm or type what was said. Shift-click a word to widen the span.</div>
-      <label class="small muted" for="fixtext">What was said (leave empty if nothing was)</label>
-      <textarea id="fixtext" rows="2">${esc(spanTxt)}</textarea>
-      <input id="fixnote" placeholder="note (optional)">
+      <div class="ctx">… ${esc(before)} <mark>${spanTxt ? esc(spanTxt) : "⟂"}</mark> ${esc(after)} …</div>
+      <label class="small muted" for="fixtext">What was said in the highlighted part (leave empty if nothing was)</label>
+      <textarea id="fixtext" rows="2">${esc(draft ? draft.text : spanTxt)}</textarea>
+      <input id="fixnote" placeholder="note (optional)" value="${esc(draft ? draft.note : "")}">
+      <div id="draftmsg" class="small muted" ${draft ? "" : "hidden"}>Your draft (not saved yet) · <button id="b-reset" class="link">reset to the reference</button></div>
       <div class="row">
         <button id="b-keep" title="k">✓ Correct as is</button>
         <button id="b-fix" class="primary" title="Enter in the text box">Save correction</button>
@@ -280,6 +309,9 @@ function selectTok(i, seek, range) {
   $("#b-keep").onclick = () => settle("keep");
   $("#b-unclear").onclick = () => settle("unclear");
   $("#b-fix").onclick = () => settle("fix");
+  const keep = () => { st.drafts[draftKey()] = { text: $("#fixtext").value, note: $("#fixnote").value }; $("#draftmsg").hidden = false; };
+  $("#fixtext").oninput = keep; $("#fixnote").oninput = keep;
+  $("#b-reset").onclick = () => { delete st.drafts[draftKey()]; $("#fixtext").value = spanTxt; $("#fixnote").value = ""; $("#draftmsg").hidden = true; };
   $("#fixtext").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); settle("fix"); } if (e.key === "Escape") e.target.blur(); };
   document.querySelectorAll("#opts .opt").forEach(b => {
     b.onclick = () => useOpt(+b.dataset.k, false);
@@ -297,6 +329,8 @@ async function api(path, body, t0) {
     const res = await r.json().catch(() => ({ ok: false, error: `HTTP ${r.status}` }));
     if (!res.ok) throw new Error(res.error || `HTTP ${r.status}`);
     const e = st.index.clips.find(c => c.id === st.clip); if (e) Object.assign(e, res.entry);
+    for (const k of Object.keys(st.drafts)) if (k.startsWith(st.clip + ":")) delete st.drafts[k];
+    st.range = null;
     st.data = await (await fetch(`clips/${st.clip}.json`, { cache: "no-store" })).json();
     st.timesCache = {}; renderList(); renderRef(); renderFlags();
     const regs = st.data.silver.regions, next = regs.findIndex(r => r.t >= t0 - 0.01);
@@ -343,6 +377,7 @@ function spanOptions(range) {
 function useOpt(k, save) {
   const o = st.opts[k]; if (!o) return;
   $("#fixtext").value = o.text;
+  st.drafts[draftKey()] = { text: o.text, note: $("#fixnote").value }; $("#draftmsg").hidden = false;
   document.querySelectorAll("#opts .opt").forEach(b => b.classList.toggle("picked", +b.dataset.k === k));
   if (save) settle(o.current ? "keep" : "fix");
   else { $("#fixtext").focus(); }
@@ -425,7 +460,7 @@ document.addEventListener("keydown", e => {
   else if (e.key === "p" && regs.length) { st.flag = Math.max(0, (st.flag ?? 1) - 1); selectTok(regs[st.flag].start, true); }
   else if (e.key === "ArrowRight") audio.currentTime += 5;
   else if (e.key === "ArrowLeft") audio.currentTime = Math.max(0, audio.currentTime - 5);
-  else if (e.key === "Escape") { st.sel = null; st.range = null; document.querySelectorAll(".tok.sel").forEach(x => x.classList.remove("sel")); }
+  else if (e.key === "Escape") { st.sel = null; st.range = null; markRange(); }
   else if (e.key === "k" && st.range) settle("keep");
   else if (/^[1-9]$/.test(e.key) && st.range && st.opts && st.opts[+e.key - 1]) useOpt(+e.key - 1, true);
   else if (e.key === "u" && st.range) settle("unclear");
