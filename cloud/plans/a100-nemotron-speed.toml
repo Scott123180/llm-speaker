@@ -1,0 +1,34 @@
+# Nemotron 3.5 (4-bit GGUF) throughput on an A100 40 GB, to compare cost per audio hour with the
+# A10 (85x with 4 requests in flight, about $95 for the archive; eval/findings.md item 20).
+# Settings follow NeMo-Speech.cpp's docs/salm/configuration.md: 32 GB+ GPUs run 16 requests at once
+# and keep speculative decoding (mtp_draft) on. Transcripts stay in data/logs/speed/nemotron-a100/
+# so they can be scored against the gold set (does speculative decoding change the output?).
+#   uv run python -m cloud run cloud/plans/a100-nemotron-speed.toml --dry-run
+name = "a100-nemotron-speed"
+
+[instance]
+provider = "lambda"
+types = ["gpu_1x_a100_sxm4", "gpu_1x_a100"]
+max_price_per_hour = 2.10
+max_hours = 1.5
+min_gpu_mem_gb = 40
+regions = ["us-east-1", "us-west-2", "us-west-1", "us-south-1"]
+
+[sync]
+dirs = ["data/goldset/clips", "transcriber/context"]
+results = ["data/logs"]
+
+[setup]
+commands = ["bash cloud/remote/bootstrap.sh"]
+
+# 50 speech clips (5 h of audio) per configuration.
+[[job]]
+name = "nemotron-a100"
+models = ["AtomicChat/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B-GGUF:*Encoder-F16.gguf,*AD-IQ4_NL.gguf"]
+setup = ["bash cloud/remote/setup_nemo_speech_cpp.sh cuda"]
+commands = [
+  "uv run python asr/throughput.py --label nemotron-a100 --variant '4 requests, A10 settings' -- uv run python asr/run_nemotron_cpp.py --kinds speech --concurrency 4 --salm max_sequences=4 --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4",
+  "uv run python asr/throughput.py --label nemotron-a100 --variant '16 requests' -- uv run python asr/run_nemotron_cpp.py --kinds speech --concurrency 16 --salm max_sequences=16 --salm n_ctx_per_sequence=8192 --salm max_context=73728 --salm mtp_draft=0 --salm n_batch=2048 --salm encoder_max_batch=16",
+  "uv run python asr/throughput.py --label nemotron-a100 --variant '16 requests, speculative' -- uv run python asr/run_nemotron_cpp.py --kinds speech --concurrency 16 --salm max_sequences=16 --salm n_ctx_per_sequence=8192 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=2048 --salm encoder_max_batch=16",
+  "uv run python asr/throughput.py --label nemotron-a100 --variant '32 requests, speculative' -- uv run python asr/run_nemotron_cpp.py --kinds speech --concurrency 32 --salm max_sequences=32 --salm n_ctx_per_sequence=4096 --salm max_context=73728 --salm mtp_draft=7 --salm n_batch=4096 --salm encoder_max_batch=32",
+]
