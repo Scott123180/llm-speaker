@@ -1,6 +1,6 @@
 # ASR bake-off
 
-_Generated 2026-11-14 20:05 by `eval/report.py`. Re-run after adding systems or references._
+_Generated 2026-11-14 20:23 by `eval/report.py`. Re-run after adding systems or references._
 
 **Gold set:** 50 speech excerpts (5.0 h, one per talk, stratified by era / speaker / content / audio difficulty) and 76 non-speech clips (38 min of bells, silence and room noise where VAD finds <10% speech). **Corrected references: 0/50.**
 
@@ -187,6 +187,7 @@ Each speech clip's reference is built without a human, by `eval/silver.py`:
   of word (measured against the book).
 - **Review:** an LLM read every remaining flagged spot as text, without audio (`eval/goldset/judge.json`).
   It could only choose words that some system, the glossary or the book wrote, or mark the spot *unclear*.
+- **Listener:** spots settled by ear in the viewer are saved to the same file and override everything else.
 
 **No system grades itself.** Each system is scored against a reference rebuilt *without its own family*.
 The *voters* column shows how many families that reference used, and with fewer than about 4 the reference

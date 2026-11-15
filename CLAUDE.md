@@ -33,6 +33,8 @@ eval/               # gold set, scoring and the bake-off report
   goldset.py        # select / download / cut gold-set clips
   goldset/          # manifest.json, drafts/ (from legacy transcripts), refs/ (hand-corrected)
   report.py         # metrics + reports/ASR bake-off.md
+  silver.py         # automatic references: vote, glossary, book, review decisions (goldset/judge.json)
+  viewer.py         # local side-by-side viewer; saves listener decisions to goldset/judge.json
   run_bakeoff.sh    # run every system and regenerate the report
   CONVENTIONS.md    # how to correct drafts into references
 glossary/           # glossary.csv (names/terms, correct + misheard forms) and README
@@ -74,6 +76,8 @@ uv run python transcriber/build_context.py \
 uv run python eval/goldset.py select && uv run python eval/goldset.py download && uv run python eval/goldset.py cut
 bash eval/run_bakeoff.sh                     # all systems, resumable; then writes reports/ASR bake-off.md
 uv run python eval/report.py                 # regenerate the report (e.g. after correcting references)
+uv run python eval/silver.py build           # automatic (silver) references -> data/silver/
+uv run python eval/viewer.py                 # side-by-side viewer at http://127.0.0.1:8765; settle flags by ear
 ```
 
 ### Cloud runs (see cloud/README.md)

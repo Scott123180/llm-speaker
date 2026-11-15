@@ -357,6 +357,7 @@ def write_silver(w, names, SV):
     w("  of word (measured against the book).")
     w("- **Review:** an LLM read every remaining flagged spot as text, without audio (`eval/goldset/judge.json`).")
     w("  It could only choose words that some system, the glossary or the book wrote, or mark the spot *unclear*.")
+    w("- **Listener:** spots settled by ear in the viewer are saved to the same file and override everything else.")
     w("")
     w("**No system grades itself.** Each system is scored against a reference rebuilt *without its own family*.")
     w("The *voters* column shows how many families that reference used, and with fewer than about 4 the reference")

@@ -1,4 +1,5 @@
 {
+ "about": "Decisions on flagged silver-reference spans. by=llm: a text-only reviewer (no audio) choosing among system outputs, the glossary and the book; 'unclear' needs a listener. by=listener: a person who heard the audio (saved from eval/viewer.py); applied last, so they override.",
  "decisions": [
   {
    "clip": "29973_s00810",
@@ -8,7 +9,8 @@
    "after": "change money into",
    "verdict": "fix",
    "to": "To",
-   "why": "\"To change money into a jelly donut becomes a pretty simple matter\""
+   "why": "\"To change money into a jelly donut becomes a pretty simple matter\"",
+   "by": "llm"
   },
   {
    "clip": "29973_s00810",
@@ -18,7 +20,8 @@
    "after": "was mentioning yesterday,",
    "verdict": "fix",
    "to": "As Ryushin Sensei",
-   "why": "ZMM teacher; Ruben Sanza / Vincenzo / Sri Venanda are mishearings of it"
+   "why": "ZMM teacher; Ruben Sanza / Vincenzo / Sri Venanda are mishearings of it",
+   "by": "llm"
   },
   {
    "clip": "29973_s00810",
@@ -28,7 +31,8 @@
    "after": "attempt of precipitating",
    "verdict": "fix",
    "to": "Yunmen's",
-   "why": "Yunmen's leg caught in the door, told earlier in the clip; \"human's attempt\" makes no sense"
+   "why": "Yunmen's leg caught in the door, told earlier in the clip; \"human's attempt\" makes no sense",
+   "by": "llm"
   },
   {
    "clip": "30643_s01710",
@@ -38,7 +42,8 @@
    "after": "",
    "verdict": "unclear",
    "to": "",
-   "why": "30 s where every system writes unrelated text: faint or noisy speech, needs a listener"
+   "why": "30 s where every system writes unrelated text: faint or noisy speech, needs a listener",
+   "by": "llm"
   },
   {
    "clip": "30660_b00309",
@@ -48,7 +53,8 @@
    "after": "pictures. And in",
    "verdict": "keep",
    "to": "oxherding",
-   "why": "ox herding pictures; the book alignment here is off"
+   "why": "ox herding pictures; the book alignment here is off",
+   "by": "llm"
   },
   {
    "clip": "30671_b01435",
@@ -58,7 +64,8 @@
    "after": "when you become",
    "verdict": "keep",
    "to": "mu,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "30671_b01435",
@@ -68,7 +75,8 @@
    "after": "The tree. Sound",
    "verdict": "keep",
    "to": "Mu.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "30671_b01435",
@@ -78,7 +86,8 @@
    "after": "is a whole",
    "verdict": "fix",
    "to": "through",
-   "why": "\"Through and through is a whole different dimension of reality\""
+   "why": "\"Through and through is a whole different dimension of reality\"",
+   "by": "llm"
   },
   {
    "clip": "30714_b01540",
@@ -88,7 +97,8 @@
    "after": "at Yoshimi Monastery,",
    "verdict": "unclear",
    "to": "",
-   "why": "the era is Kangen (1243); systems wrote Kanjin/Kunjan and the book prints Konjen"
+   "why": "the era is Kangen (1243); systems wrote Kanjin/Kunjan and the book prints Konjen",
+   "by": "llm"
   },
   {
    "clip": "30714_b01540",
@@ -98,7 +108,8 @@
    "after": "eyeballs, you should",
    "verdict": "fix",
    "to": "Gautama's",
-   "why": "book and Whisper: \"plum blossoms are not Gautama's eyeballs\""
+   "why": "book and Whisper: \"plum blossoms are not Gautama's eyeballs\"",
+   "by": "llm"
   },
   {
    "clip": "30754_b00012",
@@ -108,7 +119,8 @@
    "after": "caretaking that was",
    "verdict": "keep",
    "to": "watched",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "30754_b00012",
@@ -118,7 +130,8 @@
    "after": "and two minutes",
    "verdict": "keep",
    "to": "outdoors",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "30754_b00012",
@@ -128,7 +141,8 @@
    "after": "it happening Incidentally,",
    "verdict": "keep",
    "to": "think",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "30754_b00012",
@@ -138,7 +152,8 @@
    "after": "So please excuse",
    "verdict": "keep",
    "to": "Record.",
-   "why": "Mountain Record, the ZMM journal"
+   "why": "Mountain Record, the ZMM journal",
+   "by": "llm"
   },
   {
    "clip": "30766_s00180",
@@ -148,7 +163,8 @@
    "after": "fifth, the precept",
    "verdict": "fix",
    "to": "And",
-   "why": "\"And fifth, the precept of...\""
+   "why": "\"And fifth, the precept of...\"",
+   "by": "llm"
   },
   {
    "clip": "30766_s00180",
@@ -158,7 +174,8 @@
    "after": "in the bestowal",
    "verdict": "unclear",
    "to": "",
-   "why": "precept wording is \"avaricious in the bestowal of the dharma\", but no system wrote it"
+   "why": "precept wording is \"avaricious in the bestowal of the dharma\", but no system wrote it",
+   "by": "llm"
   },
   {
    "clip": "30766_s00180",
@@ -168,7 +185,8 @@
    "after": "in the bestowal",
    "verdict": "unclear",
    "to": "",
-   "why": "as W058: likely \"avaricious\""
+   "why": "as W058: likely \"avaricious\"",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -178,7 +196,8 @@
    "after": "well yeah when",
    "verdict": "keep",
    "to": "that",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -188,7 +207,8 @@
    "after": "did you explore",
    "verdict": "unclear",
    "to": "",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -198,7 +218,8 @@
    "after": "and hitting the",
    "verdict": "keep",
    "to": "flinging",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -208,7 +229,8 @@
    "after": "paint was how",
    "verdict": "keep",
    "to": "where",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -218,7 +240,8 @@
    "after": "and having no",
    "verdict": "fix",
    "to": "experience",
-   "why": "\"I felt like I was having no experience and having no feelings about it\""
+   "why": "\"I felt like I was having no experience and having no feelings about it\"",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -228,7 +251,8 @@
    "after": "about it. But",
    "verdict": "keep",
    "to": "feelings",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -238,7 +262,8 @@
    "after": "I liked that.",
    "verdict": "keep",
    "to": "light is sparkling.",
-   "why": "the book's version also has the sparkling light"
+   "why": "the book's version also has the sparkling light",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -248,7 +273,8 @@
    "after": "the on top",
    "verdict": "keep",
    "to": "towards",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -258,7 +284,8 @@
    "after": "different texture. Not",
    "verdict": "keep",
    "to": "with",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -268,7 +295,8 @@
    "after": "real security that",
    "verdict": "keep",
    "to": "the",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31039_b04388",
@@ -278,7 +306,8 @@
    "after": "in the center.",
    "verdict": "keep",
    "to": "sparkling light",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -288,7 +317,8 @@
    "after": "have to end",
    "verdict": "keep",
    "to": "We",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -298,7 +328,8 @@
    "after": "millions of hectares",
    "verdict": "fix",
    "to": "which owns",
-   "why": "\"McDonald's, which owns millions of hectares\""
+   "why": "\"McDonald's, which owns millions of hectares\"",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -308,7 +339,8 @@
    "after": "cattle. Because if",
    "verdict": "fix",
    "to": "for its",
-   "why": "\"in the Brazilian rainforest for its cattle\""
+   "why": "\"in the Brazilian rainforest for its cattle\"",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -318,7 +350,8 @@
    "after": "if we didn't",
    "verdict": "keep",
    "to": "I",
-   "why": "false start"
+   "why": "false start",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -328,7 +361,8 @@
    "after": "job, which are",
    "verdict": "fix",
    "to": "their",
-   "why": "\"can't afford to lose their job(s)\""
+   "why": "\"can't afford to lose their job(s)\"",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -338,7 +372,8 @@
    "after": "Marlin Arms, Winchester,",
    "verdict": "fix",
    "to": "Remington",
-   "why": "Connecticut gun makers: Remington, Marlin, Winchester, Colt"
+   "why": "Connecticut gun makers: Remington, Marlin, Winchester, Colt",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -348,7 +383,8 @@
    "after": "don't have food,",
    "verdict": "unclear",
    "to": "",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -358,7 +394,8 @@
    "after": "let me say",
    "verdict": "keep",
    "to": "that",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -368,7 +405,8 @@
    "after": "bomber, the minute",
    "verdict": "fix",
    "to": "1",
-   "why": "B-1 bomber; the \"-1\" is a tokenizing artefact"
+   "why": "B-1 bomber; the \"-1\" is a tokenizing artefact",
+   "by": "llm"
   },
   {
    "clip": "31043_s04042",
@@ -378,7 +416,8 @@
    "after": "yeah of course",
    "verdict": "keep",
    "to": "we",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -388,7 +427,8 @@
    "after": "over to peony,",
    "verdict": "keep",
    "to": "Taifu",
-   "why": "Riko Taifu (Lu Xuan) and Nansen, Blue Cliff Record 40"
+   "why": "Riko Taifu (Lu Xuan) and Nansen, Blue Cliff Record 40",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -398,7 +438,8 @@
    "after": "pointed to. it,",
    "verdict": "keep",
    "to": "peony,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -408,7 +449,8 @@
    "after": "said, people these",
    "verdict": "keep",
    "to": "it, and",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -418,7 +460,8 @@
    "after": "died at the",
    "verdict": "unclear",
    "to": "",
-   "why": "Nansen lived 748–835; the systems wrote 1748 / 1948, so the year as spoken needs a listener"
+   "why": "Nansen lived 748–835; the systems wrote 1748 / 1948, so the year as spoken needs a listener",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -428,7 +471,8 @@
    "after": "greatest successor, one",
    "verdict": "keep",
    "to": "Baso's",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -438,7 +482,8 @@
    "after": "the sutra is",
    "verdict": "keep",
    "to": "of his,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -448,7 +493,8 @@
    "after": "asked Nansen, \"I've",
    "verdict": "fix",
    "to": "Taifu",
-   "why": "Riko Taifu asks Nansen about the goose in the bottle; Kaifu/Tyfu are mishearings"
+   "why": "Riko Taifu asks Nansen about the goose in the bottle; Kaifu/Tyfu are mishearings",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -458,7 +504,8 @@
    "after": "didn't say yes.",
    "verdict": "fix",
    "to": "Nansen",
-   "why": "\"Nansen didn't say yes, it's wonderful\"; Einstein/Johnson make no sense here"
+   "why": "\"Nansen didn't say yes, it's wonderful\"; Einstein/Johnson make no sense here",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -468,7 +515,8 @@
    "after": "flower as in",
    "verdict": "keep",
    "to": "this",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -478,7 +526,8 @@
    "after": "a dream. When",
    "verdict": "keep",
    "to": "in",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31268_s00240",
@@ -488,7 +537,8 @@
    "after": "What he's saying,",
    "verdict": "fix",
    "to": "is",
-   "why": "\"It's not easy to really be clear, is what he's saying\""
+   "why": "\"It's not easy to really be clear, is what he's saying\"",
+   "by": "llm"
   },
   {
    "clip": "31298_b01702",
@@ -498,7 +548,8 @@
    "after": "knew how to",
    "verdict": "keep",
    "to": "Setcho",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31298_b01702",
@@ -508,7 +559,8 @@
    "after": "happening to hear",
    "verdict": "keep",
    "to": "And",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "31311_s00180",
@@ -518,7 +570,8 @@
    "after": "who is not",
    "verdict": "unclear",
    "to": "",
-   "why": "Obaku's other successor; Kayan/Tayan/Taion — name not identifiable from text"
+   "why": "Obaku's other successor; Kayan/Tayan/Taion — name not identifiable from text",
+   "by": "llm"
   },
   {
    "clip": "31311_s00180",
@@ -528,7 +581,8 @@
    "after": "the what does",
    "verdict": "fix",
    "to": "did",
-   "why": "\"what did the... what does this guy understand\" (false start); qwen and turbo+ctx"
+   "why": "\"what did the... what does this guy understand\" (false start); qwen and turbo+ctx",
+   "by": "llm"
   },
   {
    "clip": "31311_s00180",
@@ -538,7 +592,8 @@
    "after": "some students better",
    "verdict": "keep",
    "to": "for",
-   "why": "\"It's got something to do with quality. For some students...\""
+   "why": "\"It's got something to do with quality. For some students...\"",
+   "by": "llm"
   },
   {
    "clip": "31587_s01620",
@@ -548,7 +603,8 @@
    "after": "yesterday, who was",
    "verdict": "fix",
    "to": "Deepa Ma",
-   "why": "the teacher Dipa Ma; turbo+ctx has \"Deepa Ma\""
+   "why": "the teacher Dipa Ma; turbo+ctx has \"Deepa Ma\"",
+   "by": "llm"
   },
   {
    "clip": "31966_s01428",
@@ -558,7 +614,8 @@
    "after": "pores, of hearing",
    "verdict": "fix",
    "to": "84,000",
-   "why": "same number, standard spelling"
+   "why": "same number, standard spelling",
+   "by": "llm"
   },
   {
    "clip": "32903_s00720",
@@ -568,7 +625,8 @@
    "after": "want to say",
    "verdict": "keep",
    "to": "I I",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "32903_s00720",
@@ -578,7 +636,8 @@
    "after": "Sensei said, we",
    "verdict": "fix",
    "to": "Ryushin",
-   "why": "Ryushin Sensei (ZMM); Rishon/Rishan are mishearings"
+   "why": "Ryushin Sensei (ZMM); Rishon/Rishan are mishearings",
+   "by": "llm"
   },
   {
    "clip": "32995_s00180",
@@ -588,7 +647,8 @@
    "after": "fulfilling samadhi, maintain",
    "verdict": "fix",
    "to": "and other",
-   "why": "liturgy: \"play freely in self-fulfilling and other-fulfilling samadhi\""
+   "why": "liturgy: \"play freely in self-fulfilling and other-fulfilling samadhi\"",
+   "by": "llm"
   },
   {
    "clip": "32995_s00180",
@@ -598,7 +658,8 @@
    "after": "Genjokoan. How extremely",
    "verdict": "keep",
    "to": "manifests",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33411_s01620",
@@ -608,7 +669,8 @@
    "after": "skin graft. just",
    "verdict": "fix",
    "to": "did a",
-   "why": "\"took him to his operating room and did a skin graft\""
+   "why": "\"took him to his operating room and did a skin graft\"",
+   "by": "llm"
   },
   {
    "clip": "33411_s01620",
@@ -618,7 +680,8 @@
    "after": "that off, put",
    "verdict": "fix",
    "to": "scraped",
-   "why": "\"just scraped that off, put some new skin on\"; \"grafted that off\" doesn't make sense"
+   "why": "\"just scraped that off, put some new skin on\"; \"grafted that off\" doesn't make sense",
+   "by": "llm"
   },
   {
    "clip": "33411_s01620",
@@ -628,7 +691,8 @@
    "after": "the water from",
    "verdict": "keep",
    "to": "then",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -638,7 +702,8 @@
    "after": "the issue of",
    "verdict": "fix",
    "to": "I'm stuck on is",
-   "why": "\"What I'm stuck on is the issue of attachment to the liturgy\""
+   "why": "\"What I'm stuck on is the issue of attachment to the liturgy\"",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -648,7 +713,8 @@
    "after": "people who think",
    "verdict": "fix",
    "to": "from",
-   "why": "\"so much attachment in the world from people who think...\"; both Whisper voters"
+   "why": "\"so much attachment in the world from people who think...\"; both Whisper voters",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -658,7 +724,8 @@
    "after": "Yeah well you",
    "verdict": "keep",
    "to": "holy.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -668,7 +735,8 @@
    "after": "rings it's time",
    "verdict": "fix",
    "to": "densho",
-   "why": "\"the bell rings, the densho rings\" — the densho is the bell for service"
+   "why": "\"the bell rings, the densho rings\" — the densho is the bell for service",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -678,7 +746,8 @@
    "after": "play assembly you",
    "verdict": "keep",
    "to": "I would",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -688,7 +757,8 @@
    "after": "come together or",
    "verdict": "keep",
    "to": "everybody",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -698,7 +768,8 @@
    "after": "got a reason.",
    "verdict": "keep",
    "to": "has",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -708,7 +779,8 @@
    "after": "phrases like beings",
    "verdict": "unclear",
    "to": "",
-   "why": "\"some of the things you raised(?), phrases like...\" — words too garbled"
+   "why": "\"some of the things you raised(?), phrases like...\" — words too garbled",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -718,7 +790,8 @@
    "after": "really understand with.",
    "verdict": "fix",
    "to": "don't",
-   "why": "\"a realm that I don't really understand\""
+   "why": "\"a realm that I don't really understand\"",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -728,7 +801,8 @@
    "after": "who's sitting here",
    "verdict": "unclear",
    "to": "",
-   "why": "Japanese monk's name (Taikin-san?) — spelling unknown"
+   "why": "Japanese monk's name (Taikin-san?) — spelling unknown",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -738,7 +812,8 @@
    "after": "everybody just lays",
    "verdict": "unclear",
    "to": "",
-   "why": "\"open sozan\" — unknown term"
+   "why": "\"open sozan\" — unknown term",
+   "by": "llm"
   },
   {
    "clip": "33528_s01214",
@@ -748,7 +823,8 @@
    "after": "with his head",
    "verdict": "fix",
    "to": "there",
-   "why": "\"he's standing there with his head down\""
+   "why": "\"he's standing there with his head down\"",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -758,7 +834,8 @@
    "after": "yes I used",
    "verdict": "keep",
    "to": "nightmares.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -768,7 +845,8 @@
    "after": "dream to fly",
    "verdict": "keep",
    "to": "a",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -778,7 +856,8 @@
    "after": "Lama. yeah it",
    "verdict": "unclear",
    "to": "",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -788,7 +867,8 @@
    "after": "ninety one was",
    "verdict": "keep",
    "to": "1991,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -798,7 +878,8 @@
    "after": "sort of and",
    "verdict": "keep",
    "to": "or",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -808,7 +889,8 @@
    "after": "couldn't talk and",
    "verdict": "keep",
    "to": "aphasic,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -818,7 +900,8 @@
    "after": "follow everything that",
    "verdict": "fix",
    "to": "I",
-   "why": "\"I knew everything that was going on, I follow everything\""
+   "why": "\"I knew everything that was going on, I follow everything\"",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -828,7 +911,8 @@
    "after": "anyway eventually at",
    "verdict": "keep",
    "to": "just",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -838,7 +922,8 @@
    "after": "me in fact",
    "verdict": "fix",
    "to": "were giving",
-   "why": "\"the medicine they were giving me\""
+   "why": "\"the medicine they were giving me\"",
+   "by": "llm"
   },
   {
    "clip": "33728_s03570",
@@ -848,7 +933,8 @@
    "after": "So",
    "verdict": "unclear",
    "to": "",
-   "why": "Manjushri mantra syllables; spelling needs a listener"
+   "why": "Manjushri mantra syllables; spelling needs a listener",
+   "by": "llm"
   },
   {
    "clip": "33782_s02428",
@@ -858,7 +944,8 @@
    "after": "in a connection",
    "verdict": "keep",
    "to": "an",
-   "why": "false start"
+   "why": "false start",
+   "by": "llm"
   },
   {
    "clip": "33782_s02428",
@@ -868,7 +955,8 @@
    "after": "question is on",
    "verdict": "keep",
    "to": "the",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -878,7 +966,8 @@
    "after": "sense of distance",
    "verdict": "keep",
    "to": "That",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -888,7 +977,8 @@
    "after": "looked around and",
    "verdict": "fix",
    "to": "he",
-   "why": "\"Now supposedly he looked around and said...\""
+   "why": "\"Now supposedly he looked around and said...\"",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -898,7 +988,8 @@
    "after": "others, you know,",
    "verdict": "keep",
    "to": "to",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -908,7 +999,8 @@
    "after": "Well, that's what",
    "verdict": "fix",
    "to": "80-year-old?",
-   "why": "the passage contrasts a three-year-old with an 80-year-old"
+   "why": "the passage contrasts a three-year-old with an 80-year-old",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -918,7 +1010,8 @@
    "after": "that's the question,",
    "verdict": "keep",
    "to": "what",
-   "why": "false start \"that's what... that's the question\""
+   "why": "false start \"that's what... that's the question\"",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -928,7 +1021,8 @@
    "after": "is not manifesting",
    "verdict": "fix",
    "to": "80-year-old",
-   "why": "the number was lost in the vote; parakeet, qwen and turbo+ctx have it"
+   "why": "the number was lost in the vote; parakeet, qwen and turbo+ctx have it",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -938,7 +1032,8 @@
    "after": "practice it? That's",
    "verdict": "fix",
    "to": "80-year-old",
-   "why": "as W077"
+   "why": "as W077",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -948,7 +1043,8 @@
    "after": "can't practice it.",
    "verdict": "fix",
    "to": "80-year-old",
-   "why": "as W077"
+   "why": "as W077",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -958,7 +1054,8 @@
    "after": "practice it? Well,",
    "verdict": "fix",
    "to": "80-year-old",
-   "why": "as W077"
+   "why": "as W077",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -968,7 +1065,8 @@
    "after": "if I approach",
    "verdict": "fix",
    "to": "even",
-   "why": "\"intellectually, even if I approach it like that\""
+   "why": "\"intellectually, even if I approach it like that\"",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -978,7 +1076,8 @@
    "after": "you got. I",
    "verdict": "unclear",
    "to": "",
-   "why": "the rest of the sentence (\"like that, I still think\") is garbled across voters"
+   "why": "the rest of the sentence (\"like that, I still think\") is garbled across voters",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -988,7 +1087,8 @@
    "after": "Well, think on",
    "verdict": "unclear",
    "to": "",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -998,7 +1098,8 @@
    "after": "Yep. A three-year-old",
    "verdict": "unclear",
    "to": "",
-   "why": "probably a repeat of \"A three-year-old...\" but the voters disagree completely"
+   "why": "probably a repeat of \"A three-year-old...\" but the voters disagree completely",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -1008,7 +1109,8 @@
    "after": "cannot practice it",
    "verdict": "fix",
    "to": "80-year-old",
-   "why": "\"a three-year-old can say it, but even an 80-year-old cannot practice it\""
+   "why": "\"a three-year-old can say it, but even an 80-year-old cannot practice it\"",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -1018,7 +1120,8 @@
    "after": "year old can",
    "verdict": "fix",
    "to": "three",
-   "why": "same word; spelled out like the rest of the passage"
+   "why": "same word; spelled out like the rest of the passage",
+   "by": "llm"
   },
   {
    "clip": "33871_s02464",
@@ -1028,7 +1131,8 @@
    "after": "year old say",
    "verdict": "fix",
    "to": "three",
-   "why": "as W086"
+   "why": "as W086",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1038,7 +1142,8 @@
    "after": "Then I really",
    "verdict": "keep",
    "to": "Who are you when you don't know?",
-   "why": "teacher's question in an exchange; parakeet heard it in full"
+   "why": "teacher's question in an exchange; parakeet heard it in full",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1048,7 +1153,8 @@
    "after": "caught in fly",
    "verdict": "keep",
    "to": "Attention. Justo, you and I had a meal shift together, and you were sweeping under the pizza oven, and you swept down a little critter that was",
-   "why": "parakeet and qwen independently heard the same long passage; Whisper skipped it"
+   "why": "parakeet and qwen independently heard the same long passage; Whisper skipped it",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1058,7 +1164,8 @@
    "after": "flypaper and ran",
    "verdict": "keep",
    "to": "fly",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1068,7 +1175,8 @@
    "after": "There's something in",
    "verdict": "keep",
    "to": "alive.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1078,7 +1186,8 @@
    "after": "that? May your",
    "verdict": "keep",
    "to": "for",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1088,7 +1197,8 @@
    "after": "I want to",
    "verdict": "unclear",
    "to": "",
-   "why": "\"First,\" vs \"Chris,\" (both Whisper systems): addressing someone by name is plausible"
+   "why": "\"First,\" vs \"Chris,\" (both Whisper systems): addressing someone by name is plausible",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1098,7 +1208,8 @@
    "after": "if you agree,",
    "verdict": "keep",
    "to": "koan,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1108,7 +1219,8 @@
    "after": "sense of matter.",
    "verdict": "keep",
    "to": "the",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1118,7 +1230,8 @@
    "after": "Something that actually,",
    "verdict": "fix",
    "to": "the room.",
-   "why": "\"concerns probably everybody in the room\""
+   "why": "\"concerns probably everybody in the room\"",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1128,7 +1241,8 @@
    "after": "How do you",
    "verdict": "unclear",
    "to": "",
-   "why": "\"its auxiliary\" makes no sense; no better candidate"
+   "why": "\"its auxiliary\" makes no sense; no better candidate",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1138,7 +1252,8 @@
    "after": "impermanence? I don't",
    "verdict": "fix",
    "to": "peace with",
-   "why": "\"Have you made peace with impermanence?\""
+   "why": "\"Have you made peace with impermanence?\"",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1148,7 +1263,8 @@
    "after": "Combat too, and",
    "verdict": "fix",
    "to": "I'm new to Dharma",
-   "why": "\"I'll say right off, I'm new to Dharma Combat\""
+   "why": "\"I'll say right off, I'm new to Dharma Combat\"",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1158,7 +1274,8 @@
    "after": "someone, questioning, and",
    "verdict": "keep",
    "to": "to",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1168,7 +1285,8 @@
    "after": "to the incense",
    "verdict": "unclear",
    "to": "",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1178,7 +1296,8 @@
    "after": "stick, hoping that",
    "verdict": "keep",
    "to": "incense",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1188,7 +1307,8 @@
    "after": "my fingers, and",
    "verdict": "keep",
    "to": "from",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1198,7 +1318,8 @@
    "after": "reminds me of",
    "verdict": "fix",
    "to": "koan",
-   "why": "\"This koan reminds me of a conversation\" — coin/call/colon are mishearings of koan in dharma combat"
+   "why": "\"This koan reminds me of a conversation\" — coin/call/colon are mishearings of koan in dharma combat",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1208,7 +1329,8 @@
    "after": "May your life",
    "verdict": "keep",
    "to": "Right. Thank you for your answer.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1218,7 +1340,8 @@
    "after": "May your life",
    "verdict": "keep",
    "to": "Thank you",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34004_s01972",
@@ -1228,7 +1351,8 @@
    "after": "I don't know",
    "verdict": "keep",
    "to": "Attention.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34444_s01440",
@@ -1238,7 +1362,8 @@
    "after": "general communications and",
    "verdict": "keep",
    "to": "and",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34444_s01440",
@@ -1248,7 +1373,8 @@
    "after": "capacity for learning",
    "verdict": "fix",
    "to": "man's",
-   "why": "quoted dictionary definition of culture: \"dependent upon man's capacity for learning\""
+   "why": "quoted dictionary definition of culture: \"dependent upon man's capacity for learning\"",
+   "by": "llm"
   },
   {
    "clip": "34444_s01440",
@@ -1258,7 +1384,8 @@
    "after": "Surely sounded familiar.",
    "verdict": "keep",
    "to": "It",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34444_s01440",
@@ -1268,7 +1395,8 @@
    "after": "I don't know",
    "verdict": "keep",
    "to": "of",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34444_s01440",
@@ -1278,7 +1406,8 @@
    "after": "saints, these wise",
    "verdict": "keep",
    "to": "it, that",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34444_s01440",
@@ -1288,7 +1417,8 @@
    "after": "kind of unaware",
    "verdict": "keep",
    "to": "these",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34444_s01440",
@@ -1298,7 +1428,8 @@
    "after": "says, and when",
    "verdict": "fix",
    "to": "Gyoji",
-   "why": "\"as Gyoji says, when we engage the ceaseless practice\" — Dogen's fascicle on continuous practice"
+   "why": "\"as Gyoji says, when we engage the ceaseless practice\" — Dogen's fascicle on continuous practice",
+   "by": "llm"
   },
   {
    "clip": "34450_s01140",
@@ -1308,7 +1439,8 @@
    "after": "She calls out",
    "verdict": "fix",
    "to": "Wuzu",
-   "why": "the \"little Jade\" love poem is Wuzu's koan; utsu/Iwutsu are its sound"
+   "why": "the \"little Jade\" love poem is Wuzu's koan; utsu/Iwutsu are its sound",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1318,7 +1450,8 @@
    "after": "spoken of in",
    "verdict": "keep",
    "to": "anthropomorphically",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1328,7 +1461,8 @@
    "after": "things. People unwittingly",
    "verdict": "unclear",
    "to": "",
-   "why": "\"in human things\" / \"in living things\" — both possible"
+   "why": "\"in human things\" / \"in living things\" — both possible",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1338,7 +1472,8 @@
    "after": "to a degree",
    "verdict": "fix",
    "to": "insentient",
-   "why": "book and qwen; \"between the sentient and the insentient\""
+   "why": "book and qwen; \"between the sentient and the insentient\"",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1348,7 +1483,8 @@
    "after": "phraseology, the insentient",
    "verdict": "keep",
    "to": "Dogen's",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1358,7 +1494,8 @@
    "after": "No separation. We",
    "verdict": "fix",
    "to": "insentient.",
-   "why": "\"insentient beings are sentient, and sentient beings insentient\" — book and the logic of the passage"
+   "why": "\"insentient beings are sentient, and sentient beings insentient\" — book and the logic of the passage",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1368,7 +1505,8 @@
    "after": "a down? They're",
    "verdict": "unclear",
    "to": "",
-   "why": "book says \"unless there is a down\"; the reference's \"and\" before the span would garble a fix"
+   "why": "book says \"unless there is a down\"; the reference's \"and\" before the span would garble a fix",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1378,7 +1516,8 @@
    "after": "of the absolute,",
    "verdict": "fix",
    "to": "co-dependence,",
-   "why": "book: \"from the point of view of that co-dependence\"; COVID ten/coldness are mishearings"
+   "why": "book: \"from the point of view of that co-dependence\"; COVID ten/coldness are mishearings",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1388,7 +1527,8 @@
    "after": "The Master Tong",
    "verdict": "fix",
    "to": "strange.",
-   "why": "\"Doesn't sound so strange.\" — parakeet and the book"
+   "why": "\"Doesn't sound so strange.\" — parakeet and the book",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1398,7 +1538,8 @@
    "after": "since the last",
    "verdict": "fix",
    "to": "gathas",
-   "why": "book: \"Eighty-four thousand gathas since last night\""
+   "why": "book: \"Eighty-four thousand gathas since last night\"",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1408,7 +1549,8 @@
    "after": "another time? The",
    "verdict": "keep",
    "to": "at",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1418,7 +1560,8 @@
    "after": "is the working",
    "verdict": "keep",
    "to": "Tong Po",
-   "why": "Su Tung-po"
+   "why": "Su Tung-po",
+   "by": "llm"
   },
   {
    "clip": "34577_b01262",
@@ -1428,7 +1571,8 @@
    "after": "Dogen says, I",
    "verdict": "unclear",
    "to": "",
-   "why": "book: \"flowing into the poet's ears\"; the systems' words are too garbled to rebuild it"
+   "why": "book: \"flowing into the poet's ears\"; the systems' words are too garbled to rebuild it",
+   "by": "llm"
   },
   {
    "clip": "34582_b00912",
@@ -1438,7 +1582,8 @@
    "after": "that we use",
    "verdict": "keep",
    "to": "gassho",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34582_b00912",
@@ -1448,7 +1593,8 @@
    "after": "You're sitting, you're",
    "verdict": "keep",
    "to": "in zazen?",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34724_s01050",
@@ -1458,7 +1604,8 @@
    "after": "one of those.",
    "verdict": "fix",
    "to": "of",
-   "why": "\"similar observations regarding each of those\""
+   "why": "\"similar observations regarding each of those\"",
+   "by": "llm"
   },
   {
    "clip": "34724_s01050",
@@ -1468,7 +1615,8 @@
    "after": "the monastery was",
    "verdict": "unclear",
    "to": "",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34724_s01050",
@@ -1478,7 +1626,8 @@
    "after": "Sutta. Deva is",
    "verdict": "keep",
    "to": "Dutta",
-   "why": "Devaduta Sutta"
+   "why": "Devaduta Sutta",
+   "by": "llm"
   },
   {
    "clip": "34724_s01050",
@@ -1488,7 +1637,8 @@
    "after": "an evil, committing",
    "verdict": "keep",
    "to": "committed",
-   "why": "false start"
+   "why": "false start",
+   "by": "llm"
   },
   {
    "clip": "34725_s00990",
@@ -1498,7 +1648,8 @@
    "after": "you know. There",
    "verdict": "unclear",
    "to": "",
-   "why": "probably a cut-off \"ordained\""
+   "why": "probably a cut-off \"ordained\"",
+   "by": "llm"
   },
   {
    "clip": "34725_s00990",
@@ -1508,7 +1659,8 @@
    "after": "He's teaches at",
    "verdict": "keep",
    "to": "Hallisey,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34736_s02010",
@@ -1518,7 +1670,8 @@
    "after": "the first time",
    "verdict": "fix",
    "to": "gassho.",
-   "why": "Gasha/Gosho/Gusho = gassho before a recited verse"
+   "why": "Gasha/Gosho/Gusho = gassho before a recited verse",
+   "by": "llm"
   },
   {
    "clip": "34736_s02010",
@@ -1528,7 +1681,8 @@
    "after": "through I invite",
    "verdict": "keep",
    "to": "too",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34736_s02010",
@@ -1538,7 +1692,8 @@
    "after": "honored one I",
    "verdict": "keep",
    "to": "incomparably",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34775_s01976",
@@ -1548,7 +1703,8 @@
    "after": "I came here",
    "verdict": "unclear",
    "to": "",
-   "why": "unknown word (Shosanji/Shoshangi)"
+   "why": "unknown word (Shosanji/Shoshangi)",
+   "by": "llm"
   },
   {
    "clip": "34775_s01976",
@@ -1558,7 +1714,8 @@
    "after": "stuff that I",
    "verdict": "keep",
    "to": "this",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34788_s00990",
@@ -1568,7 +1725,8 @@
    "after": "the poems of",
    "verdict": "unclear",
    "to": "",
-   "why": "poems of the early nuns are the Therigatha, but every system wrote Thera-; check what was said"
+   "why": "poems of the early nuns are the Therigatha, but every system wrote Thera-; check what was said",
+   "by": "llm"
   },
   {
    "clip": "34788_s00990",
@@ -1578,7 +1736,8 @@
    "after": "says, well, later",
    "verdict": "keep",
    "to": "Jinshan",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34788_s00990",
@@ -1588,7 +1747,8 @@
    "after": "used to say",
    "verdict": "fix",
    "to": "Daido Roshi",
-   "why": "\"Dr. Roshi\"/\"Dharoshi\" = Daido Roshi"
+   "why": "\"Dr. Roshi\"/\"Dharoshi\" = Daido Roshi",
+   "by": "llm"
   },
   {
    "clip": "34803_s00570",
@@ -1598,7 +1758,8 @@
    "after": "the path that's",
    "verdict": "keep",
    "to": "where",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "34803_s00570",
@@ -1608,7 +1769,8 @@
    "after": "who served tea,",
    "verdict": "fix",
    "to": "Taishan,",
-   "why": "the old woman on the road to Mount Tai (Zhaozhou's koan); turbo+ctx has Taishan"
+   "why": "the old woman on the road to Mount Tai (Zhaozhou's koan); turbo+ctx has Taishan",
+   "by": "llm"
   },
   {
    "clip": "34803_s00570",
@@ -1618,7 +1780,8 @@
    "after": "And she would",
    "verdict": "fix",
    "to": "Taishan?",
-   "why": "as W162"
+   "why": "as W162",
+   "by": "llm"
   },
   {
    "clip": "34803_s00570",
@@ -1628,7 +1791,8 @@
    "after": "and I were",
    "verdict": "unclear",
    "to": "",
-   "why": "a person's name (Jimon?); spelling unknown"
+   "why": "a person's name (Jimon?); spelling unknown",
+   "by": "llm"
   },
   {
    "clip": "34803_s00570",
@@ -1638,7 +1802,8 @@
    "after": "Roshi it was",
    "verdict": "fix",
    "to": "Daido",
-   "why": "\"for Daido Roshi it was so important\""
+   "why": "\"for Daido Roshi it was so important\"",
+   "by": "llm"
   },
   {
    "clip": "34906_s02400",
@@ -1648,7 +1813,8 @@
    "after": "He pointed to",
    "verdict": "unclear",
    "to": "",
-   "why": "a word before \"He pointed\" (Has/Is) — can't tell from text"
+   "why": "a word before \"He pointed\" (Has/Is) — can't tell from text",
+   "by": "llm"
   },
   {
    "clip": "34906_s02400",
@@ -1658,7 +1824,8 @@
    "after": "this mountaintop, right,",
    "verdict": "keep",
    "to": "the",
-   "why": "false start \"the, this mountaintop\""
+   "why": "false start \"the, this mountaintop\"",
+   "by": "llm"
   },
   {
    "clip": "35351_s00900",
@@ -1668,7 +1835,8 @@
    "after": "was pointing to?",
    "verdict": "fix",
    "to": "Baso",
-   "why": "\"what is this mind that Baso was pointing to\" — Mazu/Baso's \"this very mind is Buddha\"; Basava/Basa/bossa are the sound of Baso"
+   "why": "\"what is this mind that Baso was pointing to\" — Mazu/Baso's \"this very mind is Buddha\"; Basava/Basa/bossa are the sound of Baso",
+   "by": "llm"
   },
   {
    "clip": "35549_s00390",
@@ -1678,7 +1846,8 @@
    "after": "not is happening",
    "verdict": "unclear",
    "to": "",
-   "why": "gassho? the sentence is garbled"
+   "why": "gassho? the sentence is garbled",
+   "by": "llm"
   },
   {
    "clip": "35549_s00390",
@@ -1688,7 +1857,8 @@
    "after": "when you're doing",
    "verdict": "keep",
    "to": "that",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35549_s00390",
@@ -1698,7 +1868,8 @@
    "after": "How's that feel?",
    "verdict": "fix",
    "to": "what you're into.",
-   "why": "\"Interrupting a conversation to state what you're into. How's that feel?\""
+   "why": "\"Interrupting a conversation to state what you're into. How's that feel?\"",
+   "by": "llm"
   },
   {
    "clip": "35549_s00390",
@@ -1708,7 +1879,8 @@
    "after": "Okay. Is there",
    "verdict": "keep",
    "to": "sometimes.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35687_s00990",
@@ -1718,7 +1890,8 @@
    "after": "Giving Dharma talk.",
    "verdict": "fix",
    "to": "teisho,",
-   "why": "\"Both teachers were giving teisho. Giving Dharma talk.\" — teshas/taishas"
+   "why": "\"Both teachers were giving teisho. Giving Dharma talk.\" — teshas/taishas",
+   "by": "llm"
   },
   {
    "clip": "35687_s00990",
@@ -1728,7 +1901,8 @@
    "after": "is not saying",
    "verdict": "keep",
    "to": "Fayan",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35687_s00990",
@@ -1738,7 +1912,8 @@
    "after": "fascicle that we've",
    "verdict": "fix",
    "to": "Katto",
-   "why": "Dogen's fascicle Katto (Entangled Vines), studied in the ango"
+   "why": "Dogen's fascicle Katto (Entangled Vines), studied in the ango",
+   "by": "llm"
   },
   {
    "clip": "35687_s00990",
@@ -1748,7 +1923,8 @@
    "after": "that we've been",
    "verdict": "fix",
    "to": "Katto.",
-   "why": "the speaker repeats the fascicle's name"
+   "why": "the speaker repeats the fascicle's name",
+   "by": "llm"
   },
   {
    "clip": "35687_s00990",
@@ -1758,7 +1934,8 @@
    "after": "our playing became",
    "verdict": "keep",
    "to": "we're",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35799_s01080",
@@ -1768,7 +1945,8 @@
    "after": "and other. Taking",
    "verdict": "keep",
    "to": "Self",
-   "why": "\"Self and other\" fits \"taking, giving, receiving is one reality\""
+   "why": "\"Self and other\" fits \"taking, giving, receiving is one reality\"",
+   "by": "llm"
   },
   {
    "clip": "35799_s01080",
@@ -1778,7 +1956,8 @@
    "after": "then they went",
    "verdict": "fix",
    "to": "And",
-   "why": "\"And then they went back\"; the bracketed \"You\" has no support"
+   "why": "\"And then they went back\"; the bracketed \"You\" has no support",
+   "by": "llm"
   },
   {
    "clip": "35815_s00540",
@@ -1788,7 +1967,8 @@
    "after": "how we work,",
    "verdict": "fix",
    "to": "in",
-   "why": "\"engaged in how we work, how we study\""
+   "why": "\"engaged in how we work, how we study\"",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1798,7 +1978,8 @@
    "after": "either Muji, the",
    "verdict": "keep",
    "to": "koan",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1808,7 +1989,8 @@
    "after": "or fourteen of",
    "verdict": "fix",
    "to": "ten or twelve",
-   "why": "same words, spelled-out numbers like the rest of the line"
+   "why": "same words, spelled-out numbers like the rest of the line",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1818,7 +2000,8 @@
    "after": "trying to figure",
    "verdict": "keep",
    "to": "and",
-   "why": "two systems and parakeet (best on function words) agree on \"and\""
+   "why": "two systems and parakeet (best on function words) agree on \"and\"",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1828,7 +2011,8 @@
    "after": "koan, but also",
    "verdict": "keep",
    "to": "Dharmakaya",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1838,7 +2022,8 @@
    "after": "You know that",
    "verdict": "keep",
    "to": "koans?",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1848,7 +2033,8 @@
    "after": "depends on how",
    "verdict": "keep",
    "to": "It",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1858,7 +2044,8 @@
    "after": "You know Dosho",
    "verdict": "keep",
    "to": "sitting.",
-   "why": "\"sitting for 30 years ... depends on how much sitting\""
+   "why": "\"sitting for 30 years ... depends on how much sitting\"",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1868,7 +2055,8 @@
    "after": "Saikawa is a",
    "verdict": "keep",
    "to": "Dosho Saikawa? Dosho",
-   "why": "Dosho Saikawa is a real Soto teacher"
+   "why": "Dosho Saikawa is a real Soto teacher",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1878,7 +2066,8 @@
    "after": "His English is",
    "verdict": "keep",
    "to": "he yeah yeah he's",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1888,7 +2077,8 @@
    "after": "Roshi. He had",
    "verdict": "keep",
    "to": "Maezumi",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1898,7 +2088,8 @@
    "after": "with him. Comes",
    "verdict": "fix",
    "to": "koans",
-   "why": "\"Dosho had started doing koans with him\" (Nishiwaki Roshi); \"concert\" makes no sense"
+   "why": "\"Dosho had started doing koans with him\" (Nishiwaki Roshi); \"concert\" makes no sense",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1908,7 +2099,8 @@
    "after": "Like I mentioned",
    "verdict": "keep",
    "to": "you know I mean I had",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "35934_s02640",
@@ -1918,7 +2110,8 @@
    "after": "you know, I",
    "verdict": "fix",
    "to": "Dosho,",
-   "why": "same person named a moment earlier"
+   "why": "same person named a moment earlier",
+   "by": "llm"
   },
   {
    "clip": "36192_s02610",
@@ -1928,7 +2121,8 @@
    "after": "men would walk",
    "verdict": "fix",
    "to": "20,000",
-   "why": "same number, standard spelling"
+   "why": "same number, standard spelling",
+   "by": "llm"
   },
   {
    "clip": "36192_s02610",
@@ -1938,7 +2132,8 @@
    "after": "would be dead,",
    "verdict": "fix",
    "to": "10,000",
-   "why": "as W128"
+   "why": "as W128",
+   "by": "llm"
   },
   {
    "clip": "36192_s02610",
@@ -1948,7 +2143,8 @@
    "after": "some of them",
    "verdict": "keep",
    "to": "them,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "36192_s02610",
@@ -1958,7 +2154,8 @@
    "after": "I have been",
    "verdict": "keep",
    "to": "I've denied,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "37196_s01410",
@@ -1968,7 +2165,8 @@
    "after": "the laxity of",
    "verdict": "keep",
    "to": "distractability,",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "37645_s00780",
@@ -1978,7 +2176,8 @@
    "after": "With physical acts",
    "verdict": "keep",
    "to": "Tathagata.",
-   "why": ""
+   "why": "",
+   "by": "llm"
   },
   {
    "clip": "37645_s00780",
@@ -1988,7 +2187,8 @@
    "after": "Rinpoche, and he",
    "verdict": "unclear",
    "to": "",
-   "why": "probably Tsoknyi Rinpoche, but no system wrote it"
+   "why": "probably Tsoknyi Rinpoche, but no system wrote it",
+   "by": "llm"
   },
   {
    "clip": "37645_s00780",
@@ -1998,7 +2198,8 @@
    "after": "Americans in practice",
    "verdict": "fix",
    "to": "noticed",
-   "why": "\"he noticed Americans in practice like to dump sutras on top\""
+   "why": "\"he noticed Americans in practice like to dump sutras on top\"",
+   "by": "llm"
   },
   {
    "clip": "37645_s00780",
@@ -2008,7 +2209,8 @@
    "after": "can open channels,",
    "verdict": "fix",
    "to": "and",
-   "why": "\"the liturgy is so helpful and can open channels\""
+   "why": "\"the liturgy is so helpful and can open channels\"",
+   "by": "llm"
   },
   {
    "clip": "37645_s00780",
@@ -2018,8 +2220,8 @@
    "after": "on top of",
    "verdict": "keep",
    "to": "ava loki",
-   "why": "slang use of \"Avaloki(teshvara)\"; spelling as heard"
+   "why": "slang use of \"Avaloki(teshvara)\"; spelling as heard",
+   "by": "llm"
   }
- ],
- "about": "Decisions on flagged silver-reference spans by a text-only reviewer (no audio). They choose among system outputs, the glossary and the book; 'unclear' needs a listener."
+ ]
 }

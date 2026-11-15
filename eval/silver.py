@@ -429,9 +429,12 @@ def confidence(t):
 def judge_pass(clip, toks):
     """Apply reviewed decisions (eval/goldset/judge.json) for flagged spans. A decision names the
     span by the words around it, so it still applies when a leave-one-family-out rebuild changes
-    the words inside. "unclear" decisions change nothing (the span stays flagged for a listener)."""
+    the words inside. Decisions come from an LLM reviewer (text only, may only choose existing words)
+    or a listener (heard the audio; applied last, so they override). An LLM's "unclear" changes nothing;
+    a listener's "unclear" keeps the words but records that someone listened."""
     for d in clip.judge:
-        if d["verdict"] == "unclear":
+        listener = d.get("by") == "listener"
+        if d["verdict"] == "unclear" and not listener:
             continue
         W = [k for k, t in enumerate(toks) if t["n"]]
         n = [toks[k]["n"] for k in W]
@@ -458,7 +461,9 @@ def judge_pass(clip, toks):
         first = toks[a] if a < len(toks) else toks[-1]
         was = " ".join(t["w"] for t in toks[a:b] if t["n"])
         toks[a:b] = [{"w": w, "n": wnorm(w), "t": first["t"], "agree": first["agree"], "how": "judge",
-                      "judge_conf": "medium", "verdict": d["verdict"], "was": was, "why": d.get("why", ""),
+                      "judge_conf": ("low" if d["verdict"] == "unclear" else "high") if listener else "medium",
+                      "verdict": d["verdict"], "by": d.get("by", "llm"), "jid": d.get("id"),
+                      "was": was, "why": d.get("why", ""),
                       "cands": first.get("cands")} for w in d["to"].split() if wnorm(w)]
     return toks
 
@@ -533,13 +538,28 @@ def load_clips(manifest=None, systems=None):
     return clips
 
 
+JUDGE_ABOUT = ("Decisions on flagged silver-reference spans. by=llm: a text-only reviewer (no audio) choosing "
+               "among system outputs, the glossary and the book; 'unclear' needs a listener. by=listener: a "
+               "person who heard the audio (saved from eval/viewer.py); applied last, so they override.")
+
+
+def save_judge(decisions):
+    # LLM decisions first, then a listener's in the order they were made (later ones build on earlier ones)
+    decisions = sorted(decisions, key=lambda d: (d["clip"], d.get("by") == "listener", d.get("at", ""), d["t"]))
+    tmp = JUDGE.with_suffix(".tmp")
+    tmp.write_text(json.dumps({"about": JUDGE_ABOUT, "decisions": decisions}, ensure_ascii=False, indent=1))
+    tmp.replace(JUDGE)
+
+
 def load_judge():
-    """Decisions by clip; each "to" may only use words some system, the glossary or the book has."""
+    """Decisions by clip, LLM decisions first and listeners' last."""
     if not JUDGE.exists():
         return {}
     by = defaultdict(list)
     for d in json.loads(JUDGE.read_text())["decisions"]:
         by[d["clip"]].append(d)
+    for ds in by.values():
+        ds.sort(key=lambda d: d.get("by") == "listener")  # listeners last: their decisions win
     return by
 
 
@@ -669,7 +689,7 @@ def cmd_judge_import(a):
     clips = {c.id: c for c in load_clips()}
     terms = {t for e in next(iter(clips.values())).gloss.entries for f in e["valid"] for t in gtokens(f)}
     doc = json.loads(JUDGE.read_text()) if JUDGE.exists() else {"decisions": []}
-    keep = {(d["clip"], d["t"], d["from"]): d for d in doc["decisions"]}
+    keep = {(d["clip"], d["t"], d["from"], d.get("by", "llm")): d for d in doc["decisions"]}
     bad = 0
     for line in Path(a.tsv).read_text().splitlines():
         if not line.strip() or line.startswith("#"):
@@ -685,12 +705,9 @@ def cmd_judge_import(a):
             print(f"rejected {wid}: {new} not in any system output, the glossary or the book")
             bad += 1
             continue
-        keep[(x["clip"], x["t"], x["from"])] = {**{k: x[k] for k in ("clip", "t", "before", "from", "after")},
-                                                "verdict": verdict, "to": to, "why": why.strip()}
-    doc["about"] = ("Decisions on flagged silver-reference spans by a text-only reviewer (no audio). "
-                    "They choose among system outputs, the glossary and the book; 'unclear' needs a listener.")
-    doc["decisions"] = sorted(keep.values(), key=lambda d: (d["clip"], d["t"]))
-    JUDGE.write_text(json.dumps(doc, ensure_ascii=False, indent=1))
+        keep[(x["clip"], x["t"], x["from"], "llm")] = {**{k: x[k] for k in ("clip", "t", "before", "from", "after")},
+                                                "verdict": verdict, "to": to, "why": why.strip(), "by": "llm"}
+    save_judge(list(keep.values()))
     print(f"{len(doc['decisions'])} decisions in {JUDGE} ({bad} rejected)")
 
 
