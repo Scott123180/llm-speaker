@@ -343,6 +343,31 @@ def fmt(x, d=1):
     return "—" if x is None else f"{x:.{d}f}"
 
 
+PROD = "whisper-turbo+ctx+seq+vadlo+echo+hst"  # production default (eval/findings.md)
+
+
+def boot_rows(rows, other=None, iters=2000, seed=1):
+    """95% range of silver WER from [clip, errors, words] rows, resampling clips; with `other`, the
+    paired difference WER(rows) - WER(other) on the clips both systems have."""
+    rng = random.Random(seed)
+    if other is not None:
+        ob = {r[0]: r for r in other}
+        pairs = [(r, ob[r[0]]) for r in rows if r[0] in ob]
+    else:
+        pairs = [(r, None) for r in rows]
+    if len(pairs) < 5:
+        return None
+    vals = []
+    for _ in range(iters):
+        smp = [rng.choice(pairs) for _ in pairs]
+        a = sum(x[0][1] for x in smp) / max(1, sum(x[0][2] for x in smp))
+        if other is not None:
+            a -= sum(x[1][1] for x in smp) / max(1, sum(x[1][2] for x in smp))
+        vals.append(a)
+    vals.sort()
+    return vals[int(0.025 * iters)], vals[int(0.975 * iters)]
+
+
 def write_silver(w, names, SV):
     """Accuracy against automatic (silver) references; see eval/silver.py."""
     if not SV:
@@ -366,14 +391,83 @@ def write_silver(w, names, SV):
     w("**Errors every system makes go unseen** unless the glossary or the book catches them. Treat these numbers")
     w("as a ranking aid until corrected references exist. Browse the flagged spots with `uv run python eval/viewer.py`.")
     w("")
-    w("| System | Silver WER (all) | substitutions / deletions / insertions | Stratified set | Book set | Voters |")
-    w("|---|---|---|---|---|---|")
+    w("**Ranges:** *95% range* resamples the clips (2,000 bootstrap draws). *vs production* is the paired")
+    w(f"difference from `{PROD}` on the clips both systems have, in percentage points; a range that")
+    w("includes 0 means the two can't be told apart on this gold set.")
+    w("")
+    w("| System | Silver WER (all) | 95% range | vs production | substitutions / deletions / insertions | Stratified set | Book set | Clips | Voters |")
+    w("|---|---|---|---|---|---|---|---|---|")
+    prod_rows = SV.get(PROD, {}).get("all", {}).get("rows")
     for s in sorted((n for n in names if n in SV), key=lambda n: SV[n]["all"]["wer"] if SV[n]["all"]["wer"] is not None else 9):
         r = SV[s]
         f = lambda k: pct(r[k]["wer"]) if k in r and r[k]["wer"] is not None else "—"
         a = r["all"]
-        w(f"| `{s}` | {f('all')} | {pct(a['sub'])} / {pct(a['del'])} / {pct(a['ins'])} | {f('stratified')} | {f('book')} | {a['voters']} |")
+        ci = boot_rows(a.get("rows") or [])
+        rng = f"{100 * ci[0]:.1f}–{100 * ci[1]:.1f}%" if ci else "—"
+        if s == PROD or not prod_rows or not a.get("rows"):
+            vs = "—"
+        else:
+            d = boot_rows(a["rows"], prod_rows)
+            ob = {x[0] for x in prod_rows}
+            both = [x for x in a["rows"] if x[0] in ob]
+            mine = sum(x[1] for x in both) / max(1, sum(x[2] for x in both))
+            pb = {x[0]: x for x in prod_rows}
+            theirs = sum(pb[x[0]][1] for x in both) / max(1, sum(pb[x[0]][2] for x in both))
+            vs = f"{100 * (mine - theirs):+.2f} ({100 * d[0]:+.1f} to {100 * d[1]:+.1f})" if d else "—"
+        w(f"| `{s}` | {f('all')} | {rng} | {vs} | {pct(a['sub'])} / {pct(a['del'])} / {pct(a['ins'])} | {f('stratified')} | {f('book')} | {a['clips']} | {a['voters']} |")
     w("")
+
+
+SPEED = REPO / "data" / "logs" / "speed"
+SPEED_NAMES = {"whisper-prod": "Whisper turbo, production setup", "nemotron": "Nemotron 3.5 (4-bit GGUF, NeMo-Speech.cpp)",
+               "vibevoice": "VibeVoice-ASR"}
+
+
+def load_throughput():
+    """Speed tests from asr/throughput.py (data/logs/speed/*.json)."""
+    if not SPEED.exists():
+        return {}
+    return {p.stem: json.loads(p.read_text()) for p in sorted(SPEED.glob("*.json"))}
+
+
+def write_throughput(w, TP, price=1.29, hours=6500):
+    if not TP:
+        return
+    w("## Throughput: running several clips at once")
+    w("")
+    w("One transcription stream rarely keeps a GPU busy. `asr/throughput.py` measures how much more audio per hour")
+    w("one GPU gets through when it works on several clips at once: parallel processes (each on its share of the")
+    w("clips), concurrent requests to one server, or batches inside one model.")
+    w("")
+    w("- **Throughput** is steady-state (model loading excluded): total audio ÷ the slowest process's decoding time.")
+    w(f"- **Archive** is {hours:,} h of audio at that throughput on one such GPU; **cost** at ${price:.2f}/h (Lambda A10).")
+    w("  Several GPUs divide the time but not the cost.")
+    w("")
+    for label, d in TP.items():
+        rows = sorted(d["results"], key=lambda r: (r["variant"] != "procs", r["variant"], r["procs"]))
+        if not rows:
+            continue
+        w(f"### {SPEED_NAMES.get(label, label)}")
+        w("")
+        w(f"_GPU: {d.get('gpu')} ({int(d['gpu_mem_mb']) // 1024 if d.get('gpu_mem_mb') else '?'} GB)._")
+        w("")
+        base = next((r["rtfx_decode"] for r in rows if r["procs"] == 1 and r["rtfx_decode"] and not r["failed"]), None)
+        w("| Configuration | Processes | Clips | Throughput (× real time) | vs one stream | GPU memory peak | GPU busy | Archive | Cost |")
+        w("|---|---|---|---|---|---|---|---|---|")
+        for r in rows:
+            rt = r["rtfx_decode"]
+            name = "one stream per process" if r["variant"] == "procs" else r["variant"]
+            bad = f" ({r['failed']} failed)" if r["failed"] else ""
+            if rt and not r["failed"]:
+                days, cost = hours / rt / 24, hours / rt * price
+                cells = f"{rt:.0f}× | {rt / base:.1f}× | " if base else f"{rt:.0f}× | — | "
+                tail = f"{days:.1f} days | ${cost:,.0f}"
+            else:
+                cells, tail = "— | — | ", "— | —"
+            mem = f"{r['gpu_peak_mb'] / 1024:.1f} GB" if r.get("gpu_peak_mb") else "—"
+            util = f"{r['gpu_util_avg']}%" if r.get("gpu_util_avg") is not None else "—"
+            w(f"| {name}{bad} | {r['procs']} | {r['clips']} | {cells}{mem} | {util} | {tail} |")
+        w("")
 
 
 def write_report(manifest, systems, refs, M, agree, anchor, ex, SV=None):
@@ -487,6 +581,7 @@ def write_report(manifest, systems, refs, M, agree, anchor, ex, SV=None):
         w("")
 
     write_silver(w, names, SV)
+    write_throughput(w, load_throughput())
 
     w("## Effect of per-talk context")
     w("")
@@ -581,6 +676,9 @@ def write_report(manifest, systems, refs, M, agree, anchor, ex, SV=None):
     w("- Drafts for correction come from the legacy transcripts, so the gold set isn't anchored to any new system.")
     for c in EXCLUDED:
         w(f"- Excluded `{c['clip_id']}` ({c.get('title', '')}): {c['exclude']}.")
+    for c in manifest:
+        if c.get("unscored"):
+            w(f"- Left out of silver WER only `{c['clip_id']}` ({c.get('title', '')}): {c['unscored']}.")
     w("- Non-speech clips skew toward the 1980s tapes, where the old transcripts hallucinate most. They are "
       "VAD-confirmed but not yet confirmed by ear (`verified: false` in the manifest).")
     REPORT.parent.mkdir(exist_ok=True)
@@ -605,7 +703,7 @@ def main():
     METRICS.parent.mkdir(parents=True, exist_ok=True)
     slim = {s: {k: v for k, v in m.items() if k != "ref"} | (
         {"ref": {k: v for k, v in m["ref"].items() if k != "rows"}} if "ref" in m else {}) for s, m in M.items()}
-    METRICS.write_text(json.dumps({"systems": slim, "refs": len(refs), "silver": SV,
+    METRICS.write_text(json.dumps({"systems": slim, "refs": len(refs), "silver": SV, "throughput": load_throughput(),
                                    "agreement": {f"{a} vs {b}": v for (a, b), v in agree.items()}},
                                   indent=1, default=str))
     print(f"wrote {REPORT} ({len(systems)} systems, {len(refs)} references)", file=sys.stderr)

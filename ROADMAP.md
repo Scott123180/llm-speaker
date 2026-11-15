@@ -78,8 +78,8 @@ Without a gold set, every later choice is a guess.
       across the 50 clips are left to check by ear.
 - [x] **Viewer:** `uv run python eval/viewer.py` shows each system side by side with the reference, its
       flags, the book passage and the audio.
-- [ ] More voter families make silver references stronger. Only 3 run locally (Whisper, Parakeet, Qwen);
-      the A10 cloud run adds Granite, VibeVoice and Nemotron.
+- [x] More voter families make silver references stronger: six now vote (Whisper, Parakeet, Qwen locally;
+      Granite, VibeVoice, Nemotron from two A10 runs). Each system is scored against the other five.
 - [ ] Optional, to measure errors every system shares: hand-correct a few clips
       (`eval/goldset/drafts/` → `eval/goldset/refs/`, see `eval/CONVENTIONS.md`), starting with the
       viewer's most-flagged clips.
@@ -107,7 +107,7 @@ Can start as a smoke test on 5–10 talks while the gold set is being built.
 | faster-whisper large-v3 / turbo | per-talk `hotwords` prompt; VAD on; `condition_on_previous_text=False` | 3070 Ti | Lowest-effort upgrade; about 3–6 days for the full archive locally |
 | Parakeet-TDT-0.6B v3 (NeMo) | GPU phrase boosting with the ranked term list | 3070 Ti | Prior favourite: copes with long term lists, handles 90-min talks in one pass, less prone to hallucination |
 | Qwen3-ASR-1.7B | short context in the system prompt, ≤20-min chunks | 3070 Ti | Good benchmarks, but fragile with long or irrelevant term lists |
-| Nemotron-3.5-Transcribe | "context terms" prompt | rented H100 | Check its OpenMDW licence first |
+| Nemotron-3.5-Transcribe | "context terms" prompt | A10 24 GB (4-bit GGUF, NeMo-Speech.cpp) | Most accurate tested (findings 19); check its OpenMDW licence |
 | ElevenLabs Scribe v2 (hosted) | keyterms | API | **Gold set only**, as an accuracy ceiling |
 
 - [x] faster-whisper turbo and large-v3, with and without the per-talk prompt
@@ -121,12 +121,17 @@ Can start as a smoke test on 5–10 talks while the gold set is being built.
       against WER and term false insertions
 - [ ] Whisper large-v3 + prompt: detect prompt echo (a window whose text repeats the prompt) and
       redo that window without the prompt; re-test
-- [ ] Cloud: Nemotron-3.5-Transcribe (about 60 GB of weights, too big for this PC) and Scribe v2 as a
-      ceiling, both on the gold set only
+- [x] Cloud (two A10 runs, $5.43): Granite, VibeVoice and Nemotron-3.5 (4-bit GGUF) on the gold set, plus
+      throughput tests (findings 18–20). Scribe v2 dropped: no paid transcription APIs.
+- [ ] Nemotron for production: decode VAD speech spans (it loops on some silent clips), align its text to
+      Whisper/Parakeet word timings for timestamps, strip fillers, then pilot on about 20 full talks
 
-**Findings so far (no WER yet; details in `eval/findings.md`):**
-- **Whisper turbo + prompt** is the safe front-runner: misheard terms fall from 13% to 3%, with no
-  prompt echo and the same speed (about 2 days for the archive on this PC).
+**Findings so far (silver WER; details in `eval/findings.md`):**
+- **Nemotron-3.5 + term list** is the most accurate (2.9% silver WER against 4.8% for the Whisper
+  setup; about a third of that gap is Whisper tidying "you know" and repeats). It spells names best
+  (0.4% misheard) and loses almost no speech. It needs a 24 GB GPU: about $95 for the archive on an A10.
+- **Whisper turbo + prompt, sequential decoding** is the free local option: misheard terms fall from
+  13% to 4% with no prompt echo; about 3.4 days for the archive on this PC.
 - **Whisper large-v3 + prompt** spells best among the Whisper setups but **echoes the prompt instead of
   transcribing** in 12 of 38 clips (2.3% of speech lost).
 - **Qwen3-ASR** needs VAD (without it, it invents text on 97% of silent clips) and takes a term list,
@@ -151,8 +156,9 @@ hallucination rate.
 - [ ] Batch runner: manifest (SQLite/JSON), resumable, atomic writes, a params sidecar per output
       (model, version, prompt or terms used)
 - [ ] Output word-level timestamps + segments (JSON), not just text
-- [ ] Decide local vs. cloud. Rough costs for about 6,500 h: Parakeet about $20–30 on a GH200;
-      Whisper turbo about $115–215; or days to weeks on the 3070 Ti
+- [ ] Decide local vs. cloud. Measured on one A10 ($1.29/h) for about 6,500 h (findings 20): Nemotron
+      with 4 requests in flight about $95; Whisper production setup with 2 processes about $96;
+      VibeVoice about $950. Locally, Whisper takes about 3.4 days on the 3070 Ti.
 - [ ] New lineage stage (e.g. `transcript_asr_v2`), keeping the old `transcript_raw` for comparison
 - [ ] Spot-check a random sample against the gold-set stratum results
 

@@ -1,4 +1,4 @@
-These notes are based on 14 systems, 38 stratified speech excerpts plus 12 book excerpts, and 76 non-speech clips. **No human-corrected references exist yet;** sections 8–14 use automatic silver references and the edited book text. Everything below comes from metrics that don't need a reference, plus listening to the side-by-side examples. Treat the ranking as provisional until WER is in.
+These notes cover 30 setups from 6 model families, on 38 stratified speech excerpts plus 12 book excerpts, and 76 non-speech clips. **No transcript has been fully hand-corrected.** Items 1–7 use metrics that don't need a reference. From item 8 on, accuracy is measured against automatic (silver) references: a vote across model families, checked against the glossary, the edited book text, an LLM review of flagged spots and 40 spots settled by ear. The latest results are items 19–20 and the recommendation at the end; earlier items keep the numbers measured at the time.
 
 ### What we learned
 
@@ -150,16 +150,73 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
       - Granite: 7.7%. It skips stretches mid-chunk, losing 3.0% of words in runs, and runs at about 20× real time. Its book-clip WER is good (4.4%). Its term list helps spelling a little (13.0% → 10.3% misheard). Not a production candidate.
     - **VibeVoice (18 speech clips so far):** no lost stretches at all and very few deletions (0.4%). It keeps disfluencies (120 words/min), so its insertions are higher. Worth finishing.
 
-### Recommendation (provisional)
+19. **Second A10 run: Nemotron and VibeVoice finished, six voting families (2026-11-15, $3.05; $5.43 for all three launches).**
+    - **References:** six families now vote (Whisper, Parakeet, Qwen, Granite, VibeVoice, Nemotron), so each system is scored against five others. 167 regions are flagged. 169 of 172 LLM decisions and all 36 current listener decisions apply. A decision that falls in a long stretch the vote left empty now matches by the gap's time, not the next word's (it had dropped "sheep on strong longing funny" in 31039).
+    - **One clip left out of WER:** `30643_s01710` is mostly unintelligible (62 reference words in 6 minutes; settled by ear as unclear). Every system writes unrelated text there, and VibeVoice loops ("uh, this is" ×1,600, 3,297 words), which alone added 6 points to its WER. It stays in the loop and non-speech checks (`unscored` in the manifest).
+    - **Silver WER (49 clips), with the paired difference from the production Whisper setup:**
 
-- **Production default:** faster-whisper **turbo + per-talk prompt, sequential decoding, VAD 0.35 with 800 ms padding, prompt-echo filter, hallucination_silence 2 s** (item 17). It has the best silver WER of any system tested (5.6%), the best term spelling of the Whisper setups and the most precise context (about 95%). It's about 80× real time, about 3.4 days for the archive on this PC.
+      | System | WER | 95% range | vs production | Book clips | Lost in runs | Misheard terms | Silent clips with text |
+      |---|---|---|---|---|---|---|---|
+      | Nemotron 3.5 + term list | **2.9%** | 2.2–3.8% | −1.9 (−2.6 to −1.3) | **3.0%** | **0.09%** | **0.4%** | 10/76 |
+      | Nemotron 3.5 | 2.9% | 2.2–3.8% | −1.9 | 3.0% | 0.09% | 4.0% | 10/76 |
+      | VibeVoice + term list | 3.4% | 2.3–4.9% | −1.4 (−2.2 to −0.6) | 4.3% | 0.04% | 1.8% | 3/76 |
+      | Parakeet-ft + VAD | 3.6% | 2.6–4.7% | −1.2 (−1.9 to −0.5) | 3.7% | 0.35% | 16.6% | 4/76 |
+      | VibeVoice | 3.8% | 2.5–5.3% | −1.1 (−2.0 to −0.2) | 4.2% | 0.17% | 5.3% | 4/76 |
+      | Qwen + VAD | 4.7% | 3.4–6.4% | −0.1 (−1.0 to +0.9) | 5.5% | 0.57% | 2.9% | 7/76 |
+      | Production Whisper setup | 4.8% | 3.8–6.0% | — | 3.7% | 0.81% | 3.8% | 7/76 |
+
+    - **The book agrees, independently of the vote.** Where the book settles a disputed word, the share each family got right:
+
+      | Family | Content words | Function words |
+      |---|---|---|
+      | Nemotron | **80%** | 80% |
+      | VibeVoice | **80%** | **88%** |
+      | Granite | 70% | 68% |
+      | Whisper | 66% | 61% |
+      | Parakeet | 62% | 86% |
+      | Qwen | 51% | 58% |
+
+      These shares also set the tie-break weights in the vote.
+    - **Part of Whisper's gap is style.** Its errors are mostly deletions (2.8%, against 0.5% for Nemotron): it tidies "you know", leading "and" and repeated words, which the other five families write verbatim. Collapsing repeated words in reference and output narrows the gap from 1.9 to 1.6 points; "you know" and "and" account for roughly another 0.3–0.5. The rest is real: lost speech (0.8% vs 0.1%) and misheard words.
+    - **Nemotron's term list fixes spelling without hurting accuracy:** misheard terms 4.0% → 0.4% (2 of 455) at the same WER. With the term list it spells names better than any other system.
+    - **Nemotron caveats:**
+      - It ran without voice detection and writes text on 10 of 76 silent clips. Two of these hold real chanting ("Sentient beings are numberless…", "Kanzeon… namu…"). The others are loops ("Knock knock knock…", "Yeah, yeah, yeah…"), so production needs VAD.
+      - It returns plain text with no timestamps through NeMo-Speech.cpp's server. Paragraphs by pauses and audio sync would need its words aligned to Whisper or Parakeet timings (as `eval/silver.py` already does).
+      - It keeps "uh"/"um" and punctuates less (12 marks per 100 words against 16).
+      - It needs a 24 GB GPU (22 GB in use), so it can't run on the 8 GB 3070 Ti.
+    - **VibeVoice** is accurate but slow (item 20), loops on noise, and writes sound tags ("[Music]", "[Lyric]") that need stripping.
+
+20. **Throughput: running several clips at once on one A10 (`asr/throughput.py`, report section "Throughput").**
+
+    | Setup | One stream | Best parallel setting | Gain | Archive on one A10 | Cost at $1.29/h |
+    |---|---|---|---|---|---|
+    | Whisper production setup | 70× | 2 processes: 87× | 1.25× | 3.1 days | about $96 |
+    | Whisper batched (drops speech) | 144× | 2 processes: 199× | 1.4× | 1.4 days | about $42 |
+    | Nemotron 3.5 (4-bit) | 50× | 4 requests in flight: 85–90× | 1.7× | 3.1 days | about $95 |
+    | VibeVoice | 6× | batch of 4: 9× | 1.5× | 31 days | about $950 |
+
+    - **Whisper's sequential decoding leaves the GPU 39% idle,** but more processes don't fill it usefully: 4–8 processes reach 96–98% busy at 77–84×. Two is the sweet spot.
+    - **One Whisper stream is faster on the 3070 Ti (80×) than on the A10 (70×).** Locally, a second process doesn't fit next to the desktop's GPU use (tested: out of memory).
+    - **Nemotron benefits most from parallel work:** its server decodes up to 4 requests together.
+    - **VibeVoice keeps the GPU 95% busy even one clip at a time,** so batching helps little. A batch of 4 fits in 21 GB.
+    - Several GPUs divide the time but not the cost; at these prices a full archive pass on A10s costs about $95 for Nemotron or Whisper.
+
+### Recommendation (provisional, 2026-11-15)
+
+- **Switch the archive run to Nemotron 3.5 + term list on cloud A10s,** if a pilot confirms it on full talks. It's the most accurate system tested (2.9% silver WER, 1.9 points better than the Whisper setup, of which about 1.3–1.6 is not style), it loses almost no speech and spells names best (0.4% misheard). At 4 requests in flight it costs about $95 for the archive on one A10, or about a day on three.
+  ```
+  uv run python asr/run_nemotron_cpp.py --terms --concurrency 4 --salm max_sequences=4 \
+      --salm n_ctx_per_sequence=8192 --salm max_context=32768 --salm mtp_draft=0 --salm n_batch=1024 --salm encoder_max_batch=4
+  ```
+  Before that it needs: voice detection (decode VAD speech spans, as Parakeet does), word timings by alignment to a timed system, filler removal, and a check on full-length talks.
+- **Fallback and free local option:** the production Whisper setup (item 17), about 3.4 days on this PC. It's the safest on silent clips and keeps timestamps, but it's clearly less accurate.
   ```
   uv run python asr/run_whisper.py --model large-v3-turbo --context --batch-size 0 \
       --vad-threshold 0.35 --vad-pad-ms 800 --drop-prompt-echo --hallucination-silence 2
   ```
-- **Upgrade if WER supports it:** **Qwen3-ASR + VAD + term list**, for difficult talks or a full cloud run. Its term list is less precise (about 68%).
-- **Not recommended as configured:**
-  - large-v3 with a prompt, which is mostly insertions
-  - Qwen with a prose prompt, which echoes and inserts
-  - Parakeet's gentle boost, which does almost nothing
-- **Before deciding,** correct about 15–20 references (see `eval/CONVENTIONS.md`) and re-run `eval/report.py`. That adds WER, term recall and false insertions with confidence intervals. The A10 run adds three more voter families to the silver references.
+- **Not recommended:**
+  - VibeVoice for the full archive: accurate, but about $950 and loops on noise. It could serve a few hard talks.
+  - Granite: skips speech mid-chunk.
+  - large-v3 with a prompt: echoes the prompt.
+  - Qwen with a prose prompt: echoes and inserts.
+- **Remaining measurement gap:** every number here is against automatic references. A mistake all six families share stays invisible, and only the 12 book clips and the listener's 40 spots are independent checks.

@@ -449,13 +449,23 @@ def confidence(t):
     return "high" if t["agree"] >= HIGH else "medium"
 
 
+def gap_dist(toks, W, p, t):
+    """Seconds from time t to the boundary before word p: 0 when t falls in the gap between word p-1
+    and word p (a span the vote left empty can be long, e.g. a stretch only a listener made out)."""
+    hi = toks[W[min(p, len(W) - 1)]]["t"]
+    lo = toks[W[p - 1]]["t"] if p > 0 else hi
+    if p >= len(W):
+        hi = lo
+    return 0.0 if lo <= t <= hi else min(abs(t - lo), abs(t - hi))
+
+
 def fuzzy_anchor(toks, W, n, bef, frm, aft, t, window=10):
     """Span [p, q) whose surroundings best match the decision's context words, within `window` s of
     its time: at least 4 of the (up to 6) context words must line up, and one on each side."""
     best = None
     for p in range(len(W) + 1):
-        tp = toks[W[min(p, len(W) - 1)]]["t"]
-        if abs(tp - t) > window:
+        dt = gap_dist(toks, W, p, t)
+        if dt > window:
             continue
         left = sum(1 for k in range(1, len(bef) + 1) if p - k >= 0 and n[p - k] == bef[-k])
         for q in range(p, min(len(W), p + len(frm) + 4) + 1):
@@ -463,7 +473,7 @@ def fuzzy_anchor(toks, W, n, bef, frm, aft, t, window=10):
             if (bef and not left) or (aft and not right) or left + right < min(4, len(bef) + len(aft)):
                 continue
             same = sum(1 for x in n[p:q] if x in frm)
-            key = (left + right, same - abs(len(n[p:q]) - len(frm)), -abs(tp - t))
+            key = (left + right, same - abs(len(n[p:q]) - len(frm)), -dt)
             if best is None or key > best[0]:
                 best = (key, p, q)
     return best
@@ -491,10 +501,10 @@ def judge_pass(clip, toks):
             for q in qs:
                 if q > len(W) or n[q:q + len(aft)] != aft:
                     continue
-                t0 = toks[W[p]]["t"] if p < len(W) else toks[W[-1]]["t"]
-                if abs(t0 - d["t"]) > 15:
+                dt = gap_dist(toks, W, p, d["t"])
+                if dt > 15:
                     continue
-                key = (n[p:q] == frm, -abs(t0 - d["t"]))
+                key = (n[p:q] == frm, -dt)
                 if best is None or key > best[0]:
                     best = (key, p, q)
         if best is None:  # the vote changed nearby words: best partial match at the same moment
@@ -644,12 +654,13 @@ def score(manifest=None, systems=None, normalize=None, judge=True):
         r = build(clips[i], fam, judge)
         return (normalize(r["text"]), len(r["voters"]), r["clip_id"]) if r else None
 
-    res = defaultdict(lambda: defaultdict(lambda: {"S": 0, "D": 0, "I": 0, "N": 0, "clips": 0, "voters": []}))
+    res = defaultdict(lambda: defaultdict(lambda: {"S": 0, "D": 0, "I": 0, "N": 0, "clips": 0, "voters": [],
+                                                   "rows": []}))
     all_systems = sorted({s for c in clips for s in c.outs})
     for s in all_systems:
         fam = family(s)
         for i, c in enumerate(clips):
-            if s not in c.outs:
+            if s not in c.outs or c.c.get("unscored"):  # unintelligible clips: see the manifest's reason
                 continue
             r = ref_for(i, fam)
             if not r or not r[0]:
@@ -665,11 +676,13 @@ def score(manifest=None, systems=None, normalize=None, judge=True):
                 b["N"] += len(ref.split())
                 b["clips"] += 1
                 b["voters"].append(nv)
+                b["rows"].append([c.id, o.substitutions + o.deletions + o.insertions, len(ref.split())])
     out = {}
     for s, by in res.items():
         out[s] = {k: {"wer": (b["S"] + b["D"] + b["I"]) / b["N"] if b["N"] else None, "clips": b["clips"],
                       "sub": b["S"] / max(1, b["N"]), "del": b["D"] / max(1, b["N"]), "ins": b["I"] / max(1, b["N"]),
-                      "voters": round(sum(b["voters"]) / len(b["voters"]), 1)} for k, b in by.items()}
+                      "voters": round(sum(b["voters"]) / len(b["voters"]), 1),
+                      "rows": b["rows"]} for k, b in by.items()}  # [clip_id, errors, ref words] for bootstrap
     return out
 
 

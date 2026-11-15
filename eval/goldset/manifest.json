@@ -443,7 +443,8 @@
    "content": "other",
    "difficulty": "hard",
    "old_logprob": -1.381,
-   "snapped": true
+   "snapped": true,
+   "unscored": "mostly unintelligible: 62 reference words in 6 min, settled by ear as unclear; systems write unrelated text or loop here, which is reported under loops, not WER"
   },
   {
    "clip_id": "30643_n00005",
