@@ -113,10 +113,33 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
     - **What it doesn't measure:** the LLM's 71 fixes weren't flagged, so they haven't been checked by ear yet.
     - **Scores:** silver WER moves by 0.01–0.07 points and the ranking is unchanged.
 
+17. **Whisper turbo's dropped speech: fixed by decoding one window at a time (2026-11-15).** `eval/drops.py` counts reference words lost in runs of 4+:
+
+    | turbo + prompt, variant | Silver WER | Book clips | Words lost in runs | Misheard | Silent clips with text | Speed |
+    |---|---|---|---|---|---|---|
+    | batched (previous default) | 6.50% | 5.53% | 1.74% | 3.9% | 7/76 | 151× |
+    | batched, VAD 0.35 / 800 ms pad | 6.12% | | 1.28% | 4.3% | 10/76 | 128× |
+    | batched, no-speech skip off | 6.50% | | 1.74% | 3.9% | 7/76 | 153× |
+    | sequential | 6.10% | | 0.92% | 3.9% | 7/76 | 87× |
+    | sequential, VAD 0.35 / 800 ms | 5.63% | 4.39% | 0.74% | 3.8% | 10/76 | 83× |
+    | **+ prompt-echo filter + hallucination_silence 2 s** | **5.59%** | **4.20%** | **0.71%** | **3.8%** | **7/76** | **80×** |
+    | same, longer prompt (`data/context-long`) | 5.44% | 4.66% | 0.54% | 4.8% | 10/76 | 82× |
+    | sequential, no VAD | 6.50% | | 0.52% | 3.2% | 72/76 | 68× |
+    | plain turbo, no prompt, for comparison | 5.79% | 5.38% | 0.99% | 13.1% | 7/76 | 150× |
+
+    - **Batching is the main cause.** It cuts audio into 30 s windows at voice-detector boundaries, and decoding several at once loses words. A more sensitive detector helps a bit more.
+    - **"No-speech skip off" changes nothing.** Batched decoding doesn't use that setting.
+    - **No voice detection is unusable.** It writes text on 72 of 76 silent clips.
+    - **The prompt-echo filter** removes segments that only repeat the prompt, e.g. "This is a dharma talk" read into the noise at the start of 30643.
+    - **The longer prompt scores 0.15 points better overall, within noise.** It spells terms worse and recited a term list on a silent clip ("Doshinji, shikantaza, nirvana, nirvana…"), so it's not recommended.
+
 ### Recommendation (provisional)
 
-- **Production default:** faster-whisper **turbo + per-talk prompt + VAD**. It has the most precise context (about 95%), the best term spelling and the best speed.
-- **Fix before production:** turbo's phrase drops (about 2.4% of words). Test VAD settings, then smaller batches. A second system can fill the gaps: parakeet-ft-v1 is fast and rarely drops a phrase.
+- **Production default:** faster-whisper **turbo + per-talk prompt, sequential decoding, VAD 0.35 with 800 ms padding, prompt-echo filter, hallucination_silence 2 s** (item 17). It has the best silver WER of any system tested (5.6%), the best term spelling of the Whisper setups and the most precise context (about 95%). It's about 80× real time, about 3.4 days for the archive on this PC.
+  ```
+  uv run python asr/run_whisper.py --model large-v3-turbo --context --batch-size 0 \
+      --vad-threshold 0.35 --vad-pad-ms 800 --drop-prompt-echo --hallucination-silence 2
+  ```
 - **Upgrade if WER supports it:** **Qwen3-ASR + VAD + term list**, for difficult talks or a full cloud run. Its term list is less precise (about 68%).
 - **Not recommended as configured:**
   - large-v3 with a prompt, which is mostly insertions

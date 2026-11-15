@@ -113,6 +113,9 @@ Can start as a smoke test on 5–10 talks while the gold set is being built.
 - [x] faster-whisper turbo and large-v3, with and without the per-talk prompt
 - [x] Parakeet with phrase boosting at alpha 0.3 (hard terms only), 0.5 and 1.0
 - [x] Qwen3-ASR plain, with the prose prompt, with VAD, and with VAD plus a term list
+- [x] **Whisper turbo's dropped speech fixed** (findings item 17). Sequential decoding with VAD 0.35 and
+      800 ms padding, a prompt-echo filter and hallucination_silence 2 s. Silver WER 6.5% → 5.6%, words lost
+      in runs 1.7% → 0.7%, at about 80× real time. `eval/drops.py` measures it.
 - [ ] Re-score everything once references exist, then pick the engine (see findings)
 - [ ] Tune `boosting_tree_alpha` and the context builder (prompt length, term count, min difficulty)
       against WER and term false insertions

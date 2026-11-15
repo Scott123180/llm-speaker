@@ -1,6 +1,6 @@
 # ASR bake-off
 
-_Generated 2026-11-14 22:01 by `eval/report.py`. Re-run after adding systems or references._
+_Generated 2026-11-14 23:05 by `eval/report.py`. Re-run after adding systems or references._
 
 **Gold set:** 50 speech excerpts (5.0 h, one per talk, stratified by era / speaker / content / audio difficulty) and 76 non-speech clips (38 min of bells, silence and room noise where VAD finds <10% speech). **Corrected references: 0/50.**
 
@@ -154,6 +154,15 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
 | `whisper-large-v3+ctx` | faster-whisper large-v3 | hotwords=talk prompt | cuda | 58 | 4995 MB | 4.7 days |
 | `whisper-turbo` | faster-whisper large-v3-turbo | — | cuda | 150 | 3320 MB | 1.8 days |
 | `whisper-turbo+ctx` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 151 | 3336 MB | 1.8 days |
+| `whisper-turbo+ctx+nsoff` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 153 | 3324 MB | 1.8 days |
+| `whisper-turbo+ctx+seq` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 87 | 2394 MB | 3.1 days |
+| `whisper-turbo+ctx+seq+novad` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 68 | 2426 MB | 4.0 days |
+| `whisper-turbo+ctx+seq+vadlo` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 83 | 2490 MB | 3.2 days |
+| `whisper-turbo+ctx+seq+vadlo+echo` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 84 | 2394 MB | 3.2 days |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 80 | 2426 MB | 3.4 days |
+| `whisper-turbo+ctx+vadlo` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 128 | 3322 MB | 2.1 days |
+| `whisper-turbo+ctxlong` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 151 | 3324 MB | 1.8 days |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | faster-whisper large-v3-turbo | hotwords=talk prompt | cuda | 82 | 2394 MB | 3.3 days |
 
 \* 6,500 h of audio at the measured speed on short clips (includes per-clip overhead, so full talks run somewhat faster). `legacy-whisper-cli` = the existing transcripts (Whisper CLI turbo, no VAD, no prompt, `condition_on_previous_text=True`).
 
@@ -175,6 +184,15 @@ These results cover 50 speech clips: the 38 stratified clips plus 12 talks from 
 | `whisper-large-v3+ctx` | 7/76 (9%) | 2.5% (12 of 475) | 13 clips (2.0% of audio) | 0 | 100 | 16.9 |
 | `whisper-turbo` | 7/76 (9%) | 13.1% (55 of 421) | — | 0 | 107 | 16.0 |
 | `whisper-turbo+ctx` | 7/76 (9%) | 3.9% (17 of 440) | 0 clips | 0 | 106 | 16.6 |
+| `whisper-turbo+ctx+nsoff` | 7/76 (9%) | 3.9% (17 of 440) | 0 clips | 0 | 106 | 16.6 |
+| `whisper-turbo+ctx+seq` | 7/76 (9%) | 3.9% (18 of 463) | 1 clips (0.1% of audio) | 2 | 107 | 16.4 |
+| `whisper-turbo+ctx+seq+novad` | 72/76 (95%) | 3.2% (15 of 462) | 2 clips (0.3% of audio) | 2 | 109 | 16.5 |
+| `whisper-turbo+ctx+seq+vadlo` | 10/76 (13%) | 3.8% (17 of 450) | 2 clips (0.1% of audio) | 2 | 108 | 16.4 |
+| `whisper-turbo+ctx+seq+vadlo+echo` | 9/76 (12%) | 3.8% (17 of 448) | 0 clips | 2 | 108 | 16.4 |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | 7/76 (9%) | 3.8% (17 of 444) | 0 clips | 1 | 108 | 16.4 |
+| `whisper-turbo+ctx+vadlo` | 10/76 (13%) | 4.3% (19 of 441) | 0 clips | 0 | 106 | 16.6 |
+| `whisper-turbo+ctxlong` | 7/76 (9%) | 3.6% (16 of 448) | 0 clips | 0 | 106 | 16.8 |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | 10/76 (13%) | 4.8% (22 of 457) | 0 clips | 1 | 108 | 16.6 |
 
 How to read this:
 - **Non-speech clips with invented text**: any words output on a clip with no speech. All of them are errors, so lower is better. Most of these clips were *chosen* at spots where the legacy transcripts invented text, so legacy's score there is near 100% by construction. Compare the new systems with each other.
@@ -204,10 +222,19 @@ as a ranking aid until corrected references exist. Browse the flagged spots with
 
 | System | Silver WER (all) | substitutions / deletions / insertions | Stratified set | Book set | Voters |
 |---|---|---|---|---|---|
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | 5.4% | 1.5% / 3.0% / 0.9% | 5.6% | 4.7% | 2.0 |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | 5.6% | 1.5% / 3.2% / 0.9% | 6.0% | 4.2% | 2.0 |
+| `whisper-turbo+ctx+seq+vadlo+echo` | 5.6% | 1.4% / 3.3% / 0.9% | 6.0% | 4.3% | 2.0 |
+| `whisper-turbo+ctx+seq+vadlo` | 5.6% | 1.5% / 3.3% / 0.9% | 6.0% | 4.4% | 2.0 |
 | `whisper-turbo` | 5.8% | 1.4% / 3.9% / 0.5% | 5.9% | 5.4% | 2.0 |
 | `whisper-large-v3` | 5.8% | 1.3% / 4.1% / 0.4% | 6.1% | 4.9% | 2.0 |
+| `whisper-turbo+ctx+seq` | 6.1% | 1.4% / 3.8% / 0.9% | 6.3% | 5.2% | 2.0 |
+| `whisper-turbo+ctx+vadlo` | 6.1% | 1.3% / 4.2% / 0.6% | 6.5% | 4.7% | 2.0 |
+| `whisper-turbo+ctxlong` | 6.2% | 1.2% / 4.5% / 0.5% | 6.4% | 5.5% | 2.0 |
 | `parakeet-ft-v1+vad90` | 6.2% | 1.7% / 0.6% / 3.9% | 6.4% | 5.4% | 2.0 |
 | `whisper-turbo+ctx` | 6.5% | 1.2% / 4.8% / 0.5% | 6.7% | 5.5% | 2.0 |
+| `whisper-turbo+ctx+nsoff` | 6.5% | 1.2% / 4.8% / 0.5% | 6.7% | 5.5% | 2.0 |
+| `whisper-turbo+ctx+seq+novad` | 6.5% | 1.7% / 2.7% / 2.1% | 6.9% | 5.1% | 2.0 |
 | `legacy-whisper-cli` | 6.8% | 1.8% / 1.9% / 3.1% | 7.1% | 5.5% | 2.0 |
 | `parakeet-v3+boost0.5` | 7.1% | 2.0% / 1.9% / 3.3% | 7.3% | 6.5% | 2.0 |
 | `qwen3-asr-1.7b+vad` | 7.2% | 2.6% / 1.3% / 3.3% | 7.2% | 7.3% | 2.0 |
@@ -231,6 +258,15 @@ as a ranking aid until corrected references exist. Browse the flagged spots with
 | `qwen3-asr-1.7b+vad` → `qwen3-asr-1.7b+vad+terms` | 2.9% → 1.9% | 7 → 7 clips | 2.3% of words |
 | `whisper-large-v3` → `whisper-large-v3+ctx` | 8.0% → 2.5% | 7 → 7 clips | 8.1% of words |
 | `whisper-turbo` → `whisper-turbo+ctx` | 13.1% → 3.9% | 7 → 7 clips | 2.0% of words |
+| `whisper-turbo+ctx` → `whisper-turbo+ctx+nsoff` | 3.9% → 3.9% | 7 → 7 clips | 0.0% of words |
+| `whisper-turbo+ctx` → `whisper-turbo+ctx+seq` | 3.9% → 3.9% | 7 → 7 clips | 3.1% of words |
+| `whisper-turbo+ctx+seq` → `whisper-turbo+ctx+seq+novad` | 3.9% → 3.2% | 7 → 72 clips | 5.1% of words |
+| `whisper-turbo+ctx+seq` → `whisper-turbo+ctx+seq+vadlo` | 3.9% → 3.8% | 7 → 10 clips | 2.8% of words |
+| `whisper-turbo+ctx+seq+vadlo` → `whisper-turbo+ctx+seq+vadlo+echo` | 3.8% → 3.8% | 10 → 9 clips | 0.0% of words |
+| `whisper-turbo+ctx+seq+vadlo+echo` → `whisper-turbo+ctx+seq+vadlo+echo+hst` | 3.8% → 3.8% | 9 → 7 clips | 0.2% of words |
+| `whisper-turbo+ctx` → `whisper-turbo+ctx+vadlo` | 3.9% → 4.3% | 7 → 10 clips | 3.2% of words |
+| `whisper-turbo` → `whisper-turbo+ctxlong` | 13.1% → 3.6% | 7 → 7 clips | 1.7% of words |
+| `whisper-turbo+ctxlong` → `whisper-turbo+ctxlong+seq+vadlo+echo` | 3.6% → 4.8% | 7 → 10 clips | 3.8% of words |
 
 Disagreement is the word error rate between the two outputs: how much of the text the context changed.
 
@@ -252,6 +288,15 @@ Disagreement is the word error rate between the two outputs: how much of the tex
 | `whisper-large-v3+ctx` | Shapa, Mayakaya Shapa, Setsho, Zenda, Dogon |
 | `whisper-turbo` | doksan, Yakujo, Shapa, gasho, Maizumi, Gashow, Setsho, Mayakaya Shapa, Huiko, Daito, Zhao, Ingo |
 | `whisper-turbo+ctx` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, seshin, Zenda, Sazen |
+| `whisper-turbo+ctx+nsoff` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, seshin, Zenda, Sazen |
+| `whisper-turbo+ctx+seq` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, Sashin, Zenda, Sazen |
+| `whisper-turbo+ctx+seq+novad` | Shapa, Yakujo, Mayakaya Shapa, Setsho, Yastani, Sashin, Sashen, Zenda |
+| `whisper-turbo+ctx+seq+vadlo` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, seshin, Zenda, Sazen |
+| `whisper-turbo+ctx+seq+vadlo+echo` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, seshin, Zenda, Sazen |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, seshin, Zenda, Sazen |
+| `whisper-turbo+ctx+vadlo` | Shapa, Setsho, Yakujo, Mayakaya Shapa, Sashen, seshin, Dogon's, Zenda, Sazen |
+| `whisper-turbo+ctxlong` | Shapa, Yakujo, Mayakaya Shapa, Sashen, Setsho, Yastani, seshin, Zenda |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | Shapa, doksan, Setsho, Yakujo, Mayakaya Shapa, Sashen, Yastani, seshin, Zenda |
 
 ## What systems output on non-speech
 
@@ -269,6 +314,15 @@ Disagreement is the word error rate between the two outputs: how much of the tex
 - `whisper-large-v3+ctx`: "Opening Talk."×2; "Thank you."×2; "Thank you for watching!"×1; "Shobogenzo."×1; "Sentient beings are..."×1
 - `whisper-turbo`: "Amen."×2; "Thank you."×2; "Bye."×1; "Yeah."×1; "Sentient beings are"×1
 - `whisper-turbo+ctx`: "Thank you."×4; "Amen."×1; "Shobogenzo."×1; "Sentient beings are..."×1
+- `whisper-turbo+ctx+nsoff`: "Thank you."×4; "Amen."×1; "Shobogenzo."×1; "Sentient beings are..."×1
+- `whisper-turbo+ctx+seq`: "Thank you."×2; "To Be Enlightened by the World"×1; "It's a dharma talk."×1; "Amen."×1; "We'll be talking about Shobogenzo."×1; "Sentient beings of..."×1
+- `whisper-turbo+ctx+seq+novad`: "Thank you."×17; "This is a dharma talk."×3; ". . . Thank you."×3; "Thank you very much."×2; "We'll be right back."×2; "Avalokiteshvara."×2
+- `whisper-turbo+ctx+seq+vadlo`: "Amen."×2; "Thank you."×2; "Shobogenzo."×2; "2019 Fall Ango Intensive, Part 2 – Versace Speaking ofaption"×1; "Avalokiteshvara.com"×1; "We'll be talking about Shobogenzo."×1
+- `whisper-turbo+ctx+seq+vadlo+echo`: "Amen."×2; "Thank you."×2; "Shobogenzo."×2; "Music by T Union"×1; "Avalokiteshvara.com"×1; "Sentient beings are alive."×1
+- `whisper-turbo+ctx+seq+vadlo+echo+hst`: "Thank you."×3; "Avalokiteshvara.com"×1; "Amen."×1; "Sentient beings are alive."×1; "Shobogenzo."×1
+- `whisper-turbo+ctx+vadlo`: "Thank you."×4; "This is a dharma talk by Geoffrey Shugen Arnold."×1; "Avalokiteshva"×1; "Amen."×1; "Aaaaaaaaaa."×1; "Just..."×1
+- `whisper-turbo+ctxlong`: "Thank you."×4; "Amen."×1; "Yeah."×1; "Sentient beings are"×1
+- `whisper-turbo+ctxlong+seq+vadlo+echo`: "Amen."×2; "Thank you."×2; "Zazen."×1; "Doshinji, shikantaza, nirvana, nirvana, nirvana, nirvana, ni"×1; "Aaaaaaah"×1; "Just..."×1
 
 ## Side-by-side examples
 
@@ -292,6 +346,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | -nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment is called a precept of refraining from |
 | `whisper-turbo` | -nature is clear and obvious. In the sphere of the unstained Dharma, not yielding to attachment is called a precept of refraining from |
 | `whisper-turbo+ctx` | -nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment is called a precept of refraining from |
+| `whisper-turbo+ctx+nsoff` | -nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment is called a precept of refraining from |
+| `whisper-turbo+ctx+seq` | nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment, is called a precept of refraining from |
+| `whisper-turbo+ctx+seq+novad` | -nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `whisper-turbo+ctx+seq+vadlo` | -nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `whisper-turbo+ctx+seq+vadlo+echo` | -nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | -nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
+| `whisper-turbo+ctx+vadlo` | -nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called a precept of refraining from |
+| `whisper-turbo+ctxlong` | -nature is clear and obvious. In the sphere of the unstained dharma, not yielding to attachment is called a precept of refraining from |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | -nature is clear and obvious in the sphere of the unstained dharma. Not yielding to attachment is called the precept of refraining from |
 
 **zendo** — `32995_s00180` at 2:36 · Konrad Ryushin Marchaj · 2010s · hard audio
 
@@ -311,6 +374,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
 | `whisper-turbo` | our life. If we were to leave this within the Zenda, that question of what good does it really do, should be on |
 | `whisper-turbo+ctx` | our life. If we were to leave this within the zenda, that question of what good does it really do, should be on |
+| `whisper-turbo+ctx+nsoff` | our life. If we were to leave this within the zenda, that question of what good does it really do, should be on |
+| `whisper-turbo+ctx+seq` | our life. If we were to leave this within the zenda, that question of what good does it really do, should be on |
+| `whisper-turbo+ctx+seq+novad` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
+| `whisper-turbo+ctx+seq+vadlo` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
+| `whisper-turbo+ctx+seq+vadlo+echo` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
+| `whisper-turbo+ctx+vadlo` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
+| `whisper-turbo+ctxlong` | our life. If we were to leave this within the zenda, that question of what good does it really do, should be on |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | our life. If we were to leave this within the zenda, that question of what good does it really do should be on |
 
 **Baizhang Huaihai** — `31268_s00240` at 0:59 · John Daido Loori · 1980s · medium audio
 
@@ -330,6 +402,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | was Hyakujo, that we talked about in the calling of Hyakujo and the fox, and another was Nansen. Basso once said of these |
 | `whisper-turbo` | was Yakujo, that we talked about in the colon of Yakujo and the fox. And another was Nansen. Basso once said of these |
 | `whisper-turbo+ctx` | was Hyakujo, that we talked about in the colon of Hyakujo and the fox, and another was Nansen. Baso once said of these |
+| `whisper-turbo+ctx+nsoff` | was Hyakujo, that we talked about in the colon of Hyakujo and the fox, and another was Nansen. Baso once said of these |
+| `whisper-turbo+ctx+seq` | was Hyakujo, as we talked about in the column of Hyakujo and the Fox, and another was Nansen. And Basa once said of these |
+| `whisper-turbo+ctx+seq+novad` | was Hyakujo, as we talked about in the colon of Hyakujo and the fox, and another was Nansen. Mbasa once said of these |
+| `whisper-turbo+ctx+seq+vadlo` | was Hyakujo, as we talked about in the colon of Hyakujo and the fox, and another was Nansen. Baso once said of these |
+| `whisper-turbo+ctx+seq+vadlo+echo` | was Hyakujo, as we talked about in the colon of Hyakujo and the fox, and another was Nansen. Baso once said of these |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | was Hyakujo, as we talked about in the colon of Hyakujo and the fox, and another was Nansen. Baso once said of these |
+| `whisper-turbo+ctx+vadlo` | words, Hyakujo, that we talked about in the calling of Hyakujo and the fox. And another was Nansen. Vasa once said of these |
+| `whisper-turbo+ctxlong` | was Hyakujo, that we talked about in the colon of Hyakujo and the fox, and another was Nansen. Baso once said of these |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | was Hyakujo, as we talked about in the koan of Hyakujo and the fox, and another was Nansen. Baso once said of these |
 
 **densho** — `33528_s01214` at 2:09 · John Daido Loori · 1990s · medium audio
 
@@ -349,6 +430,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | It's communication, it's what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
 | `whisper-turbo` | is communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha hall for |
 | `whisper-turbo+ctx` | is communication, is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctx+nsoff` | is communication, is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctx+seq` | It's communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctx+seq+novad` | is communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctx+seq+vadlo` | It's communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctx+seq+vadlo+echo` | It's communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | It's communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctx+vadlo` | is communication is what it is. You know, the bell rings, the dencho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctxlong` | is communication is what it is. You know, the bell rings, the densho rings, it's time to go to the Buddha Hall for |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | it's communication is what it is, you know, the bell rings, the dencho rings, it's time to go to the Buddha Hall for |
 
 **Zhaozhou Congshen** — `34803_s00570` at 4:05 · Geoffrey Shugen Arnold · 2020s · medium audio
 
@@ -368,6 +458,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
 | `whisper-turbo` | What was her power? She's a tea woman offering refreshment to travelers. Zhao Zhao, you could from one perspective say, is a great master. |
 | `whisper-turbo+ctx` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
+| `whisper-turbo+ctx+nsoff` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
+| `whisper-turbo+ctx+seq` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master, |
+| `whisper-turbo+ctx+seq+novad` | What was her power? She's a tea woman, offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master, |
+| `whisper-turbo+ctx+seq+vadlo` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could, from one perspective, say, is a great master. |
+| `whisper-turbo+ctx+seq+vadlo+echo` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could, from one perspective, say, is a great master. |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could, from one perspective, say, is a great master. |
+| `whisper-turbo+ctx+vadlo` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master, |
+| `whisper-turbo+ctxlong` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | What was her power? She's a tea woman offering refreshment to travelers. Zhaozhou, you could from one perspective say, is a great master. |
 
 **Yantou Quanhuo** — `34004_s01972` at 1:08 · Other · 1990s · hard audio
 
@@ -387,6 +486,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | John Daido Loori, Bernie Glassman, Tokusan, Zen Peacemaker Order, and Ganto. We'll be talking about John Daido Loori, Bernie Glassman, Tokusan, Zen Peacemaker |
 | `whisper-turbo` | koan, if you agree, then you're still attached to the sense of manner. If you do not agree... Then you're forever sunk in |
 | `whisper-turbo+ctx` | As far as the last line of the koan, if you agree, then you're still attached to the sentiment. If you do not |
+| `whisper-turbo+ctx+nsoff` | As far as the last line of the koan, if you agree, then you're still attached to the sentiment. If you do not |
+| `whisper-turbo+ctx+seq` | shift together. You were sweeping under the pizza oven, and you swept down a little critter that was caught in flypaper, and you ran over in a panic. I don't know if it's dead or alive, there's something in the flypaper. What's the constant principle of that? May your life go well. Attention. Chris, I want to let you know I've never done this before, so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attached to the sense of matter. If you do not agree, then you're forever sunk in |
+| `whisper-turbo+ctx+seq+novad` | together, and you were sweeping under the pizza oven, and you swept down a little critter that was caught in flypaper, and you ran over in a panic. I don't know if it's dead or alive, there's something in the flypaper. What's the constant principle of that? May your life go well. Attention. First, I want to let you know I've never done this before, so I'm actually being kind of nervous. As far as the last line of the koan, if you agree, then you're still attentive to the sense of manner. If you do not agree, then you're forever sunk in |
+| `whisper-turbo+ctx+seq+vadlo` | you agree, then you are still attached to the sense of matter. If you do not agree, then you are forever sunk in |
+| `whisper-turbo+ctx+seq+vadlo+echo` | you agree, then you are still attached to the sense of matter. If you do not agree, then you are forever sunk in |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | you agree, then you are still attached to the sense of matter. If you do not agree, then you are forever sunk in |
+| `whisper-turbo+ctx+vadlo` | together and you were sweeping under the pizza oven and you swept down a little critter that was caught in flypaper and you ran over in a panic. |
+| `whisper-turbo+ctxlong` | as the last line of the koan, if you agree, then you're still attached to the sense of manner. If you do not |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | koan, if you agree, then you're still attached to the sense of matter. If you do not agree, then you're forever sunk in |
 
 **Shariputra** — `30671_b01435` at 4:12 · John Daido Loori · 1980s · easy audio
 
@@ -406,6 +514,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | the brain works linearly and sequentially. Avalokitesvara, jukai, Eno, and Shariputra. Back and forth, referring to different references. What's the absolute basis of |
 | `whisper-turbo` | the brain works linearly and sequentially. And we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day the whole thing just... back and forth referring to different reference systems what's the absolute basis of |
 | `whisper-turbo+ctx` | the brain works linearly and sequentially. And we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my god. And then I realized one day the whole thing just... Back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctx+nsoff` | the brain works linearly and sequentially. And we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my god. And then I realized one day the whole thing just... Back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctx+seq` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day, the whole thing, just back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctx+seq+novad` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That It was my field, science. It was my God. And then I realized one day, the whole thing, just back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctx+seq+vadlo` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science. For 17 years, that was my field, science. It was my God. And then I realized one day, the whole thing, just back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctx+seq+vadlo+echo` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science. For 17 years, that was my field, science. It was my God. And then I realized one day, the whole thing, just back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science. For 17 years, that was my field, science. It was my God. And then I realized one day, the whole thing, just back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctx+vadlo` | the brain works linearly and sequentially. And we grasp things dualistically. Relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day, the whole thing, just back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctxlong` | the brain works linearly and sequentially. And we grasp things dualistically, relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my god. And then I realized one day the whole thing just... Back and forth, referring to different reference systems. What's the absolute basis of |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | the brain works linearly and sequentially, and we grasp things dualistically, relatively. Relatively. Our whole definition of the universe is based on that relativity. Everything is known in reference to something else. It's one big reference system. I remember when I began to realize that in science. I mean, I used to think of science for 17 years. That was my field, science. It was my God. And then I realized one day, the whole thing, just back and forth, referring to different reference systems. What's the absolute basis of |
 
 **Shakyamuni** — `36533_s00180` at 2:25 · John Daido Loori · 2000s · easy audio
 
@@ -425,6 +542,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | Dogen says, let us offer flowers of the distant mountains to the tathagata. The other gives the other for the sake of giving |
 | `whisper-turbo` | Dogen says let us offer flowers of the distant mountains to the Tathagatha or share the treasures with all sentient beings in spiritual things as well as material things when the way is surrendered to the way you attain the way upon being awakened you necessarily let the way come through itself the self gives the self for the sake of giving the self the other gives the other for the sake of giving |
 | `whisper-turbo+ctx` | Dogen says let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctx+nsoff` | Dogen says let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctx+seq` | Dogen says let us offer flowers of the distant mountains to the tathagata or share the treasures with all sentient beings in spiritual things as well as material things. When the way is surrendered to the way you attain the way. Upon being awakened you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctx+seq+novad` | Dogen says, let us offer flowers of the distant mountains to the tathagata or share the treasures with all sentient beings in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctx+seq+vadlo` | Dogen says, let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings. In spiritual things as well as material things. When the Way is surrendered to the Way, you attain the Way. Upon being awakened, you necessarily let the Way come through itself. The Self gives the Self for the sake of giving the Self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctx+seq+vadlo+echo` | Dogen says, let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings. In spiritual things as well as material things. When the Way is surrendered to the Way, you attain the Way. Upon being awakened, you necessarily let the Way come through itself. The Self gives the Self for the sake of giving the Self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | Dogen says, let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings. In spiritual things as well as material things. When the Way is surrendered to the Way, you attain the Way. Upon being awakened, you necessarily let the Way come through itself. The Self gives the Self for the sake of giving the Self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctx+vadlo` | Dogen says, let us offer flowers of the distant mountains to the tathagata, or share the treasures with all sentient beings, in spiritual things as well as material things. When the Way is surrendered to the Way, you attain the Way. Upon being awakened, you necessarily let the Way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctxlong` | Dogen says, let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings, in spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | Dogen says let us offer flowers of the distant mountains to the tathagata. Or share the treasures with all sentient beings. In spiritual things as well as material things. When the way is surrendered to the way, you attain the way. Upon being awakened, you necessarily let the way come through itself. The self gives the self for the sake of giving the self. The other gives the other for the sake of giving |
 
 **gassho** — `35549_s00390` at 3:01 · Bonnie Myotai Treace · 1990s · easy audio
 
@@ -444,6 +570,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | experience. Have you experienced that? Have you experienced acting on the world? Gassho not. Anybody? Ever entered a situation, a moment, a relationship? |
 | `whisper-turbo` | experience have you experienced that have you experienced acting on the world gacho not anybody Ever entered a situation, a moment, a relationship? |
 | `whisper-turbo+ctx` | experience. Have you experienced that? Have you experienced acting on the world, gassho, not? Anybody? Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo+ctx+nsoff` | experience. Have you experienced that? Have you experienced acting on the world, gassho, not? Anybody? Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo+ctx+seq` | Have you experienced that? Have you experienced acting on the world? Gassho not. Anybody? Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo+ctx+seq+novad` | experience. Have you experienced that? Have you experienced acting on the world, gassho not? Anybody? Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo+ctx+seq+vadlo` | experience. Have you experienced that? Have you experienced acting on the world, gassho not? Anybody? Ever entered a situation, a moment, a relationship. |
+| `whisper-turbo+ctx+seq+vadlo+echo` | experience. Have you experienced that? Have you experienced acting on the world, gassho not? Anybody? Ever entered a situation, a moment, a relationship. |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | experience. Have you experienced that? Have you experienced acting on the world, gassho not? Anybody? Ever entered a situation, a moment, a relationship. |
+| `whisper-turbo+ctx+vadlo` | experience. Have you experienced that? Have you experienced acting on the world, gassho, not? Anybody? Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo+ctxlong` | experience. Have you experienced that? Have you experienced acting on the world, gassho, not? Anybody? Ever entered a situation, a moment, a relationship? |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | experience. Have you experienced that? Have you experienced acting on the world? Gassho, not. Anybody? Ever entered a situation, a moment, a relationship? |
 
 **sangha** — `34736_s02010` at 1:44 · Ron Hogen Green · 2020s · hard audio
 
@@ -463,6 +598,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | Buddha. I take refuge in the dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
 | `whisper-turbo` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
 | `whisper-turbo+ctx` | Buddha. I take refuge in the Dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx+nsoff` | Buddha. I take refuge in the Dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx+seq` | Buddha. I take refuge in the dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx+seq+novad` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx+seq+vadlo` | Buddha. I take refuge in the dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx+seq+vadlo+echo` | Buddha. I take refuge in the dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | Buddha. I take refuge in the dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctx+vadlo` | Buddha. I take refuge in the Dharma. I take refuge in the Sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctxlong` | Buddha. I take refuge in the Dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | Buddha. I take refuge in the dharma. I take refuge in the sangha. I take refuge in the Buddha, the incomparably honored one. |
 
 **ango** — `34775_s01976` at 3:04 · Jody Hojin Kimmel · 2020s · medium audio
 
@@ -482,6 +626,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | of all my fear and all of my We'll be talking about ango, Sozan, and zmm .org. We'll be talking about ango, Sozan, |
 | `whisper-turbo` | of all my fear and all of my... You know, like, no way. And so, and I keep coming, too. I walk in the door for session. I feel like I'm getting an infusion, like I need an infusion. And so, and every session, you know, I'll be sitting, and I don't |
 | `whisper-turbo+ctx` | of all my fear and all of my... You know, like, no way. And so, and I keep coming, too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And so, and every Sashen, you know, I'll be sitting and I don't |
+| `whisper-turbo+ctx+nsoff` | of all my fear and all of my... You know, like, no way. And so, and I keep coming, too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And so, and every Sashen, you know, I'll be sitting and I don't |
+| `whisper-turbo+ctx+seq` | of all my fear and all of my, you know, like, no way. And so, and I keep coming to, I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And so, and every Sashen, you know, I'll be sitting and I don't |
+| `whisper-turbo+ctx+seq+novad` | of all my fear and all of my, you know, like, no way. And so, and I keep coming to, I walk in the door for Sashen, I feel like I'm getting an infusion, like I I need an infusion. |
+| `whisper-turbo+ctx+seq+vadlo` | of all my fear and all of my, you know, like, no way. And I keep coming, too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And every Sashen, I'll be sitting, and I don't sit well, it's not |
+| `whisper-turbo+ctx+seq+vadlo+echo` | of all my fear and all of my, you know, like, no way. And I keep coming, too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And every Sashen, I'll be sitting, and I don't sit well, it's not |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | of all my fear and all of my, you know, like, no way. And I keep coming, too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And every Sashen, I'll be sitting, and I don't sit well, it's not |
+| `whisper-turbo+ctx+vadlo` | of all my fear and all of my, you know, like no way. And I keep coming, too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And every Sashen, I'll be sitting, and I don't sit well. It's not |
+| `whisper-turbo+ctxlong` | of all my fear and all of my... You know, like, no way. And so, and I keep coming too. I walk in the door for Sashen, I feel like I'm getting an infusion, like I need an infusion. And so, and every Sashen, you know, I'll be sitting and I don't |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | of all my fear and all of my, you know, like no way. And I keep coming, too. I walk in the door for Sashen. I feel like I'm getting an infusion, like I need an infusion. And every Sashen, I'll be sitting, and I don't sit well. It's not |
 
 **karma** — `33782_s02428` at 5:54 · Ron Hogen Green · 2010s · easy audio
 
@@ -501,6 +654,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | to. And that's our responsibility. And there's a karma from that. Karma came out of all of those things. |
 | `whisper-turbo` | to. And that's our responsibility. And there's a karma for that. Karma came out of all of those things. |
 | `whisper-turbo+ctx` | to. And that's our responsibility. And there's a karma for that. Karma came out of all of those things. |
+| `whisper-turbo+ctx+nsoff` | to. And that's our responsibility. And there's a karma for that. Karma came out of all of those things. |
+| `whisper-turbo+ctx+seq` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `whisper-turbo+ctx+seq+novad` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `whisper-turbo+ctx+seq+vadlo` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `whisper-turbo+ctx+seq+vadlo+echo` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `whisper-turbo+ctx+vadlo` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
+| `whisper-turbo+ctxlong` | to. And that's our responsibility. And there's a karma for that. Karma came out of all of those things. |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | to. And that's our responsibility. And there's a karma for that. And a karma came out of all of those things. |
 
 **Konrad Ryushin Marchaj** — `29973_s00810` at 4:32 · Konrad Ryushin Marchaj · 2010s · medium audio
 
@@ -520,6 +682,15 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
 | `whisper-turbo` | through and expose the fallacy of all the laws of nature. As you can sense, I was mentioning yesterday, every koan, in a sense, is |
 | `whisper-turbo+ctx` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx+nsoff` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx+seq` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx+seq+novad` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx+seq+vadlo` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx+seq+vadlo+echo` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctx+vadlo` | through and expose. The fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctxlong` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | through and expose the fallacy of all the laws of nature. As Ryushin Sensei was mentioning yesterday, every koan, in a sense, is |
 
 **Bodhidharma** — `31369_b00637` at 2:00 · John Daido Loori · 1980s · easy audio
 
@@ -539,27 +710,45 @@ Snippets around a glossary term, aligned to `whisper-large-v3+ctx`. Each starts 
 | `whisper-large-v3+ctx` | it possible to listen to the Bodhidharma? The master replied, The Bodhidharma cannot be attained by following others. That is, one has to |
 | `whisper-turbo` | it possible to listen to the Buddha Dharma? The master replied, the Buddha Dharma cannot be attained by following others. That is, one has to |
 | `whisper-turbo+ctx` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx+nsoff` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx+seq` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx+seq+novad` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx+seq+vadlo` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx+seq+vadlo+echo` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctx+vadlo` | it possible to listen to the Buddhadharma? The master replied, the Buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctxlong` | it possible to listen to the buddhadharma? The master replied, the buddhadharma cannot be attained by following others. That is, one has to |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | it possible to listen to the buddhadharma? The master replied, the buddhadharma cannot be attained by following others. That is, one has to |
 
 ## Agreement between systems
 
 Word error rate of each row's output measured against each column's output, on speech clips. Systems that agree closely are making the same choices, not necessarily the right ones.
 
-| | `legacy-whisper-cli` | `parakeet-ft-v1+vad90` | `parakeet-v3` | `parakeet-v3+boost0.3f` | `parakeet-v3+boost0.5` | `parakeet-v3+boost1` | `qwen3-asr-1.7b` | `qwen3-asr-1.7b+ctx` | `qwen3-asr-1.7b+vad` | `qwen3-asr-1.7b+vad+terms` | `whisper-large-v3` | `whisper-large-v3+ctx` | `whisper-turbo` | `whisper-turbo+ctx` |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `legacy-whisper-cli` | · | 6% | 9% | 9% | 8% | 8% | 9% | 9% | 9% | 10% | 7% | 15% | 7% | 8% |
-| `parakeet-ft-v1+vad90` | 7% | · | 5% | 5% | 5% | 5% | 6% | 7% | 6% | 7% | 6% | 13% | 6% | 7% |
-| `parakeet-v3` | 8% | 4% | · | 1% | 1% | 1% | 8% | 9% | 8% | 9% | 7% | 14% | 7% | 8% |
-| `parakeet-v3+boost0.3f` | 8% | 4% | 1% | · | 1% | 1% | 8% | 9% | 8% | 9% | 7% | 14% | 7% | 8% |
-| `parakeet-v3+boost0.5` | 8% | 4% | 1% | 1% | · | 1% | 8% | 9% | 7% | 9% | 7% | 14% | 7% | 8% |
-| `parakeet-v3+boost1` | 8% | 4% | 1% | 1% | 1% | · | 8% | 8% | 7% | 9% | 7% | 14% | 7% | 8% |
-| `qwen3-asr-1.7b` | 8% | 6% | 8% | 8% | 8% | 8% | · | 3% | 4% | 6% | 7% | 15% | 8% | 9% |
-| `qwen3-asr-1.7b+ctx` | 9% | 7% | 9% | 9% | 9% | 9% | 3% | · | 5% | 6% | 8% | 15% | 8% | 9% |
-| `qwen3-asr-1.7b+vad` | 8% | 6% | 8% | 8% | 7% | 7% | 4% | 5% | · | 2% | 7% | 14% | 7% | 8% |
-| `qwen3-asr-1.7b+vad+terms` | 10% | 7% | 9% | 9% | 9% | 9% | 6% | 6% | 2% | · | 9% | 15% | 9% | 9% |
-| `whisper-large-v3` | 8% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | · | 9% | 2% | 3% |
-| `whisper-large-v3+ctx` | 13% | 12% | 13% | 13% | 13% | 13% | 13% | 14% | 13% | 14% | 8% | · | 9% | 8% |
-| `whisper-turbo` | 7% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | 2% | 9% | · | 2% |
-| `whisper-turbo+ctx` | 8% | 7% | 8% | 8% | 8% | 8% | 8% | 9% | 8% | 9% | 3% | 9% | 2% | · |
+| | `legacy-whisper-cli` | `parakeet-ft-v1+vad90` | `parakeet-v3` | `parakeet-v3+boost0.3f` | `parakeet-v3+boost0.5` | `parakeet-v3+boost1` | `qwen3-asr-1.7b` | `qwen3-asr-1.7b+ctx` | `qwen3-asr-1.7b+vad` | `qwen3-asr-1.7b+vad+terms` | `whisper-large-v3` | `whisper-large-v3+ctx` | `whisper-turbo` | `whisper-turbo+ctx` | `whisper-turbo+ctx+nsoff` | `whisper-turbo+ctx+seq` | `whisper-turbo+ctx+seq+novad` | `whisper-turbo+ctx+seq+vadlo` | `whisper-turbo+ctx+seq+vadlo+echo` | `whisper-turbo+ctx+seq+vadlo+echo+hst` | `whisper-turbo+ctx+vadlo` | `whisper-turbo+ctxlong` | `whisper-turbo+ctxlong+seq+vadlo+echo` |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `legacy-whisper-cli` | · | 6% | 9% | 9% | 8% | 8% | 9% | 9% | 9% | 10% | 7% | 15% | 7% | 8% | 8% | 8% | 7% | 7% | 7% | 7% | 8% | 8% | 7% |
+| `parakeet-ft-v1+vad90` | 7% | · | 5% | 5% | 5% | 5% | 6% | 7% | 6% | 7% | 6% | 13% | 6% | 7% | 7% | 7% | 7% | 6% | 6% | 6% | 7% | 7% | 6% |
+| `parakeet-v3` | 8% | 4% | · | 1% | 1% | 1% | 8% | 9% | 8% | 9% | 7% | 14% | 7% | 8% | 8% | 8% | 8% | 7% | 7% | 7% | 8% | 8% | 7% |
+| `parakeet-v3+boost0.3f` | 8% | 4% | 1% | · | 1% | 1% | 8% | 9% | 8% | 9% | 7% | 14% | 7% | 8% | 8% | 8% | 8% | 7% | 7% | 7% | 8% | 8% | 7% |
+| `parakeet-v3+boost0.5` | 8% | 4% | 1% | 1% | · | 1% | 8% | 9% | 7% | 9% | 7% | 14% | 7% | 8% | 8% | 7% | 8% | 7% | 7% | 7% | 7% | 7% | 7% |
+| `parakeet-v3+boost1` | 8% | 4% | 1% | 1% | 1% | · | 8% | 8% | 7% | 9% | 7% | 14% | 7% | 8% | 8% | 7% | 8% | 7% | 7% | 7% | 8% | 8% | 7% |
+| `qwen3-asr-1.7b` | 8% | 6% | 8% | 8% | 8% | 8% | · | 3% | 4% | 6% | 7% | 15% | 8% | 9% | 9% | 8% | 8% | 8% | 8% | 8% | 8% | 8% | 7% |
+| `qwen3-asr-1.7b+ctx` | 9% | 7% | 9% | 9% | 9% | 9% | 3% | · | 5% | 6% | 8% | 15% | 8% | 9% | 9% | 9% | 9% | 8% | 8% | 8% | 9% | 9% | 8% |
+| `qwen3-asr-1.7b+vad` | 8% | 6% | 8% | 8% | 7% | 7% | 4% | 5% | · | 2% | 7% | 14% | 7% | 8% | 8% | 7% | 8% | 7% | 7% | 7% | 7% | 8% | 7% |
+| `qwen3-asr-1.7b+vad+terms` | 10% | 7% | 9% | 9% | 9% | 9% | 6% | 6% | 2% | · | 9% | 15% | 9% | 9% | 9% | 9% | 10% | 8% | 8% | 8% | 9% | 9% | 8% |
+| `whisper-large-v3` | 8% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | · | 9% | 2% | 3% | 3% | 4% | 6% | 4% | 4% | 4% | 4% | 3% | 4% |
+| `whisper-large-v3+ctx` | 13% | 12% | 13% | 13% | 13% | 13% | 13% | 14% | 13% | 14% | 8% | · | 9% | 8% | 8% | 10% | 12% | 10% | 10% | 10% | 10% | 8% | 10% |
+| `whisper-turbo` | 7% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | 2% | 9% | · | 2% | 2% | 3% | 6% | 4% | 4% | 4% | 4% | 2% | 4% |
+| `whisper-turbo+ctx` | 8% | 7% | 8% | 8% | 8% | 8% | 8% | 9% | 8% | 9% | 3% | 9% | 2% | · | 0% | 3% | 6% | 4% | 4% | 4% | 3% | 1% | 4% |
+| `whisper-turbo+ctx+nsoff` | 8% | 7% | 8% | 8% | 8% | 8% | 8% | 9% | 8% | 9% | 3% | 9% | 2% | 0% | · | 3% | 6% | 4% | 4% | 4% | 3% | 1% | 4% |
+| `whisper-turbo+ctx+seq` | 7% | 6% | 7% | 8% | 7% | 7% | 8% | 8% | 7% | 9% | 4% | 10% | 3% | 3% | 3% | · | 5% | 3% | 3% | 3% | 3% | 3% | 3% |
+| `whisper-turbo+ctx+seq+novad` | 6% | 6% | 8% | 8% | 8% | 8% | 8% | 9% | 8% | 10% | 5% | 13% | 6% | 6% | 6% | 5% | · | 4% | 4% | 4% | 5% | 6% | 5% |
+| `whisper-turbo+ctx+seq+vadlo` | 7% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | 4% | 11% | 4% | 4% | 4% | 3% | 4% | · | 0% | 0% | 3% | 4% | 2% |
+| `whisper-turbo+ctx+seq+vadlo+echo` | 7% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | 4% | 11% | 4% | 4% | 4% | 3% | 4% | 0% | · | 0% | 3% | 4% | 2% |
+| `whisper-turbo+ctx+seq+vadlo+echo+hst` | 7% | 6% | 7% | 7% | 7% | 7% | 8% | 8% | 7% | 8% | 4% | 11% | 4% | 4% | 4% | 3% | 4% | 0% | 0% | · | 3% | 4% | 2% |
+| `whisper-turbo+ctx+vadlo` | 7% | 6% | 8% | 8% | 7% | 7% | 8% | 8% | 7% | 8% | 4% | 10% | 4% | 3% | 3% | 3% | 5% | 3% | 3% | 3% | · | 3% | 3% |
+| `whisper-turbo+ctxlong` | 8% | 6% | 8% | 8% | 7% | 7% | 8% | 9% | 7% | 9% | 3% | 9% | 2% | 1% | 1% | 3% | 6% | 4% | 4% | 4% | 3% | · | 4% |
+| `whisper-turbo+ctxlong+seq+vadlo+echo` | 6% | 6% | 7% | 7% | 7% | 7% | 7% | 8% | 7% | 8% | 4% | 11% | 4% | 4% | 4% | 3% | 4% | 2% | 2% | 2% | 3% | 4% | · |
 
 ## Clips with repetition loops
 
@@ -571,6 +760,12 @@ Word error rate of each row's output measured against each column's output, on s
 - `parakeet-v3+boost1`: `36192_s02610`
 - `qwen3-asr-1.7b+ctx`: `30643_s01710`
 - `whisper-large-v3`: `36192_s02610`
+- `whisper-turbo+ctx+seq`: `36192_s02610`, `35549_s00390`
+- `whisper-turbo+ctx+seq+novad`: `31043_s04042`, `36192_s02610`
+- `whisper-turbo+ctx+seq+vadlo`: `30643_s01710`, `36192_s02610`
+- `whisper-turbo+ctx+seq+vadlo+echo`: `30643_s01710`, `36192_s02610`
+- `whisper-turbo+ctx+seq+vadlo+echo+hst`: `36192_s02610`
+- `whisper-turbo+ctxlong+seq+vadlo+echo`: `36192_s02610`
 
 ## Not run here
 

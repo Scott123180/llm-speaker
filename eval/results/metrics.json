@@ -1083,6 +1083,783 @@
     "punct_per_100w": 16.64185015048313,
     "has_word_timestamps": true
    }
+  },
+  "whisper-turbo+ctx+nsoff": {
+   "run": {
+    "system": "whisper-turbo+ctx+nsoff",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": null,
+     "no_speech_threshold": null,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 8,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:23:29",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 136.42489361763,
+    "load_sec": 1.4,
+    "rtfx": 153.2,
+    "gpu_peak_mb": 3324,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 22:25:54"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 14,
+    "phrases": [
+     [
+      "Thank you.",
+      4
+     ],
+     [
+      "Amen.",
+      1
+     ],
+     [
+      "Shobogenzo.",
+      1
+     ],
+     [
+      "Sentient beings are...",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 105.539206207415,
+    "gloss_valid": 423,
+    "gloss_misheard": 17,
+    "gloss_misheard_share": 0.038636363636363635,
+    "top_misheard": [
+     "Shapa",
+     "Setsho",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "seshin",
+     "Zenda",
+     "Sazen"
+    ],
+    "loops": [],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.64185015048313,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctx+seq": {
+   "run": {
+    "system": "whisper-turbo+ctx+seq",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": null,
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 0,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:25:55",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 239.3822100162506,
+    "load_sec": 1.4,
+    "rtfx": 87.3,
+    "gpu_peak_mb": 2394,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 22:30:03"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 26,
+    "phrases": [
+     [
+      "Thank you.",
+      2
+     ],
+     [
+      "To Be Enlightened by the World",
+      1
+     ],
+     [
+      "It's a dharma talk.",
+      1
+     ],
+     [
+      "Amen.",
+      1
+     ],
+     [
+      "We'll be talking about Shobogenzo.",
+      1
+     ],
+     [
+      "Sentient beings of...",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 107.01371246236417,
+    "gloss_valid": 445,
+    "gloss_misheard": 18,
+    "gloss_misheard_share": 0.038876889848812095,
+    "top_misheard": [
+     "Shapa",
+     "Setsho",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "Sashin",
+     "Zenda",
+     "Sazen"
+    ],
+    "loops": [
+     "36192_s02610",
+     "35549_s00390"
+    ],
+    "echo_clips": [
+     "30643_s01710"
+    ],
+    "echo_min": 0.43983333333333335,
+    "punct_per_100w": 16.434418546522526,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctx+seq+novad": {
+   "run": {
+    "system": "whisper-turbo+ctx+seq+novad",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": false,
+     "vad_parameters": null,
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 0,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:34:24",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 308.01096749305725,
+    "load_sec": 1.4,
+    "rtfx": 67.8,
+    "gpu_peak_mb": 2426,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 22:39:41"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 72,
+    "rate": 0.9473684210526315,
+    "words_total": 579,
+    "phrases": [
+     [
+      "Thank you.",
+      17
+     ],
+     [
+      "This is a dharma talk.",
+      3
+     ],
+     [
+      ". . . Thank you.",
+      3
+     ],
+     [
+      "Thank you very much.",
+      2
+     ],
+     [
+      "We'll be right back.",
+      2
+     ],
+     [
+      "Avalokiteshvara.",
+      2
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 109.48459709367351,
+    "gloss_valid": 447,
+    "gloss_misheard": 15,
+    "gloss_misheard_share": 0.032467532467532464,
+    "top_misheard": [
+     "Shapa",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Setsho",
+     "Yastani",
+     "Sashin",
+     "Sashen",
+     "Zenda"
+    ],
+    "loops": [
+     "31043_s04042",
+     "36192_s02610"
+    ],
+    "echo_clips": [
+     "30643_s01710",
+     "31039_b04388"
+    ],
+    "echo_min": 1.0103333333333335,
+    "punct_per_100w": 16.500229042601923,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctx+seq+vadlo": {
+   "run": {
+    "system": "whisper-turbo+ctx+seq+vadlo",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": {
+      "threshold": 0.35,
+      "speech_pad_ms": 800
+     },
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 0,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:30:04",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 250.56742143630981,
+    "load_sec": 1.4,
+    "rtfx": 83.4,
+    "gpu_peak_mb": 2490,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 22:34:24"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 10,
+    "rate": 0.13157894736842105,
+    "words_total": 35,
+    "phrases": [
+     [
+      "Amen.",
+      2
+     ],
+     [
+      "Thank you.",
+      2
+     ],
+     [
+      "Shobogenzo.",
+      2
+     ],
+     [
+      "2019 Fall Ango Intensive, Part 2 \u2013 Versace Speaking ofaption",
+      1
+     ],
+     [
+      "Avalokiteshvara.com",
+      1
+     ],
+     [
+      "We'll be talking about Shobogenzo.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 107.6556743692808,
+    "gloss_valid": 433,
+    "gloss_misheard": 17,
+    "gloss_misheard_share": 0.03777777777777778,
+    "top_misheard": [
+     "Shapa",
+     "Setsho",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "seshin",
+     "Zenda",
+     "Sazen"
+    ],
+    "loops": [
+     "30643_s01710",
+     "36192_s02610"
+    ],
+    "echo_clips": [
+     "30643_s01710",
+     "30660_b00309"
+    ],
+    "echo_min": 0.24633333333333332,
+    "punct_per_100w": 16.36437045779241,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctx+seq+vadlo+echo": {
+   "run": {
+    "system": "whisper-turbo+ctx+seq+vadlo+echo",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": {
+      "threshold": 0.35,
+      "speech_pad_ms": 800
+     },
+     "drop_prompt_echo": true,
+     "hallucination_silence_threshold": null,
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 0,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:47:14",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 249.39429831504822,
+    "load_sec": 1.6,
+    "echo_dropped": 3,
+    "rtfx": 83.8,
+    "gpu_peak_mb": 2394,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 22:51:32"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 9,
+    "rate": 0.11842105263157894,
+    "words_total": 18,
+    "phrases": [
+     [
+      "Amen.",
+      2
+     ],
+     [
+      "Thank you.",
+      2
+     ],
+     [
+      "Shobogenzo.",
+      2
+     ],
+     [
+      "Music by T Union",
+      1
+     ],
+     [
+      "Avalokiteshvara.com",
+      1
+     ],
+     [
+      "Sentient beings are alive.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 107.60886464690147,
+    "gloss_valid": 431,
+    "gloss_misheard": 17,
+    "gloss_misheard_share": 0.03794642857142857,
+    "top_misheard": [
+     "Shapa",
+     "Setsho",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "seshin",
+     "Zenda",
+     "Sazen"
+    ],
+    "loops": [
+     "30643_s01710",
+     "36192_s02610"
+    ],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.3652746706438,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctx+seq+vadlo+echo+hst": {
+   "run": {
+    "system": "whisper-turbo+ctx+seq+vadlo+echo+hst",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": {
+      "threshold": 0.35,
+      "speech_pad_ms": 800
+     },
+     "drop_prompt_echo": true,
+     "hallucination_silence_threshold": 2.0,
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 0,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:51:33",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 259.4830205440521,
+    "load_sec": 1.5,
+    "echo_dropped": 3,
+    "rtfx": 80.5,
+    "gpu_peak_mb": 2426,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 22:56:01"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 14,
+    "phrases": [
+     [
+      "Thank you.",
+      3
+     ],
+     [
+      "Avalokiteshvara.com",
+      1
+     ],
+     [
+      "Amen.",
+      1
+     ],
+     [
+      "Sentient beings are alive.",
+      1
+     ],
+     [
+      "Shobogenzo.",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 107.63561305968966,
+    "gloss_valid": 427,
+    "gloss_misheard": 17,
+    "gloss_misheard_share": 0.038288288288288286,
+    "top_misheard": [
+     "Shapa",
+     "Setsho",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "seshin",
+     "Zenda",
+     "Sazen"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.36431411530815,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctx+vadlo": {
+   "run": {
+    "system": "whisper-turbo+ctx+vadlo",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": {
+      "threshold": 0.35,
+      "speech_pad_ms": 800
+     },
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 8,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:20:36",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 162.96192145347595,
+    "load_sec": 1.9,
+    "rtfx": 128.2,
+    "gpu_peak_mb": 3322,
+    "ram_peak_mb": 1962,
+    "finished": "2026-11-14 22:23:28"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 10,
+    "rate": 0.13157894736842105,
+    "words_total": 26,
+    "phrases": [
+     [
+      "Thank you.",
+      4
+     ],
+     [
+      "This is a dharma talk by Geoffrey Shugen Arnold.",
+      1
+     ],
+     [
+      "Avalokiteshva",
+      1
+     ],
+     [
+      "Amen.",
+      1
+     ],
+     [
+      "Aaaaaaaaaa.",
+      1
+     ],
+     [
+      "Just...",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 106.38512476184162,
+    "gloss_valid": 422,
+    "gloss_misheard": 19,
+    "gloss_misheard_share": 0.04308390022675737,
+    "top_misheard": [
+     "Shapa",
+     "Setsho",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "seshin",
+     "Dogon's",
+     "Zenda",
+     "Sazen"
+    ],
+    "loops": [],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.619523540134516,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctxlong": {
+   "run": {
+    "system": "whisper-turbo+ctxlong",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": null,
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 8,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:39:42",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 138.70609188079834,
+    "load_sec": 1.4,
+    "rtfx": 150.6,
+    "gpu_peak_mb": 3324,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 22:42:09"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 7,
+    "rate": 0.09210526315789473,
+    "words_total": 13,
+    "phrases": [
+     [
+      "Thank you.",
+      4
+     ],
+     [
+      "Amen.",
+      1
+     ],
+     [
+      "Yeah.",
+      1
+     ],
+     [
+      "Sentient beings are",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 105.91368398644971,
+    "gloss_valid": 432,
+    "gloss_misheard": 16,
+    "gloss_misheard_share": 0.03571428571428571,
+    "top_misheard": [
+     "Shapa",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "Setsho",
+     "Yastani",
+     "seshin",
+     "Zenda"
+    ],
+    "loops": [],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.79767654765287,
+    "has_word_timestamps": true
+   }
+  },
+  "whisper-turbo+ctxlong+seq+vadlo+echo": {
+   "run": {
+    "system": "whisper-turbo+ctxlong+seq+vadlo+echo",
+    "model": "faster-whisper large-v3-turbo",
+    "params": {
+     "language": "en",
+     "vad_filter": true,
+     "vad_parameters": {
+      "threshold": 0.35,
+      "speech_pad_ms": 800
+     },
+     "drop_prompt_echo": true,
+     "hallucination_silence_threshold": null,
+     "no_speech_threshold": 0.6,
+     "condition_on_previous_text": false,
+     "word_timestamps": true,
+     "beam_size": 5,
+     "batch_size": 0,
+     "compute_type": "float16",
+     "context": "hotwords=talk prompt"
+    },
+    "device": "cuda",
+    "started": "2026-11-14 22:56:02",
+    "clips": 128,
+    "audio_sec": 20895.99556249997,
+    "wall_sec": 253.97759366035461,
+    "load_sec": 1.4,
+    "echo_dropped": 0,
+    "rtfx": 82.3,
+    "gpu_peak_mb": 2394,
+    "ram_peak_mb": 1972,
+    "finished": "2026-11-14 23:00:25"
+   },
+   "nonspeech": {
+    "clips": 76,
+    "clips_with_output": 10,
+    "rate": 0.13157894736842105,
+    "words_total": 25,
+    "phrases": [
+     [
+      "Amen.",
+      2
+     ],
+     [
+      "Thank you.",
+      2
+     ],
+     [
+      "Zazen.",
+      1
+     ],
+     [
+      "Doshinji, shikantaza, nirvana, nirvana, nirvana, nirvana, ni",
+      1
+     ],
+     [
+      "Aaaaaaah",
+      1
+     ],
+     [
+      "Just...",
+      1
+     ]
+    ]
+   },
+   "speech": {
+    "clips": 50,
+    "minutes": 299.0831666666666,
+    "words_per_min": 107.9599375647465,
+    "gloss_valid": 435,
+    "gloss_misheard": 22,
+    "gloss_misheard_share": 0.04814004376367615,
+    "top_misheard": [
+     "Shapa",
+     "doksan",
+     "Setsho",
+     "Yakujo",
+     "Mayakaya Shapa",
+     "Sashen",
+     "Yastani",
+     "seshin",
+     "Zenda"
+    ],
+    "loops": [
+     "36192_s02610"
+    ],
+    "echo_clips": [],
+    "echo_min": 0.0,
+    "punct_per_100w": 16.584595373037256,
+    "has_word_timestamps": true
+   }
   }
  },
  "refs": 0,
@@ -1450,6 +2227,240 @@
     "ins": 0.004984334947308459,
     "voters": 2.0
    }
+  },
+  "whisper-turbo+ctx+nsoff": {
+   "all": {
+    "wer": 0.06495826621760141,
+    "clips": 50,
+    "sub": 0.011685459071606384,
+    "del": 0.04838190071752819,
+    "ins": 0.004890906428466833,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.06747041256498175,
+    "clips": 38,
+    "sub": 0.010802639825977952,
+    "del": 0.05180105445562806,
+    "ins": 0.0048667182833757325,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.05525491313016235,
+    "clips": 12,
+    "sub": 0.015095414411848477,
+    "del": 0.035175163771005415,
+    "ins": 0.004984334947308459,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctx+seq": {
+   "all": {
+    "wer": 0.06097525259920925,
+    "clips": 50,
+    "sub": 0.014467711231512666,
+    "del": 0.03795577683408991,
+    "ins": 0.008551764533606678,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.06323046860598017,
+    "clips": 38,
+    "sub": 0.013530951590900711,
+    "del": 0.04107215278545884,
+    "ins": 0.008627364229620618,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.05226431216177727,
+    "clips": 12,
+    "sub": 0.018086015380233553,
+    "del": 0.025918541726003986,
+    "ins": 0.008259755055539733,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctx+seq+novad": {
+   "all": {
+    "wer": 0.06504612681212477,
+    "clips": 50,
+    "sub": 0.016839947283643287,
+    "del": 0.0273246448967638,
+    "ins": 0.020881534631717675,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.06872396121373005,
+    "clips": 38,
+    "sub": 0.015927441654684217,
+    "del": 0.03203922869889024,
+    "ins": 0.020757290860155587,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.05084021646254629,
+    "clips": 12,
+    "sub": 0.020364568499003134,
+    "del": 0.009114212475078326,
+    "ins": 0.021361435488464826,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctx+seq+vadlo": {
+   "all": {
+    "wer": 0.05631864108947137,
+    "clips": 50,
+    "sub": 0.014584858690877141,
+    "del": 0.032713428027529655,
+    "ins": 0.009020354371064578,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.059543560815544,
+    "clips": 38,
+    "sub": 0.013825904214135605,
+    "del": 0.03801201931939682,
+    "ins": 0.007705637282011577,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.04386214753631444,
+    "clips": 12,
+    "sub": 0.017516377100541155,
+    "del": 0.0122472230133865,
+    "ins": 0.014098547422386785,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctx+seq+vadlo+echo": {
+   "all": {
+    "wer": 0.05617220676526578,
+    "clips": 50,
+    "sub": 0.014409137501830429,
+    "del": 0.03288914921657637,
+    "ins": 0.008873920046858984,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.05958042989344837,
+    "clips": 38,
+    "sub": 0.013604689746709435,
+    "del": 0.038233233786822994,
+    "ins": 0.007742506359915939,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.04300769011677585,
+    "clips": 12,
+    "sub": 0.017516377100541155,
+    "del": 0.0122472230133865,
+    "ins": 0.013244090002848192,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctx+seq+vadlo+echo+hst": {
+   "all": {
+    "wer": 0.05593791184653683,
+    "clips": 50,
+    "sub": 0.015112022258017279,
+    "del": 0.032274125054912874,
+    "ins": 0.008551764533606678,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.059543560815544,
+    "clips": 38,
+    "sub": 0.014563285772222836,
+    "del": 0.0374589831508314,
+    "ins": 0.007521291892489769,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.042010823127314155,
+    "clips": 12,
+    "sub": 0.01723155796069496,
+    "del": 0.0122472230133865,
+    "ins": 0.012532042153232698,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctx+vadlo": {
+   "all": {
+    "wer": 0.0612095475179382,
+    "clips": 50,
+    "sub": 0.013325523502709035,
+    "del": 0.041909503587640944,
+    "ins": 0.005974520427588227,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.06488957711167644,
+    "clips": 38,
+    "sub": 0.012240533864248055,
+    "del": 0.04719241971758286,
+    "ins": 0.005456623529845519,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.046995158074622616,
+    "clips": 12,
+    "sub": 0.017516377100541155,
+    "del": 0.021503845058387924,
+    "ins": 0.007974935915693534,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctxlong": {
+   "all": {
+    "wer": 0.06202957973348953,
+    "clips": 50,
+    "sub": 0.011978327720017572,
+    "del": 0.044926050666276175,
+    "ins": 0.005125201347195783,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.06378350477454559,
+    "clips": 38,
+    "sub": 0.011171330605021568,
+    "del": 0.04741363418500903,
+    "ins": 0.005198539984514987,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.05525491313016235,
+    "clips": 12,
+    "sub": 0.015095414411848477,
+    "del": 0.03531757334092851,
+    "ins": 0.00484192537738536,
+    "voters": 2.0
+   }
+  },
+  "whisper-turbo+ctxlong+seq+vadlo+echo": {
+   "all": {
+    "wer": 0.05438570800995753,
+    "clips": 50,
+    "sub": 0.015170595987699516,
+    "del": 0.03016547078635232,
+    "ins": 0.009049641235905697,
+    "voters": 2.0
+   },
+   "stratified": {
+    "wer": 0.056409689193673264,
+    "clips": 38,
+    "sub": 0.014231464071083583,
+    "del": 0.03454632599638683,
+    "ins": 0.007631899126202854,
+    "voters": 2.0
+   },
+   "book": {
+    "wer": 0.046567929364853315,
+    "clips": 12,
+    "sub": 0.018798063229849046,
+    "del": 0.013244090002848192,
+    "ins": 0.01452577613215608,
+    "voters": 2.0
+   }
   }
  },
  "agreement": {
@@ -1466,6 +2477,15 @@
   "legacy-whisper-cli vs whisper-large-v3+ctx": 0.150312479865988,
   "legacy-whisper-cli vs whisper-turbo": 0.07312115052034346,
   "legacy-whisper-cli vs whisper-turbo+ctx": 0.08404776484996938,
+  "legacy-whisper-cli vs whisper-turbo+ctx+nsoff": 0.08404776484996938,
+  "legacy-whisper-cli vs whisper-turbo+ctx+seq": 0.07621978817778582,
+  "legacy-whisper-cli vs whisper-turbo+ctx+seq+novad": 0.06523212969786293,
+  "legacy-whisper-cli vs whisper-turbo+ctx+seq+vadlo": 0.06947444204463643,
+  "legacy-whisper-cli vs whisper-turbo+ctx+seq+vadlo+echo": 0.0694973743435859,
+  "legacy-whisper-cli vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.06923653817309135,
+  "legacy-whisper-cli vs whisper-turbo+ctx+vadlo": 0.0764931040767969,
+  "legacy-whisper-cli vs whisper-turbo+ctxlong": 0.08040017080461173,
+  "legacy-whisper-cli vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.06692795595978937,
   "parakeet-ft-v1+vad90 vs legacy-whisper-cli": 0.0707342475264711,
   "parakeet-ft-v1+vad90 vs parakeet-v3": 0.046688414688893544,
   "parakeet-ft-v1+vad90 vs parakeet-v3+boost0.3f": 0.047820098215355135,
@@ -1479,6 +2499,15 @@
   "parakeet-ft-v1+vad90 vs whisper-large-v3+ctx": 0.1317891888409252,
   "parakeet-ft-v1+vad90 vs whisper-turbo": 0.05983191237598228,
   "parakeet-ft-v1+vad90 vs whisper-turbo+ctx": 0.06996325780771585,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx+nsoff": 0.06996325780771585,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx+seq": 0.0652967623185782,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx+seq+novad": 0.07047899778924097,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx+seq+vadlo": 0.0603551715862731,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx+seq+vadlo+echo": 0.0600450112528132,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.06068696565171741,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctx+vadlo": 0.06552645968770886,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctxlong": 0.06661379857256146,
+  "parakeet-ft-v1+vad90 vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.059298707515557686,
   "parakeet-v3 vs legacy-whisper-cli": 0.08360816987791471,
   "parakeet-v3 vs parakeet-ft-v1+vad90": 0.043143930500117396,
   "parakeet-v3 vs parakeet-v3+boost0.3f": 0.010959396334890407,
@@ -1492,6 +2521,15 @@
   "parakeet-v3 vs whisper-large-v3+ctx": 0.1423555183300045,
   "parakeet-v3 vs whisper-turbo": 0.07148275129706605,
   "parakeet-v3 vs whisper-turbo+ctx": 0.08025107164727495,
+  "parakeet-v3 vs whisper-turbo+ctx+nsoff": 0.08025107164727495,
+  "parakeet-v3 vs whisper-turbo+ctx+seq": 0.07558613198153345,
+  "parakeet-v3 vs whisper-turbo+ctx+seq+novad": 0.08277081798084009,
+  "parakeet-v3 vs whisper-turbo+ctx+seq+vadlo": 0.07202423806095512,
+  "parakeet-v3 vs whisper-turbo+ctx+seq+vadlo+echo": 0.07189797449362341,
+  "parakeet-v3 vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.07163641817909104,
+  "parakeet-v3 vs whisper-turbo+ctx+vadlo": 0.07725256698462847,
+  "parakeet-v3 vs whisper-turbo+ctxlong": 0.0771670835112548,
+  "parakeet-v3 vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.06985998085208234,
   "parakeet-v3+boost0.3f vs legacy-whisper-cli": 0.08360816987791471,
   "parakeet-v3+boost0.3f vs parakeet-ft-v1+vad90": 0.044200516553181496,
   "parakeet-v3+boost0.3f vs parakeet-v3": 0.010953820369317331,
@@ -1505,6 +2543,15 @@
   "parakeet-v3+boost0.3f vs whisper-large-v3+ctx": 0.1436440950969654,
   "parakeet-v3+boost0.3f vs whisper-turbo": 0.07257501744591766,
   "parakeet-v3+boost0.3f vs whisper-turbo+ctx": 0.08110838946723821,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx+nsoff": 0.08110838946723821,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx+seq": 0.07618961407320238,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx+seq+novad": 0.08282977155490051,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx+seq+vadlo": 0.072264218862491,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx+seq+vadlo+echo": 0.07210802700675169,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.07184640767961602,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctx+vadlo": 0.07779938027826722,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctxlong": 0.07796010492283291,
+  "parakeet-v3+boost0.3f vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.07027884155098132,
   "parakeet-v3+boost0.5 vs legacy-whisper-cli": 0.08201701093560146,
   "parakeet-v3+boost0.5 vs parakeet-ft-v1+vad90": 0.0433493777882132,
   "parakeet-v3+boost0.5 vs parakeet-v3": 0.011193248136952683,
@@ -1518,6 +2565,15 @@
   "parakeet-v3+boost0.5 vs whisper-large-v3+ctx": 0.14022936666451905,
   "parakeet-v3+boost0.5 vs whisper-turbo": 0.06990503352650262,
   "parakeet-v3+boost0.5 vs whisper-turbo+ctx": 0.07795468462951623,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx+nsoff": 0.07795468462951623,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx+seq": 0.07299115898735704,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx+seq+novad": 0.08053058216654385,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx+seq+vadlo": 0.06995440364770818,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx+seq+vadlo+echo": 0.06979744936234059,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.0695365231738413,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctx+vadlo": 0.07497417826113373,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctxlong": 0.07494052339413164,
+  "parakeet-v3+boost0.5 vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.06776567735758736,
   "parakeet-v3+boost1 vs legacy-whisper-cli": 0.08190129028525141,
   "parakeet-v3+boost1 vs parakeet-ft-v1+vad90": 0.042879783986851376,
   "parakeet-v3+boost1 vs parakeet-v3": 0.010953820369317331,
@@ -1531,6 +2587,15 @@
   "parakeet-v3+boost1 vs whisper-large-v3+ctx": 0.14109915598221764,
   "parakeet-v3+boost1 vs whisper-turbo": 0.06954094481021876,
   "parakeet-v3+boost1 vs whisper-turbo+ctx": 0.0782608695652174,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx+nsoff": 0.0782608695652174,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx+seq": 0.07284028846443982,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx+seq+novad": 0.08035372144436256,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx+seq+vadlo": 0.06971442284617231,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx+seq+vadlo+echo": 0.06952738184546137,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.06932653367331633,
+  "parakeet-v3+boost1 vs whisper-turbo+ctx+vadlo": 0.07527796342426636,
+  "parakeet-v3+boost1 vs whisper-turbo+ctxlong": 0.07506252668822058,
+  "parakeet-v3+boost1 vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.06749640976543801,
   "qwen3-asr-1.7b vs legacy-whisper-cli": 0.08334779841462708,
   "qwen3-asr-1.7b vs parakeet-ft-v1+vad90": 0.05875792439539798,
   "qwen3-asr-1.7b vs parakeet-v3": 0.07978930356448088,
@@ -1544,6 +2609,15 @@
   "qwen3-asr-1.7b vs whisper-large-v3+ctx": 0.14586689001997294,
   "qwen3-asr-1.7b vs whisper-turbo": 0.07700476349403805,
   "qwen3-asr-1.7b vs whisper-turbo+ctx": 0.08530312308634415,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx+nsoff": 0.08530312308634415,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx+seq": 0.08128903774780484,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx+seq+novad": 0.0843036109064112,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx+seq+vadlo": 0.07652387808975282,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx+seq+vadlo+echo": 0.0764291072768192,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.07613619319034048,
+  "qwen3-asr-1.7b vs whisper-turbo+ctx+vadlo": 0.0799562549365089,
+  "qwen3-asr-1.7b vs whisper-turbo+ctxlong": 0.08262673092173489,
+  "qwen3-asr-1.7b vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.074168262326472,
   "qwen3-asr-1.7b+ctx vs legacy-whisper-cli": 0.08913383093212984,
   "qwen3-asr-1.7b+ctx vs parakeet-ft-v1+vad90": 0.06591922986616576,
   "qwen3-asr-1.7b+ctx vs parakeet-v3": 0.08810941848980935,
@@ -1557,6 +2631,15 @@
   "qwen3-asr-1.7b+ctx vs whisper-large-v3+ctx": 0.15211648733973326,
   "qwen3-asr-1.7b+ctx vs whisper-turbo": 0.08489335234685519,
   "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx": 0.09167176974892835,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx+nsoff": 0.09167176974892835,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx+seq": 0.08726351045532724,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx+seq+novad": 0.0892557111274871,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx+seq+vadlo": 0.08360331173506119,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx+seq+vadlo+echo": 0.08363090772693173,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.08330583470826458,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctx+vadlo": 0.08621422929704113,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctxlong": 0.08872689562618191,
+  "qwen3-asr-1.7b+ctx vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.08042125418860699,
   "qwen3-asr-1.7b+vad vs legacy-whisper-cli": 0.08366603020308974,
   "qwen3-asr-1.7b+vad vs parakeet-ft-v1+vad90": 0.0564686546137591,
   "qwen3-asr-1.7b+vad vs parakeet-v3": 0.07589860234040643,
@@ -1570,6 +2653,15 @@
   "qwen3-asr-1.7b+vad vs whisper-large-v3+ctx": 0.13749114103472715,
   "qwen3-asr-1.7b+vad vs whisper-turbo": 0.07039048514821444,
   "qwen3-asr-1.7b+vad vs whisper-turbo+ctx": 0.07832210655235762,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx+nsoff": 0.07832210655235762,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx+seq": 0.07374551160194322,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx+seq+novad": 0.08389093588798821,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx+seq+vadlo": 0.07097432205423566,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx+seq+vadlo+echo": 0.07078769692423106,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.07082645867706615,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctx+vadlo": 0.07385017315754298,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctxlong": 0.07555053986457634,
+  "qwen3-asr-1.7b+vad vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.0675861656294878,
   "qwen3-asr-1.7b+vad+terms vs legacy-whisper-cli": 0.09842041312272175,
   "qwen3-asr-1.7b+vad+terms vs parakeet-ft-v1+vad90": 0.07093801361822023,
   "qwen3-asr-1.7b+vad+terms vs parakeet-v3": 0.09098255170143357,
@@ -1583,6 +2675,15 @@
   "qwen3-asr-1.7b+vad+terms vs whisper-large-v3+ctx": 0.15253527478899556,
   "qwen3-asr-1.7b+vad+terms vs whisper-turbo": 0.08601595922206377,
   "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx": 0.09259032455603185,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx+nsoff": 0.09259032455603185,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx+seq": 0.08777647023324583,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx+seq+novad": 0.09759764185703758,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx+seq+vadlo": 0.0847732181425486,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx+seq+vadlo+echo": 0.08459114778694674,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.08465576721163942,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctx+vadlo": 0.08776353362901756,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctxlong": 0.08991642774354908,
+  "qwen3-asr-1.7b+vad+terms vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.08146840593585447,
   "whisper-large-v3 vs legacy-whisper-cli": 0.0757680958166985,
   "whisper-large-v3 vs parakeet-ft-v1+vad90": 0.059843860061047194,
   "whisper-large-v3 vs parakeet-v3": 0.07320503995450872,
@@ -1596,6 +2697,15 @@
   "whisper-large-v3 vs whisper-large-v3+ctx": 0.08594807035629147,
   "whisper-large-v3 vs whisper-turbo": 0.023453381473952487,
   "whisper-large-v3 vs whisper-turbo+ctx": 0.03205756276791182,
+  "whisper-large-v3 vs whisper-turbo+ctx+nsoff": 0.03205756276791182,
+  "whisper-large-v3 vs whisper-turbo+ctx+seq": 0.03654084065055369,
+  "whisper-large-v3 vs whisper-turbo+ctx+seq+novad": 0.06104642593957259,
+  "whisper-large-v3 vs whisper-turbo+ctx+seq+vadlo": 0.042026637868970484,
+  "whisper-large-v3 vs whisper-turbo+ctx+seq+vadlo+echo": 0.041710427606901725,
+  "whisper-large-v3 vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.04223788810559472,
+  "whisper-large-v3 vs whisper-turbo+ctx+vadlo": 0.04128440366972477,
+  "whisper-large-v3 vs whisper-turbo+ctxlong": 0.030348319404623923,
+  "whisper-large-v3 vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.04239468645284825,
   "whisper-large-v3+ctx vs legacy-whisper-cli": 0.1349881386333391,
   "whisper-large-v3+ctx vs parakeet-ft-v1+vad90": 0.12001056586053065,
   "whisper-large-v3+ctx vs parakeet-v3": 0.13225391314757728,
@@ -1609,6 +2719,15 @@
   "whisper-large-v3+ctx vs whisper-large-v3": 0.08110986035474155,
   "whisper-large-v3+ctx vs whisper-turbo": 0.08583391486392185,
   "whisper-large-v3+ctx vs whisper-turbo+ctx": 0.08475199020208206,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx+nsoff": 0.08475199020208206,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx+seq": 0.09562173742494191,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx+seq+novad": 0.11967575534266765,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx+seq+vadlo": 0.10010199184065274,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx+seq+vadlo+echo": 0.09980495123780946,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.10040497975101245,
+  "whisper-large-v3+ctx vs whisper-turbo+ctx+vadlo": 0.09778844401239443,
+  "whisper-large-v3+ctx vs whisper-turbo+ctxlong": 0.08494479350942476,
+  "whisper-large-v3+ctx vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.10067616084250838,
   "whisper-turbo vs legacy-whisper-cli": 0.06972169183590812,
   "whisper-turbo vs parakeet-ft-v1+vad90": 0.05784808640525945,
   "whisper-turbo vs parakeet-v3": 0.07051147756861102,
@@ -1622,6 +2741,15 @@
   "whisper-turbo vs whisper-large-v3": 0.023487176366789375,
   "whisper-turbo vs whisper-large-v3+ctx": 0.09113459184330906,
   "whisper-turbo vs whisper-turbo+ctx": 0.020177587262706676,
+  "whisper-turbo vs whisper-turbo+ctx+nsoff": 0.020177587262706676,
+  "whisper-turbo vs whisper-turbo+ctx+seq": 0.031652635708035365,
+  "whisper-turbo vs whisper-turbo+ctx+seq+novad": 0.0569786293294031,
+  "whisper-turbo vs whisper-turbo+ctx+seq+vadlo": 0.03782697384209263,
+  "whisper-turbo vs whisper-turbo+ctx+seq+vadlo+echo": 0.037509377344336084,
+  "whisper-turbo vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.03815809209539523,
+  "whisper-turbo vs whisper-turbo+ctx+vadlo": 0.03605929886384349,
+  "whisper-turbo vs whisper-turbo+ctxlong": 0.017476971878240714,
+  "whisper-turbo vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.03811632359980852,
   "whisper-turbo+ctx vs legacy-whisper-cli": 0.07941329630272523,
   "whisper-turbo+ctx vs parakeet-ft-v1+vad90": 0.06700516553181499,
   "whisper-turbo+ctx vs parakeet-v3": 0.07844252237153204,
@@ -1634,6 +2762,213 @@
   "whisper-turbo+ctx vs qwen3-asr-1.7b+vad+terms": 0.08875843850895215,
   "whisper-turbo+ctx vs whisper-large-v3": 0.03179287474520064,
   "whisper-turbo+ctx vs whisper-large-v3+ctx": 0.0891695122736937,
-  "whisper-turbo+ctx vs whisper-turbo": 0.01999453866925574
+  "whisper-turbo+ctx vs whisper-turbo": 0.01999453866925574,
+  "whisper-turbo+ctx vs whisper-turbo+ctx+nsoff": 0.0,
+  "whisper-turbo+ctx vs whisper-turbo+ctx+seq": 0.030626716152198183,
+  "whisper-turbo+ctx vs whisper-turbo+ctx+seq+novad": 0.058629329403095065,
+  "whisper-turbo+ctx vs whisper-turbo+ctx+seq+vadlo": 0.038426925845932325,
+  "whisper-turbo+ctx vs whisper-turbo+ctx+seq+vadlo+echo": 0.03810952738184546,
+  "whisper-turbo+ctx vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.038758062096895154,
+  "whisper-turbo+ctx vs whisper-turbo+ctx+vadlo": 0.03214047025943253,
+  "whisper-turbo+ctx vs whisper-turbo+ctxlong": 0.007442200939425364,
+  "whisper-turbo+ctx vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.03943274293920536,
+  "whisper-turbo+ctx+nsoff vs legacy-whisper-cli": 0.07941329630272523,
+  "whisper-turbo+ctx+nsoff vs parakeet-ft-v1+vad90": 0.06700516553181499,
+  "whisper-turbo+ctx+nsoff vs parakeet-v3": 0.07844252237153204,
+  "whisper-turbo+ctx+nsoff vs parakeet-v3+boost0.3f": 0.07932087675170679,
+  "whisper-turbo+ctx+nsoff vs parakeet-v3+boost0.5": 0.07615458243598947,
+  "whisper-turbo+ctx+nsoff vs parakeet-v3+boost1": 0.07641940981253924,
+  "whisper-turbo+ctx+nsoff vs qwen3-asr-1.7b": 0.08235294117647059,
+  "whisper-turbo+ctx+nsoff vs qwen3-asr-1.7b+ctx": 0.08797860774000177,
+  "whisper-turbo+ctx+nsoff vs qwen3-asr-1.7b+vad": 0.07600653691873421,
+  "whisper-turbo+ctx+nsoff vs qwen3-asr-1.7b+vad+terms": 0.08875843850895215,
+  "whisper-turbo+ctx+nsoff vs whisper-large-v3": 0.03179287474520064,
+  "whisper-turbo+ctx+nsoff vs whisper-large-v3+ctx": 0.0891695122736937,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo": 0.01999453866925574,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctx": 0.0,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctx+seq": 0.030626716152198183,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctx+seq+novad": 0.058629329403095065,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctx+seq+vadlo": 0.038426925845932325,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctx+seq+vadlo+echo": 0.03810952738184546,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.038758062096895154,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctx+vadlo": 0.03214047025943253,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctxlong": 0.007442200939425364,
+  "whisper-turbo+ctx+nsoff vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.03943274293920536,
+  "whisper-turbo+ctx+seq vs legacy-whisper-cli": 0.07307759069605971,
+  "whisper-turbo+ctx+seq vs parakeet-ft-v1+vad90": 0.06289621976989904,
+  "whisper-turbo+ctx+seq vs parakeet-v3": 0.07497081974081944,
+  "whisper-turbo+ctx+seq vs parakeet-v3+boost0.3f": 0.07560785722841058,
+  "whisper-turbo+ctx+seq vs parakeet-v3+boost0.5": 0.07235582675281167,
+  "whisper-turbo+ctx+seq vs parakeet-v3+boost1": 0.07217388704517595,
+  "whisper-turbo+ctx+seq vs qwen3-asr-1.7b": 0.07963346142477092,
+  "whisper-turbo+ctx+seq vs qwen3-asr-1.7b+ctx": 0.08498134054244659,
+  "whisper-turbo+ctx+seq vs qwen3-asr-1.7b+vad": 0.07261922448373198,
+  "whisper-turbo+ctx+seq vs qwen3-asr-1.7b+vad+terms": 0.08538303492808923,
+  "whisper-turbo+ctx+seq vs whisper-large-v3": 0.036204326264869635,
+  "whisper-turbo+ctx+seq vs whisper-large-v3+ctx": 0.10208749436247665,
+  "whisper-turbo+ctx+seq vs whisper-turbo": 0.03182742194848145,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctx": 0.031077770973668095,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctx+nsoff": 0.031077770973668095,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctx+seq+novad": 0.049756816507000735,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctx+seq+vadlo": 0.028017758579313656,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctx+seq+vadlo+echo": 0.027726931732933235,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.028498575071246438,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctx+vadlo": 0.033720153107722216,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctxlong": 0.030592325992801806,
+  "whisper-turbo+ctx+seq vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.030187888942077547,
+  "whisper-turbo+ctx+seq+novad vs legacy-whisper-cli": 0.0640224498061679,
+  "whisper-turbo+ctx+seq+novad vs parakeet-ft-v1+vad90": 0.05966776238553651,
+  "whisper-turbo+ctx+seq+novad vs parakeet-v3": 0.08403914644000839,
+  "whisper-turbo+ctx+seq+novad vs parakeet-v3+boost0.3f": 0.08414181339082524,
+  "whisper-turbo+ctx+seq+novad vs parakeet-v3+boost0.5": 0.08171811438143096,
+  "whisper-turbo+ctx+seq+novad vs parakeet-v3+boost1": 0.0815020779143122,
+  "whisper-turbo+ctx+seq+novad vs qwen3-asr-1.7b": 0.08454034880283771,
+  "whisper-turbo+ctx+seq+novad vs qwen3-asr-1.7b+ctx": 0.08897769680585349,
+  "whisper-turbo+ctx+seq+novad vs qwen3-asr-1.7b+vad": 0.0845639578071609,
+  "whisper-turbo+ctx+seq+novad vs qwen3-asr-1.7b+vad+terms": 0.0971822717933666,
+  "whisper-turbo+ctx+seq+novad vs whisper-large-v3": 0.05211597553926192,
+  "whisper-turbo+ctx+seq+novad vs whisper-large-v3+ctx": 0.1307905418465305,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo": 0.05864862404805971,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctx": 0.06090018371096142,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctx+nsoff": 0.06090018371096142,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctx+seq": 0.050933888536857666,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctx+seq+vadlo": 0.04091672666186705,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctx+seq+vadlo+echo": 0.04093023255813953,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.04085795710214489,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctx+vadlo": 0.051582720699921016,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctxlong": 0.05892759104495821,
+  "whisper-turbo+ctx+seq+novad vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.04517711823839157,
+  "whisper-turbo+ctx+seq+vadlo vs legacy-whisper-cli": 0.06700225655268183,
+  "whisper-turbo+ctx+seq+vadlo vs parakeet-ft-v1+vad90": 0.05802418408077013,
+  "whisper-turbo+ctx+seq+vadlo vs parakeet-v3": 0.07185825876155987,
+  "whisper-turbo+ctx+seq+vadlo vs parakeet-v3+boost0.3f": 0.07213438735177866,
+  "whisper-turbo+ctx+seq+vadlo vs parakeet-v3+boost0.5": 0.06975352955252452,
+  "whisper-turbo+ctx+seq+vadlo vs parakeet-v3+boost1": 0.06948306275600204,
+  "whisper-turbo+ctx+seq+vadlo vs qwen3-asr-1.7b": 0.07540644398462902,
+  "whisper-turbo+ctx+seq+vadlo vs qwen3-asr-1.7b+ctx": 0.08189591842731626,
+  "whisper-turbo+ctx+seq+vadlo vs qwen3-asr-1.7b+vad": 0.07030158965978309,
+  "whisper-turbo+ctx+seq+vadlo vs qwen3-asr-1.7b+vad+terms": 0.08294687408277077,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-large-v3": 0.04155891569564027,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-large-v3+ctx": 0.10749951678371239,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo": 0.03825965593616311,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctx": 0.03922229026331905,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctx+nsoff": 0.03922229026331905,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctx+seq": 0.02818261368093902,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctx+seq+novad": 0.040206337509211494,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctx+seq+vadlo+echo": 0.000450112528132033,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.0019499025048747563,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctx+vadlo": 0.030894951090588735,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctxlong": 0.038736045873238575,
+  "whisper-turbo+ctx+seq+vadlo vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.019117999042604118,
+  "whisper-turbo+ctx+seq+vadlo+echo vs legacy-whisper-cli": 0.06700225655268183,
+  "whisper-turbo+ctx+seq+vadlo+echo vs parakeet-ft-v1+vad90": 0.05784808640525945,
+  "whisper-turbo+ctx+seq+vadlo+echo vs parakeet-v3": 0.07170861640678777,
+  "whisper-turbo+ctx+seq+vadlo+echo vs parakeet-v3+boost0.3f": 0.07195472511678046,
+  "whisper-turbo+ctx+seq+vadlo+echo vs parakeet-v3+boost0.5": 0.06957406078009093,
+  "whisper-turbo+ctx+seq+vadlo+echo vs parakeet-v3+boost1": 0.06927377642239961,
+  "whisper-turbo+ctx+seq+vadlo+echo vs qwen3-asr-1.7b": 0.07528820573455512,
+  "whisper-turbo+ctx+seq+vadlo+echo vs qwen3-asr-1.7b+ctx": 0.08189591842731626,
+  "whisper-turbo+ctx+seq+vadlo+echo vs qwen3-asr-1.7b+vad": 0.07009359679096716,
+  "whisper-turbo+ctx+seq+vadlo+echo vs qwen3-asr-1.7b+vad+terms": 0.08274141473437041,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-large-v3": 0.04137637287413672,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-large-v3+ctx": 0.10714515817279814,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo": 0.03792590794623623,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctx": 0.038885486834047765,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctx+nsoff": 0.038885486834047765,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctx+seq": 0.027880872635104553,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctx+seq+novad": 0.040206337509211494,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctx+seq+vadlo": 0.00044996400287976963,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.00167991600419979,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctx+vadlo": 0.03056078741114284,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctxlong": 0.03840053681449399,
+  "whisper-turbo+ctx+seq+vadlo+echo vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.019117999042604118,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs legacy-whisper-cli": 0.06677081525198171,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs parakeet-ft-v1+vad90": 0.057730687954918994,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs parakeet-v3": 0.07146918863915243,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs parakeet-v3+boost0.3f": 0.07171517547011619,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs parakeet-v3+boost0.5": 0.0693347690835128,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs parakeet-v3+boost1": 0.06909438813645469,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs qwen3-asr-1.7b": 0.07502216967188885,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs qwen3-asr-1.7b+ctx": 0.08160206870206577,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs qwen3-asr-1.7b+vad": 0.07015302332491458,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs qwen3-asr-1.7b+vad+terms": 0.08282946874082771,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-large-v3": 0.04113298244546533,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-large-v3+ctx": 0.10782166097545261,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo": 0.03859340392608999,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctx": 0.03955909369259032,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctx+nsoff": 0.03955909369259032,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctx+seq": 0.028665399354274163,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctx+seq+novad": 0.04014738393515107,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctx+seq+vadlo": 0.0019498440124790016,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctx+seq+vadlo+echo": 0.0016804201050262565,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctx+vadlo": 0.031229114770034632,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctxlong": 0.039071554931983166,
+  "whisper-turbo+ctx+seq+vadlo+echo+hst vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.018938487314504548,
+  "whisper-turbo+ctx+vadlo vs legacy-whisper-cli": 0.0728461493953596,
+  "whisper-turbo+ctx+vadlo vs parakeet-ft-v1+vad90": 0.06301361822023949,
+  "whisper-turbo+ctx+vadlo vs parakeet-v3": 0.07610810163708737,
+  "whisper-turbo+ctx+vadlo vs parakeet-v3+boost0.3f": 0.0766858306383998,
+  "whisper-turbo+ctx+vadlo vs parakeet-v3+boost0.5": 0.07382148839435272,
+  "whisper-turbo+ctx+vadlo vs parakeet-v3+boost1": 0.07408736209525518,
+  "whisper-turbo+ctx+vadlo vs qwen3-asr-1.7b": 0.07780076854862548,
+  "whisper-turbo+ctx+vadlo vs qwen3-asr-1.7b+ctx": 0.08339455202609386,
+  "whisper-turbo+ctx+vadlo vs qwen3-asr-1.7b+vad": 0.07223295201307384,
+  "whisper-turbo+ctx+vadlo vs qwen3-asr-1.7b+vad+terms": 0.08479600821837394,
+  "whisper-turbo+ctx+vadlo vs whisper-large-v3": 0.04104171103471356,
+  "whisper-turbo+ctx+vadlo vs whisper-large-v3+ctx": 0.10369821532117776,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo": 0.036014442185745926,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctx": 0.0323943661971831,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctx+nsoff": 0.0323943661971831,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctx+seq": 0.0334932560876256,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctx+seq+novad": 0.05005158437730287,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctx+seq+vadlo": 0.03050755939524838,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctx+seq+vadlo+echo": 0.03018754688672168,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.030838458077096145,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctxlong": 0.0327578844628805,
+  "whisper-turbo+ctx+vadlo vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.030726424126376255,
+  "whisper-turbo+ctxlong vs legacy-whisper-cli": 0.07625990858068622,
+  "whisper-turbo+ctxlong vs parakeet-ft-v1+vad90": 0.0640702042733036,
+  "whisper-turbo+ctxlong vs parakeet-v3": 0.07571903151467992,
+  "whisper-turbo+ctxlong vs parakeet-v3+boost0.3f": 0.07653611210923464,
+  "whisper-turbo+ctxlong vs parakeet-v3+boost0.5": 0.07349246231155779,
+  "whisper-turbo+ctxlong vs parakeet-v3+boost1": 0.07357909528507789,
+  "whisper-turbo+ctxlong vs qwen3-asr-1.7b": 0.08007685486254804,
+  "whisper-turbo+ctxlong vs qwen3-asr-1.7b+ctx": 0.08548088507537245,
+  "whisper-turbo+ctxlong vs qwen3-asr-1.7b+vad": 0.07359976229386421,
+  "whisper-turbo+ctxlong vs qwen3-asr-1.7b+vad+terms": 0.08652773701203405,
+  "whisper-turbo+ctxlong vs whisper-large-v3": 0.030241260762420518,
+  "whisper-turbo+ctxlong vs whisper-large-v3+ctx": 0.08971715739965208,
+  "whisper-turbo+ctxlong vs whisper-turbo": 0.01738523620255469,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx": 0.007470912431108389,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx+nsoff": 0.007470912431108389,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx+seq": 0.030264626897196827,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx+seq+novad": 0.05694915254237288,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx+seq+vadlo": 0.038096952243820495,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx+seq+vadlo+echo": 0.0377794448612153,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.0384280785960702,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctx+vadlo": 0.03262652652044474,
+  "whisper-turbo+ctxlong vs whisper-turbo+ctxlong+seq+vadlo+echo": 0.03733843944471039,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs legacy-whisper-cli": 0.06471677370826824,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs parakeet-ft-v1+vad90": 0.05649800422634421,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs parakeet-v3": 0.06988297967856823,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs parakeet-v3+boost0.3f": 0.07033776500179663,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs parakeet-v3+boost0.5": 0.0677494615936827,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs parakeet-v3+boost1": 0.06744999551529285,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs qwen3-asr-1.7b": 0.07327815548329884,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs qwen3-asr-1.7b+ctx": 0.07898680614733625,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs qwen3-asr-1.7b+vad": 0.0671222700935968,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs qwen3-asr-1.7b+vad+terms": 0.07992368652773701,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-large-v3": 0.04137637287413672,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-large-v3+ctx": 0.10840152052058502,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo": 0.038654085378803965,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx": 0.04035517452541335,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx+nsoff": 0.04035517452541335,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx+seq": 0.030445671524697505,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx+seq+novad": 0.0445099484156227,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx+seq+vadlo": 0.019168466522678184,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx+seq+vadlo+echo": 0.019174793698424605,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx+seq+vadlo+echo+hst": 0.018989050547472627,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctx+vadlo": 0.031198736253721368,
+  "whisper-turbo+ctxlong+seq+vadlo+echo vs whisper-turbo+ctxlong": 0.0380650277557494
  }
 }
